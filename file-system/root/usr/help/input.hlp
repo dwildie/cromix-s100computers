@@ -1,0 +1,29 @@
+utility:      INPUT
+purpose:      This program reads a line from standard input and writes it to
+              standard output.
+
+user access:  all users
+
+summary:      input
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Input utility reads a string from the standard input and, upon reading a
+newline character, writes that string to the standard output. This utility can
+be used to write interactive command language programs by redirecting its
+output to a file, and then testing the contents of the file with the Testinp
+utility.
+
+Input stops reading when it reads a zero byte, a carriage return, or a line
+feed character. The terminating character is not written to STDOUT.
+
+Example:
+
+     jim[1] input > temp
+
+The above command reads one line from the standard input and writes it to the
+file temp.

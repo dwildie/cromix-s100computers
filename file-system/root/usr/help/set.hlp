@@ -1,0 +1,97 @@
+Shell
+command:      SET
+purpose:      This command sets and displays Shell variables
+
+user access:  all users
+
+summary:      set [variable [value]]
+
+arguments:    optional variable name
+              optional variable value
+
+options:      none
+
+Description
+
+The Set command, when given without arguments, displays the names and values
+of all variables known to the Shell. The Set command given with a single
+argument removes the specified name from the list of variables. The Set
+command called with two arguments defines (or redefines) the value of the
+Shell variable identified by the first argument to the value of the second
+argument.
+
+The names of Shell variables are arbitrary sequences of upper or lower case
+letters and digits, starting with a letter. The underscore character is
+considered to be a letter. All letters in Shell variable names are
+automatically converted to lowercase.
+
+Shell variables are referenced by:
+
+     #name
+
+or
+
+     #{name}
+
+The second form is always correct. It must be used if the name is followed
+immediately by another alphanumeric character to prevent the remaining
+characters from being treated as part of the name.
+
+Each Shell starts with an empty list of Shell variables. The files:
+
+     /etc/sh_env
+     ../sh_env
+
+if they exist, are then read in this order. If the Shell is invoked using the
+-e option and its filename argument, then that file is also read.
+
+The Shell environment files are used to define (or redefine) Shell variables.
+Empty lines, lines consisting of white space only, and lines starting with the
+'%' character, are ignored. Each of the remaining lines contains a definition
+of a Shell variable. The definition consists of the variable name and optional
+string. The variable name and the string must be separated by white space. The
+string terminates with white space. If necessary, the string may be enclosed
+in quotes ("). In such a case the string may contain white space.
+
+See the file /etc/sh_env for an example.
+
+Examples.
+
+jim[1] set abra cadabra                       % Define abra
+jim[2] set hokus pokus                        % Define hokus
+jim[3] set foo bar                            % Define foo
+jim[4] echo #abra                             % #abra is replaced
+cadabra
+jim[5] echo #hokus #pokus #foo #bar           % Try something weird
+pokus #pokus bar #bar                         % Pokus and bar are not
+                                              % variables
+jim[6] set                                    % List all variables
+foo = "bar"                                   % Here they are:
+hokus = "pokus"
+abra = "cadabra"
+jim[7] set abra                               % Delete abra
+jim[8] set hokus                              % Delete hokus
+jim[9] set                                    % See what is left
+foo = "bar"                                   % As expected
+jim[10] set foo ""                            % Define foo as an empty
+                                              % string
+jim[11] set                                   % List all strings
+foo = ""
+jim[12] set foo                               % Discard foo
+jim[13] set                                   % See that nothing is
+                                              % left
+jim[14] set x ../one/two/very_long_name       % Let x be a directory
+                                              % path
+jim[15] ls #x                                 % List the directory
+File not found: "../one/two/very_long_name"   % Nonexistent
+jim[16] echo #xy                              % There is no variable xy
+#xy
+jim[17] echo #{x}y                            % Use variable x
+../one/two/very_long_namey                    % Note y at the end
+jim[18]
+
+Note:
+
+Shell variables are not passed from one Shell to another. When a command file
+is started it is run as a shell of its own. This means that each command file
+starts with an empty set of variables.

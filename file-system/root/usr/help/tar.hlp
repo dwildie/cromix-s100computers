@@ -1,0 +1,145 @@
+utility:      TAR
+purpose:      Creates and retrieves file archives.
+
+user access:  privileged users
+
+summary:      tar -rxtc[vwfblmkoi] [archive block kilobytes] [filename(s)]
+
+arguments:    one per command, from the following list:
+
+              -r   add files to end of archive
+              -x   extract files from archive
+              -t   list files on archive
+              -c   create files on new archive
+
+options:      options, grouped (as applicable) after one of the
+              preceding arguments.
+
+              v    list the name of the file being processed
+              w    wait for user confirmation before processing
+              f    next argument is the name of the archive
+              b    next argument is blocking factor
+              l    unresolved links reported
+              m    modification times not restored
+              k    next argument is archive volume size (in kilobytes)
+              o    do not check for overwriting of existing archive
+              i    cancels use of file system identifier on floppy disks
+
+Description
+
+The Tar utility can be used to create file archives on tape, floppy disk, or
+an ordinary file. Before using Tar to back up files onto floppy disks, the
+disks must be initialized for the Cromix Operating System. (Refer to the Init
+utility.) Single- or double-sided, single- or double-density, disks can be
+used.
+
+Once an archive is created, its contents can also be retrieved using Tar.
+
+Arguments
+
+One of the following for each Tar command:
+
+-r  The named files and/or directories are added to the end of an
+    existing archive.
+
+-x  The named files and/or directories are extracted from the archive
+    and transferred to the current directory (unless the extracted files are
+    governed by absolute pathnames). The owner, modification time, and access
+    are restored for ordinary files and directories--unless a directory already
+    exists, in which case, the existing characteristics are retained. If no
+    file argument is given, the entire archive will be extracted. For tapes,
+    if there are multiple entries for the same file, the last will overwrite
+    all previous entries.
+
+-t  The named files and/or directories in the archive are listed.
+
+-c  Creates files on a new archive, but prompts for continuation if
+    existing data will be overwritten.
+
+Options
+
+v   Lists each file as it is processed. When used in conjunction with
+    the -t argument command, a fuller description of the file is given.
+
+w   Prompts for confirmation of each file to be processed. If the user
+    responds by typing y, the action is performed; otherwise, it is
+    cancelled.
+
+f   Takes the next argument as the archive name. The default archive is
+    /dev/tp1. If the name of the file is '-', Tar writes to
+    the standard output or reads from the standard input, as appropriate.
+
+b   Takes the next argument as the blocking factor (the number of
+    Tar blocks per tape block) on a new tape archive. Tar blocks
+    are 512 bytes each. The maximum (and default) blocking factor is 16 blocks.
+    Since tape archives are limited to 65,535 tape blocks, the maximum size of
+    a tape archive can vary from 32.7 megabytes to 524.3 megabytes. The blocking
+    factor is determined automatically for existing tape archives.
+
+l   Reports when links to the files are not resolved (for use with the
+    -c and -r arguments). If Tar runs out of memory for the
+    link table, the message:
+
+          "No room to check links for file :  <file name>"
+
+    is displayed, and this file and the files linked to it are written to the
+    archive. (Normally, only one copy of the file is saved).
+
+m   Modification times for extracted files will be changed to the time of
+    extraction.
+
+k   Takes the next argument as the size of the archive, in kilobytes.
+    This option is useful for splitting large files into separate "volumes" on
+    fixed-size devices such as floppy disks. When creating a multi-volume
+    archive, Tar will prompt for the next volume. When extracting from a
+    multi-volume archive, Tar only prompts for a new volume if a split
+    file has been partially restored. Without the k option, Tar
+    will not check for exceeding the disk size. (For use with floppy disks and
+    ordinary files.)
+
+o   When used with the -c argument, omits the check for overwriting
+    an existing archive. The o option must be used when creating a new tape
+    archive over an existing archive of less than 512 bytes.
+
+i   When creating an archive on floppy disk, Tar normally puts an
+    8-byte file system identifier into the first 8 bytes of block 1 (2 bytes for
+    the Cromix version, 3-byte string "tar," 1 zero byte, and 2 bytes for the
+    Tar version). Tar checks for this identifier when adding,
+    extracting, or listing, and prompts for continuation if it is incorrect. The
+    i option cancels use of the Tar identifier.
+
+Examples
+
+To view the progress of directory backups to a new  archive  of  one  or  more
+small floppy disks, each limited to 390 kilobytes:
+
+     jim[1] tar -cvfk /dev/sfdc 390 directory_names
+
+To view the progress of a file backup to an existing tape archive:
+
+     jim[1] tar -rfv /dev/tp1 file1 file2 ...
+
+To list the contents of a tape archive in long form:
+
+     jim[1] tar -tvf /dev/tp1
+
+Notes
+
+If disk I/O errors occur while reading or writing a floppy disk archive, Tar
+will attempt to recover. On read errors, Tar will write the block to the
+Cromix file and display the location where the questionable block was written.
+On write errors, Tar will stop writing the file, back up to where the file
+began, and write an end-of-archive at that point. Thus, the volume's prior
+contents will be intact. Tar will then prompt for a new disk and try rewriting
+the file.
+
+If the message "Cheksum error" appears, the integrity of the file just
+processed is questionable.
+
+Tar cannot write to an uninitialized tape. To create an archive on an
+uninitialized tape, write a dummy file of size 512 bytes or greater to the
+tape and use the Ddump utility as follows:
+
+     jim[1] ddump if=[filename] of=/dev/tp1
+
+After the tape is reloaded, Tar can write to the tape.

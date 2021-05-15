@@ -1,0 +1,30 @@
+function:       rdbyte
+purpose:        Read a byte
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int rdbyte(channel)
+                int channel;
+
+Description
+
+Read next byte from channel.
+
+Returns:
+
+     byte read        if successful
+     ERR              if error
+
+Common errors:
+
+     _notopen            The channel to read from is not open.
+     _filaccess          The user does not have read access to the
+                         file to read from.
+     _ioerror            Any kind of driver error, diagnosed on the
+                         raw terminal.
+     _endfile            The file is positioned at the end of the file.
+     _ssignal            A signal was received while waiting for a byte.
+

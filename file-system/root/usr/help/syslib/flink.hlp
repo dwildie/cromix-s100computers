@@ -1,0 +1,33 @@
+function:       flink
+purpose:        Establish a link to a file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int flink(oldpath,newpath)
+                char *oldpath, *newpath;
+
+Description
+
+The flink call establishes a link from an existing file to the new file
+pathname.  The new file pathname must not exist before the clink call is made.
+
+The function returns:
+
+     0           operation successful;
+     ERR         if error
+
+Common errors:
+
+     _badname            One of the pathnames is illegal.
+     _isdir              As a rule, directories cannot be linked.
+     _numlinks           The file has too many links.
+     _diraccess          The user needs proper access to the directories
+                         involved.
+     _exists             The pathname to be created already exists.
+     _notexist           The pathname to be linked does not exist.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

@@ -1,0 +1,23 @@
+utility:      NCHECK
+purpose:      This program displays file information.
+
+user access:  all users
+
+summary:      ncheck [-i inode-#'s] [dirname or filename]
+
+arguments:    directory or file pathname
+
+options:      -i   list of inode numbers
+
+Description
+
+The Ncheck program displays the inode number, link count, and pathname of all
+files contained in the specified directory and all subdirectories. If no
+arguments are supplied, Ncheck uses the root directory.
+
+Options
+
+The -i option, which displays information about specified inodes only,
+requires an argument. This argument can be one or more inode numbers separated
+by commas or it can be one or more inode numbers separated by spaces with the
+entire list enclosed in quotation marks.

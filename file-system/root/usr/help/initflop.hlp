@@ -1,0 +1,147 @@
+utility:      INITFLOP
+purpose:      This program initializes a floppy disk.
+
+user access:  privileged user
+
+summary:      initflop [[-dsvz] [-c #[,#]] [-h #[,#]
+              [-l name] [-u #] [-n #] devname]
+
+arguments:    Cromix device name
+
+options:      -c   CYLINDERS to initialize
+              -d   Single DENSITY
+              -h   HEADS to initialize
+              -l   CDOS disk label name
+              -n   Number of CDOS directory entries
+              -s   Single SIDED
+              -u   UNIFORM format disk sector size
+              -v   Verbose
+              -z   CDOS format disk
+
+Description
+
+The Initflop program is used to initialize floppy disks. Parameters may be
+passed from the command line or interactively from the terminal as the program
+executes.
+
+Following is a sample script of a typical Initflop session to format a small
+(5-inch) Cromix floppy disk. The user's responses are printed in boldfaced
+type--everything else is displayed by Initflop. RETURN is pressed to select a
+default response (default values are displayed in angle brackets):
+
+Initialize Floppy Disks  version             xx.yy
+
+Press:  RETURN to supply default answers
+        CTRL-C to abort program
+Warning:INITFLOP can destroy all disk data
+
+Disk to initialize (devname)?   sfdd
+
+Testing:      Rotational speed:   300 RPM
+
+Formatting
+     Disk type (C=CDOS, X=CROMIX)?  <X>RETURN
+     Single or double sided (S/D)?  <D>RETURN
+     Single or double density (S/D)?  <D>RETURN
+     Single or double tracked (S/D)?  <S>RETURN
+
+     First cylinder (0-27H)?  <OH>   RETURN
+     Last cylinder (0-27H)?  <27H>   RETURN
+     Surfaces (0-1,All)?  <All>      RETURN
+
+     Surface,Cylinder
+     0       00
+     1       00
+     0       01
+     1       01
+     :       :
+     :       :
+
+The Initflop program first asks for the device name of the drive containing
+the disk to be formatted. Legal responses are the device names of the floppy
+disk drives connected to your system, such as fda, fdbf1, sfda, sfdb, ufda,
+ufdb, and so on. Absolute pathnames may also be used, for example /dev/fda or
+/dev/sfdb. Be sure to specify the device name correctly, as the Initflop
+program destroys all data on a floppy disk.
+
+Initflop briefly tests the specified drive. Drive speed, which is particularly
+important when formatting, is displayed by the program.
+
+Next, if the device is not a uniform floppy, Initflop prompts for the "type"
+of disk to be formatted. This determines whether the disk is to be used with
+the CDOS Operating System or with the Cromix-Plus Operating System. If the
+device is a uniform floppy, Initflop prompts for the sector size.
+
+Initflop then prompts for information about disk sides and density.  Double-
+sided, double-density is the default.
+
+Next, Initflop asks for the numbers of the first and last cylinder to be
+formatted. On occasion, it may be necessary to format only a portion of a disk
+(for example, one track may be experiencing frequent errors). Selecting the
+default responses will format the entire disk.
+
+Initflop then prompts for the surfaces to be initialized. To format only one
+surface, select the corresponding value from the prompt. Selecting the default
+by pressing RETURN initializes all surfaces.
+
+At this point, Initflop proceeds to format the disk. As the disk is formatted,
+cylinder and surface numbers are displayed. For proper head positioning, the
+disk is formatted from the outermost cylinders inward.
+
+When Initflop is called with a device name as an argument, the responses to
+the preceding prompts are taken from the command-line options. If no options
+are specified, double-density, double-sided Cromix disk, with all heads and
+cylinders formatted is selected by default. For uniform floppies, the default
+sector size is 512 bytes.
+
+The -d option specifies a single-density disk.
+
+The -s option specifies a single sided disk.
+
+The -z option specifies a CDOS-format disk. When the -z option is used, the
+disk label name (up to 8 characters) may be specified with the -l option and
+the number of directory entries (64 to 512) may be specified with the -n
+option. The disk label is only written if the track containing the label has
+been formatted. These options are invalid with uniform floppies.
+
+The -u option, with a sector size as an argument, specifies a uniform-density
+disk with the corresponding sector size. Valid sector sizes are 128, 256, 512,
+and 1024 bytes. This option is invalid if the device is not a uniform floppy.
+
+The -c option can be used to specify the cylinders to be formatted. If only
+one argument is given, only that cylinder will be formatted. If two arguments
+are given, all cylinders from the first argument through the second argument
+will be formatted.
+
+The -h option can be used to specify that only certain surfaces are to be
+formatted. If only one argument is given, only that surface will be formatted.
+If two arguments are given, all surfaces from the first argument through the
+second argument will be formatted.
+
+When arguments are given on the command line, Initflop normally operates in
+the "quiet" mode. To display information about the type of disk being
+formatted, and Initflop's progress, use the -v (verbose) option.
+
+Example
+
+system[1] initflop -zv -c 1,3 -l library -n 64 sfdc
+
+Device name:  sfdc
+Rotational speed:   300 RPM
+CDOS disk    Double sided    Double density
+First cylinder:   1.
+Last cylinder:   3.
+All surfaces
+
+surface,cylinder
+0    00
+1    00
+0    01
+:    :
+:    :
+
+Disk name:   library
+Date on disk:   10/10/84    (current date is printed)
+Number of directory entries:   64
+
+Had the -v option been omitted, no information would have been displayed.

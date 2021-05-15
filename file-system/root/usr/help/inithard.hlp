@@ -1,0 +1,163 @@
+utility:      INITHARD
+purpose:      Initializes a hard disk
+
+user access:  privileged user
+
+summary:      inithard [-n]
+
+arguments:    none
+
+options:      -n    new disk
+
+Description
+
+The Inithard utility initializes hard disks. It can also be used to declare
+disk partitions and alternate tracks.
+
+The Inithard utility first asks for the device name. In case of devices that
+have disk partitions (all hard disks except WDI interface drives) you must
+enter the highest partition available (e.g. std31, esd63, and so on) which
+specifies the entire drive. When an acceptable device name is entered,
+initializing proceeds in four steps. In all cases the questions asked provide
+ranges for answers. No answer will be accepted unless it falls within the
+allowable ranges. All questions also offer the default answer that will be
+taken if only the return key is pressed.
+
+Step 1
+
+All hard disks contain some special information on track zero. This special
+information includes the partition table (how a large disk is broken into a
+number of smaller devices), and an alternate track table (a list of known bad
+tracks together with the replacement track for each bad track). Most disks
+also contain a label. The label contains information such as the number of
+available cylinders. In case of drives that do not have a label, all label
+information is known by the drive itself (e.g. ESDC drives).
+
+If the -n option is not used, the Inithard utility will first read all
+pertinent information from track zero. If the -n option is used, the Inithard
+utility will not try to read the information from track zero. In the case of
+labeled drives, the Inithard utility will ask the operator label information
+entries. If the -n option was used, Inithard will display default values that
+are most likely to be wrong. The operator may need the drive manufacturer's
+manual to obtain the correct answers.
+
+The questions asked will be:
+
+     Number of surfaces
+     Number of cylinders
+     Number of sectors
+     Interleave factor (optional)
+     Max number of alternate tracks
+     Starting cylinder of disk
+     Starting cylinder for write precomp (optional)
+
+The items: number of surfaces, cylinders, and sectors are self explanatory.
+Only SMD drives use interleaving. "Max number of alternate tracks" defines the
+number of tracks that will be set aside. This number should be a multiple of
+the number of surfaces. All drives except WDI drives should use the number
+"one" as the starting cylinder of the disk. This will make accidental
+destruction of the label, partition table, and alternate track table less
+likely. Only some STDC disks use write precompensation. Here is the list of
+the most imporartant parameters for standard Cromemco STDC hard disks:
+
+Drive type           # heads       # cylinders       Write Precomp
+
+VERTEX V150           5             987               987
+MICROPOLIS 1304       6             830               830
+CDC                   6             925               0
+HITACHI               7             714               256
+IMI HD21              6             306               214
+MAXTOR XT2140         11            1225              1225
+MAXTOR XT1140         15            918               918
+
+When all the questions have been answered, the Inithard utility will
+initialize track zero and rewrite the label (if applicable) the partition
+table and the alternate track table.
+
+Step 2
+
+This step starts with the question:
+
+     Do you want to initialize any tracks?
+
+If the answer is affirmative, the Inithard utility will ask for the range of
+cylinders and heads:
+
+     First cylinder
+     Last cylinder
+     First head
+     Last head
+
+Therefore, the tracks (cylinder, head) with:
+
+     First cylinder  <= cylinder  <= Last cylinder
+     First head      <= head      <= Last head
+
+will be initialized, thereby destroying any information that happens to be
+recorded on such tracks. Cylinder zero, head zero will not be reinitialized
+even if included in the range.
+
+Step 3
+
+This step starts with the list of current partitions. For each existing
+partition the partition number and the number of cylinders it occupies is
+listed. The list is followed by the question:
+
+     Do you want to change partition table?
+
+If the answer is affirmative the Inithard utility will keep asking questions
+like:
+
+     Partition 0
+     Number of cylinders (1 - 689) <689> ?
+
+The default answer is always the remaining number of cylinders. When all the
+cylinders are used up the new partition table will be written out.
+
+Step 4
+
+This step covers the declarations of alternate tracks. The first question
+asked is for the starting cylinder number of the alternate tracks:
+
+     Alternate track location
+
+Warning: Moving the alternate tracks will jeopardize existing data.
+
+(The number of alternate tracks has been defined in step 1). Next, the current
+list of alternate tracks is listed in the form
+
+Alternate track table
+  # bad track alt track      # bad track alt track      # bad track alt track
+      cyl  hd   cyl  hd          cyl  hd   cyl  hd          cyl  hd   cyl  hd
+  0    50   3   377   0      2   243   3   377   2      4   320   0   377   1
+  1   113   2   377   5      3   288   2   377   4
+
+The first entry of this table indicates that the track on cylinder 50, head 3,
+is unusable and the system should use the track on cylinder 377, head 0,
+instead.
+
+The listed table is followed by the question:
+
+     Do you want to add an alternate track?
+
+If the answer is affirmative, the Inithard utility will ask the questions:
+
+     Bad cylinder number
+     Bad head number
+
+The questions will be repeated until the pair 0, 0 is entered. (Cylinder zero,
+head zero, cannot be a bad track). The Inithard utility will now display the
+modified alternate track table and ask if the operator wants to add some more
+alternate tracks. A negative answer is followed by the question:
+
+     Do you want to delete an alternate track?
+
+An affirmative answer is followed by the question:
+
+     Bad track index
+
+The answer should be the index of the bad track. These indices can be read
+from the alternate track table under the heading "#". After an alternate track
+has been deleted, the alternate track table is displayed again. This is
+repeated until the operator says he does not want to either add or remove an
+alternate track. The final table will be now written to the disk.

@@ -1,0 +1,10 @@
+
+PUSH - Create new interactive Kermit.
+
+		Usage:
+
+		PUSH
+
+The PUSH command enters a new level of Kermit just like the TAKE command, but
+it takes commands from the standard input instead.  Useful if you want to
+go into interactive Kermit in the middle of a command file.

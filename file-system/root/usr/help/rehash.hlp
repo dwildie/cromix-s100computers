@@ -1,0 +1,104 @@
+Shell
+command:      REHASH
+purpose:      This command builds (or discards) a table of executeble files.
+
+user access:  all users
+
+summary:      rehash [any-string]
+
+arguments:    optional arbitrary string
+
+options:      none
+
+Description
+
+To execute a command the Shell utility must locate the file to be executed.
+This means checking all the directories defined in the "path" Shell variable,
+in general three times, once for each possible executable extension (.cmd,
+.bin, or .com). If the affected directories are very extensive this might take
+a long time.
+
+The Rehash function of the Shell utility, when invoked without an argument,
+can be used to contruct a full list of executable files. If such a list is
+built, a command can be found much faster. The difference is especially
+noticable in the case of large directories and a busy system. If the Rehash
+function is invoked with any argument, the list of executable files will be
+scrapped.
+
+The list of executable files will be used provided all of the following is
+true:
+
+     The command was entered without the directory information
+     in front of it and without an extension.
+
+     The Rehash function was used to build the list of executable
+     files and the list was not subsequently scrapped.
+
+In such a case, the Shell utility will try to execute the file without any
+searching. If the list of executable files does not contain the named command
+the message "Command not found" will appear.
+
+When a Shell is started there is no list of executable files. The Rehash
+function must be invoked to build it first.
+
+The list of executable files will become invalid in the following cases:
+
+     The current directory was changed using the "Directory" command.
+
+     An executable file (file with the exension .cmd, .bin, or .com)
+     was created or deleted.
+
+     The search path stored in the "path" and "ext" Shell variables
+     was changed.
+
+If the list of execuble files becomes invalid the following may result:
+
+     A valid command will result in the message "Command not found".
+
+     A deleted command is still in the list of executable files
+     resulting in the message "File not found".
+
+     The wrong file will execute (for example, .cmd instead of .bin,
+     or a file from the wrong directory will execute).
+
+In all such cases, the Path function will correctly identify the command Shell
+will actually execute. Any problems may be resolved by any of the following
+means:
+
+     Rebuild the list of executable files ("Rehash" command).
+
+     Scrap the list of executable files ("Rehash x" command).
+
+     Identify the file to be executed more precisely by specifying
+     either the directory and/or the extension.
+
+Hint
+
+Do not add your own files into the /bin and /cmd directories. These
+directories, especially /bin, are big enough already. Store your executable
+files into the /usr/bin directory. This strategy has an added benefit of
+providing a simpler back up procedure.
+
+Note:
+
+If you have moved a large number of files from the /bin or from the /cmd
+directory to the /usr/bin directory, the original directories may end up with
+many empty slots will still be large. You can verify this state of affairs by
+simply executing the command
+
+     jim[1] dump /bin
+
+Every other line must show a command name. If there are many empty slots you
+should consolidate the directory. You can do this by executing the the
+following sequence of commands (as a privileged user):
+
+     jim[1] d /
+     jim[2] makd newbin
+     jim[3] chowner bin newbin
+     jim[4] cptree bin newbin
+     jim[5] ren bin oldbin
+     jim[6] ren newbin bin
+     jim[7] deltree -a oldbin
+
+Note that the system is very vulnerable between both Rename commands: for a
+short period of time there is no /bin directory.

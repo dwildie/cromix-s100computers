@@ -1,0 +1,46 @@
+utility:      CPTREE
+purpose:      This program copies a tree.
+
+user access:  all users
+
+summary:      cptree [-ftv] source destination [file-list]
+
+arguments:    source directory
+
+              destination directory
+
+              optional file list
+
+options:      -f   force
+              -t   time
+              -v   verbose
+
+Description
+
+The Cptree utility copies the source directory, and all its descendant
+directories and files, to the destination directory. Existing links within the
+source directory are preserved.
+
+If a file list is specified, only files whose names match at least one of the
+names in the list are copied. Ambiguous filenames enclosed in quotation marks
+may be included in the file list.
+
+Options
+
+The -f option causes the copied files to overwrite any file with the same
+pathname. If this option is not invoked and another file exists with the
+destination pathname, an error is reported.
+
+The -t option causes a file to be copied only if:
+
+the file does not exist in the destination directory, or the source file has
+been modified more recently than the destination file. This comparison is
+performed on a file-by-file basis.
+
+The -v option causes display of the name of each file as it is copied.
+
+Notes
+
+With the exception of "time dumped," which is automatically zeroed, files are
+copied with ownership and times preserved. If the system clock is reasonably
+accurate, the -t option can be very useful.

@@ -1,0 +1,43 @@
+function:       lock
+purpose:        Lock out the process
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int lock(lock_sequence,ltype,llength)
+                char *lock_sequence; int ltype, llength;
+
+Description
+
+Lock makes (or attempts to make) a lock table entry. If (ltype & 1) is "true",
+the lock is shared. If (ltype & 2) is "true", the lock is conditional.
+
+The lock will "fail" if the following is true:
+
+     The lock_sequence has already been locked and either this lock is
+     meant to be unshared or the sequence is aready locked as unshared.
+
+In the opposite case the lock will "succeed".
+
+If the lock "fails" and the lock is conditional, errno is set to _locked and
+the value ERR is returned immediately.
+
+If the lock "fails" and the lock is unconditional, the process is put to sleep
+until the lock can "succeed".
+
+The function returns:
+
+     0              operation successful;
+     ERR            if error.
+
+Common errors:
+
+     _locked               The sequence is already locked.
+     _deadlock             Locking the sequence would result in a deadlocked
+                           situation.
+     _lcktable             There are no more lock table entries available.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

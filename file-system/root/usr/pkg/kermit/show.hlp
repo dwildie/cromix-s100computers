@@ -1,0 +1,18 @@
+
+SHOW, DISPLAY, DIS, STATUS, STAT - Show Kermit options/modes.
+
+		Usage:
+
+		SHOW
+		SHOW <options>
+
+Show the settings of Kermit options.  Type HELP SET for a list.
+
+Use SHOW without arguments to display all the settings, SHOW SEND or
+SHOW RECEIVE to display all the options in those categories, SHOW <option>
+to display a single option.  More than one option may be specified.
+
+To display all the predefined settings, type SHOW SETTINGS (may be
+abbreviated as SET or =) or SHOW OPTIONS (may be abbreviated as OPT, or O).
+To display all the user-defined settings, type SHOW MACROS (may be
+abbreviated as M) or SHOW DEFS.

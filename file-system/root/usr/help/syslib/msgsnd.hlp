@@ -1,0 +1,84 @@
+function:       msgsnd
+purpose:        Send a message to a message queue
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <ipc.h>
+                <msg.h>
+
+synopsis:       int msgsnd(msqid,msgp,msgsz,msgflg)
+                int msqid, msgsz, msgflg; struct msgbuf *msgp;
+
+Description
+
+Msgsnd is used to send a message to the message queue associated with the
+message queue identifier msqid. Msgp points to a structure containing the
+message. The structure is composed of the following members:
+
+     long    mtype;           /* Message type        */
+     char    mtext[];         /* Message text        */
+
+Mtype is a positive integer that can be used by the receiving process for
+message selection (see msgrcv). Mtext is any text of length msgsz bytes. Msgsz
+can range from zero to a system imposed maximum.
+
+Msgflg specifies the action to be taken if one or more of the following are
+true:
+
+     The number of bytes already on the queue is equal to msg_qbytes.
+
+     The total number of messages on all queues system wide is equal to
+     the system imposed limit.
+
+These actions are as follows:
+
+     If (msgflg & IPC_NOWAIT) is "true", the calling process will return
+     immediately with the return value of ERR and errno set to _ipcspace.
+
+If (msgflg & IPC_NOWAIT) is "false", the calling process will suspend
+execution until one of the following occurs:
+
+          The condition responsible for the suspension no longer exists, in
+          which case the message is sent.
+
+          Msqid is removed from the system. When this occurs, errno is
+          set to _ipcremove, and value ERR is returned.
+
+          The calling process receives a signal that is to be caught. In this
+          case a message is not sent, errno is set to _ssignal, and the
+          value ERR is returned.
+
+Upon successful completion, the following actions are taken with respect to
+the data structure associated with msqid:
+
+     Msg_qnum is incremented by one.
+
+     Msg_lspid is set equal to the process ID of the calling process.
+
+     Msg_stime is set equal to the current time.
+
+The function will return:
+
+     0           if successful;
+     ERR         if error.
+
+Common errors:
+
+     _badvalue           Msqid is not a valid message queue identifier.
+     _ipcaccess          Operation permission is denied to the calling
+                         process.
+     _badvalue           Mtype is less than one.
+     _ipcagain           Message cannot be sent right now and the nowait
+                         bit is set in the msgflg.
+     _badvalue           Message size is less than zero or grater than the
+                         system imposed limit.
+     _ipcremove          While the system call was waiting to get the
+                         resources the message queue was removed from the
+                         system.
+     _ssignal            A signal was received by the process while it was
+                         waiting for resources to send the message.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

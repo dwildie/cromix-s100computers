@@ -1,0 +1,33 @@
+utility:      DAY
+purpose:      This program executes a command on the day specified.
+
+user access:  all users
+
+summary:      day [day-of-the-week command-line]
+
+arguments:    day of the week
+
+              command line
+
+options:      none
+
+Description
+
+The Day utility executes a command on the day specified. Day checks the system
+clock for the specified day. This program is useful in applications that
+require certain tasks be done on certain days of the week.
+
+Notes
+
+When used without an argument, Day displays the name of the current day.
+
+Example:
+
+The following command line (if executed on Wednesday) will remind you of a
+weekly Wednesday meeting.
+
+     jim[1] day wed echo "This is Wednesday, remember your meeting"
+
+If the command is executed on any other day, no action is taken. It is
+recommended that these commands be included in startup command files or other
+command files executed daily.

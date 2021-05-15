@@ -1,0 +1,268 @@
+68010 XPU 162   Link68 source 1.31
+link68 -r -q -o cromix.sys -y 0 crolib config -s /usr/drivers/s100lib -s iolib 
+
+crolib       cromix       cromix       000000 000bcf  RE
+                          data         0185a4 000008  RW
+                          udata        017000 000812  RWU
+crolib       arith        code         000bd0 000126  RE
+crolib       string       code         000cf8 00010c  RE
+crolib       block.c      CODE         000e04 000334  RE
+                          IDATA        0185ac 00001e  RW
+crolib       buffer.c     CODE         001138 000734  RE
+                          IDATA        0185cc 000026  RW
+                          UDATA        017814 000210  RWU
+crolib       devut.c      CODE         00186c 00037a  RE
+                          IDATA        0185f4 000006  RW
+crolib       direct.c     CODE         001be8 0008be  RE
+                          IDATA        0185fc 000022  RW
+crolib       dprintf.     CODE         0024a8 000400  RE
+                          IDATA        018620 000020  RW
+crolib       error.c      CODE         0028a8 0001d8  RE
+                          IDATA        018640 0006d0  RW
+crolib       except.c     CODE         002a80 0001bc  RE
+                          IDATA        018d10 00043e  RW
+crolib       ffp.c        CODE         002c3c 000144  RE
+crolib       file.c       CODE         002d80 000be4  RE
+                          IDATA        019150 000022  RW
+                          UDATA        017a24 00000c  RWU
+crolib       fileio.c     CODE         003964 000cc2  RE
+crolib       fileut.c     CODE         004628 0003ee  RE
+crolib       general.     CODE         004a18 0010ec  RE
+                          IDATA        019174 000022  RW
+crolib       init.c       CODE         005b04 0006a2  RE
+                          IDATA        019198 000258  RW
+                          UDATA        017a30 00000c  RWU
+crolib       inode.c      CODE         0061a8 000a90  RE
+                          IDATA        0193f0 00005e  RW
+                          UDATA        017a3c 000008  RWU
+crolib       interrup     CODE         006c38 0000f0  RE
+                          IDATA        019450 00024a  RW
+                          UDATA        017a44 000040  RWU
+crolib       iohandl.     CODE         006d28 00029e  RE
+                          UDATA        017a84 000004  RWU
+crolib       ipc.c        CODE         006fc8 000206  RE
+crolib       memory.c     CODE         0071d0 000cd8  RE
+                          IDATA        01969c 000098  RW
+                          UDATA        017a88 000110  RWU
+crolib       misc.c       CODE         007ea8 000a88  RE
+                          IDATA        019734 00001c  RW
+                          UDATA        017b98 00000c  RWU
+crolib       mount.c      CODE         008930 000502  RE
+                          IDATA        019750 00001e  RW
+                          UDATA        017ba4 00000a  RWU
+crolib       msg.c        CODE         008e34 0007a6  RE
+                          UDATA        017bb0 00000c  RWU
+crolib       printf.c     CODE         0095dc 0008ca  RE
+                          IDATA        019770 00001e  RW
+crolib       process.     CODE         009ea8 000636  RE
+                          IDATA        019790 000030  RW
+                          UDATA        017bbc 000018  RWU
+crolib       procut.c     CODE         00a4e0 000782  RE
+                          IDATA        0197c0 000020  RW
+crolib       ptrace.c     CODE         00ac64 000326  RE
+crolib       sched.c      CODE         00af8c 00047a  RE
+                          IDATA        0197e0 000070  RW
+                          UDATA        017bd4 000028  RWU
+crolib       sem.c        CODE         00b408 000ea6  RE
+                          UDATA        017bfc 000018  RWU
+crolib       shm.c        CODE         00c2b0 0006da  RE
+                          IDATA        019850 00001c  RW
+                          UDATA        017c14 00000c  RWU
+crolib       sht.c        CODE         00c98c 0008d4  RE
+                          IDATA        01986c 00001c  RW
+                          UDATA        017c20 00000a  RWU
+crolib       signal.c     CODE         00d260 0005fc  RE
+                          IDATA        019888 00001e  RW
+crolib       syscall.     CODE         00d85c 000c00  RE
+                          IDATA        0198a8 000020  RW
+crolib       table.c      CODE         00e45c 00019a  RE
+                          IDATA        0198c8 00006c  RW
+                          UDATA        017c2c 000028  RWU
+crolib       util.c       CODE         00e5f8 0004f8  RE
+                          IDATA        019934 000034  RW
+crolib       xmm.c        CODE         00eaf0 0003f6  RE
+                          IDATA        019968 000054  RW
+                          UDATA        017c54 000008  RWU
+config       config       rootdevn     0199bc 000004  RW
+                          acctable     0199c0 000006  RW
+                          raw_term     0199c8 000004  RW
+                          bdevtabl     0199cc 000030  RW
+                          cdevtabl     0199fc 000040  RW
+                          devpar       019a3c 000010  RW
+                          rawarg       019a4c 000008  RW
+                          barg         019a54 000060  RW
+                          carg         019ab4 000080  RW
+                          bufcnt       019b34 000004  RW
+                          inocnt       019b38 000004  RW
+                          mntcnt       019b3c 000004  RW
+                          filcnt       019b40 000004  RW
+                          chcnt        019b44 000004  RW
+                          usrcnt       019b48 000004  RW
+                          lckcnt       019b4c 000004  RW
+                          ptbcnt       019b50 000004  RW
+                          freecnt      019b54 000004  RW
+                          argvcnt      019b58 000004  RW
+                          charcnt      019b5c 000004  RW
+                          maxlev       019b60 000004  RW
+                          msginfo      019b64 000014  RW
+                          shminfo      019b78 000010  RW
+                          seminfo      019b88 000018  RW
+                          shtinfo      019ba0 000008  RW
+                          maxmem       019ba8 000004  RW
+                          usignon      019bac 000030  RW
+/usr/drivers/s100lib rawconso     CODE         00eee8 00005e  RE
+                          IDATA        019bdc 000010  RW
+/usr/drivers/s100lib idecf.c      CODE         00ef48 000f6e  RE
+                          IDATA        019bec 000684  RW
+                          UDATA        017c5c 000444  RWU
+/usr/drivers/s100lib systimer     CODE         00feb8 000298  RE
+                          IDATA        01a270 000040  RW
+                          UDATA        0180a0 000200  RWU
+/usr/drivers/s100lib stty.c       CODE         010150 001cea  RE
+                          IDATA        01a2b0 000220  RW
+                          UDATA        0182a0 0002b2  RWU
+/usr/drivers/s100lib sio.c        CODE         011e3c 0003bc  RE
+                          IDATA        01a4d0 000096  RW
+iolib        debug.c      CODE         0121f8 000010  RE
+iolib        sysdev.c     CODE         012208 0000b8  RE
+                          IDATA        01a568 00003c  RW
+iolib        fdctim.c     CODE         0122c0 0002b6  RE
+                          IDATA        01a5a4 000060  RW
+iolib        tuinit       CODE         012578 00001e  RE
+iolib        tu_init      CODE         012598 000012  RE
+iolib        memdev.c     CODE         0125ac 00039a  RE
+                          IDATA        01a604 00005c  RW
+                          UDATA        018554 000010  RWU
+iolib        stdc.c       CODE         012948 00178c  RE
+                          IDATA        01a660 000242  RW
+                          UDATA        018564 000010  RWU
+iolib        tuenable     CODE         0140d4 000026  RE
+iolib        tu_enabl     CODE         0140fc 000040  RE
+iolib        tuart.c      CODE         01413c 000008  RE
+                          IDATA        01a8a4 00001e  RW
+                          UDATA        018574 000010  RWU
+iolib        bu_getmo     CODE         014144 00009e  RE
+iolib        bu_setmo     CODE         0141e4 00006c  RE
+iolib        blkutl.c     CODE         014250 000008  RE
+                          IDATA        01a8c4 000020  RW
+                          UDATA        018584 000020  RWU
+
+  0 multiply defined symbol(s)
+  0 unknown symbol(s)
+
+$I_DIV4   00000c00  $I_MOD4   00000c2a  $I_MUL4   00000bd0  $U_DIV4   00000c4c
+$U_MOD4   00000c52  ?tuart    00018574  _cbegin   00000000  _cend     00014258
+_dbegin   000185a4  _dend     0001a8e4  _ibegin   00014258  _iend     00016598
+_ubegin   00017000  _uend     000185a4  abs_lba   0000f66a  absleep   0000b0dc
+accheck   00008408  acctable  000199c0  addauto   00006c88  addint    00006c38
+addmap    0000766c  alarmclock                    0000d78e  alarmdown 00017c30
+alarmup   00017c34  allfils   00017a24  allmem_b  0001a644  alloc     00008258
+argsget   0000a634  argsput   0000a6aa  argvcnt   00019b58  autovec   00017a44
+avalloc   0000858a  avinsert  00008560  avremove  00008542  barg      00019a54
+bdevtabl  000199cc  bfdummy   00001288  bfflush   0000145c  bfmakblk  0000124a
+bfqueue   000015a6  bfread    000011e2  bfrelease 000012ca  bfunqueue 00001640
+bfupdate  000013d0  bkalloc   00000e04  bkdelete  00000f20  bkdriver  00001b5e
+blkutl.c  00014250  block.c   00001130  bu_getmode                    00014144
+bu_setmode                    000141e4  bufcnt    00019b34  buffer.c  00001864
+callwd    0000b382  carg      00019ab4  catstr    0000e6a0  cdevtabl  000199fc
+cdvclose  00001ab4  cdvopen   00001a72  charcnt   00019b5c  chcnt     00019b44
+chdriver  00001b9e  checksum  00000aec  chkmem    00000b1c  chsum     00017c38
+compare   0000e5f8  consult   0000b002  copyin    0000e9f2  copyout   0000ea2a
+copyrite  00019372  ctime     0000e76e  curtime   00017c3c  cusp      00017bc2
+d_printf  000024a8  debug     000121f8  debug.c   00012200  delmap    000077ac
+devut.c   00001bde  die       00000480  direct.c  0000249e  do_nmi    000185a8
+dprintf.c 000028a0  drfind    00001be8  drget     00001d82  dummy     00017c40
+dvclose   000018aa  dvmount   0000196e  dvopen    0000186c  dvrdwr    00001900
+dvunmount 00001a4e  endone    00000bcf  err       00017c44  error.c   00002a78
+esdidma   00018584  except.c  00002c34  exception 00002a80  execone   00000ba8
+execute   00000a6e  fdctim.c  0001256e  ffp.c     00002d78  fgetblk   00004692
+fgetchan  0000465c  fgetflp   00004628  filcnt    00019b40  file.c    0000395c
+fileio.c  0000461e  fileut.c  00004a0e  filfst    00017a28  fill      00000cf8
+filnxt    00017a2c  finduser  000085fe  findusp   0000af8c  flclose   00003516
+flushtime 0001a5e4  fputblk   00004768  free      0000828e  freecnt   00019b54
+galloc    000082de  general.c 00005afc  getbkmode 00001af6  getcacr   00000ba4
+getctime  000122c0  getfree   0000755a  getq      00006e10  getutime  000071a6
+gfree     0000836c  ginit     000082b6  gsort     0000e890  hasxmm    00017c58
+i8255_init                    00011e90  idecf.c   0000feae  idecf_b   0001a254
+ignore    00006cfc  inalloc   00006442  inclose   00006394  incount   0000668c
+inflush   000065b8  init      00005b04  init.c    0000619e  initalloc 00008228
+initbuf   00001138  initfil   00002d80  initino   000061a8  initlck   00007ea8
+initmem   000071d0  initmnt   00008930  initsegs  00007530  inittbl   0000e4e4
+initusp   00017bc6  initusr   00009ea8  initxmm   0000eaf0  inlock    00006322
+inocnt    00019b38  inode.c   00006c30  inread    00006234  inrelease 000062f2
+interrupt.c                   00006d20  inthand   00006cdc  inunlock  0000635c
+inupdate  0000660e  iodone    00001344  iogetc    00006f28  iohandl.c 00006fbe
+ioputc    00006f5e  ipc.c     000071c6  ipcaccess 00006fc8  ipcget    0000705e
+lbolt     00017c48  lckcnt    00019b4c  loadxmm   0000ec16  lockev    000085b4
+losttime  00017c4c  maxlev    00019b60  maxmem    00019ba8  memdev.c  0001293e
+memfree   00007bae  memfromsys                    00007ddc  memory.c  00007ea0
+memstat   00007c56  memtosys  00007d20  misc.c    00008928  mntcnt    00019b3c
+mntfst    00017ba6  mntnxt    00017baa  mount.c   00008e2a  move      00000d40
+msg.c     000095d2  msginfo   00019b64  msginit   00008e34  mtget     00008d08
+mtgetfs   00008cbc  mtparent  00008d70  palloc    0000e45c
+practivate                    0000b1a2  pralloc   0000a754  prclose   0000a5f4
+prcreate  0000a4e0  prdeactivate                  0000b204  prexec    0000a596
+print_mbr 0000f6ba  printf.c  00009e9e  process.c 0000a4d6  procid    00017bca
+procseg   00017b94  procsr    00017804  procsw    00000ab4  procut.c  0000ac5a
+progcheck 0000ca36  progload  0000cae8  prstart   0000a284  ptbcnt    00019b50
+ptrace.c  0000af82  putq      00006d72  qinit     00006d28  queuecnt  00017a1c
+queuemod  00017a20  raw_term  000199c8  rawarg    00019a4c  rawcon    00019be0
+rawconsole.c                  0000ef3e  read_geometry                 0000f3de
+read_mbr  0000f54e  resetffp  00002d64  resetmap  0000ed24  reslev    00000b92
+restffp   00002d12  rewrite   00000dee  rmove     00000d94  rootdevn  000199bc
+s_alarm   0000d750  s_boot    00005c06  s_caccess 000051c6  s_cchstat 00004e3e
+s_chdup   000030c8  s_chkdev  00004ad2  s_clink   0000349e  s_close   00002f28
+s_create  00002f70  s_cstat   00004d3c  s_delete  00003076  s_divd    000081e2
+s_error   000028a8  s_exchg   00003120  s_exec    0000a070  s_exit    0000a0d0
+s_faccess 00005168  s_fchstat 00004daa  s_fexec   00009ff2  s_flink   00003430
+s_fshell  00009f38  s_fstat   00004ca8  s_getdate 0000523e  s_getdir  00004ba8
+s_getgroup                    000054f2  s_getmode 00003d2a  s_getpos  00003bf8
+s_getprior                    000055f8  s_getproc 00005660
+s_gettable                    0000567c  s_gettime 0000534c  s_getuser 000053ec
+s_kill    0000d260  s_lock    00007f0e  s_makdev  00004a18  s_makdir  00004b32
+s_memory  00008638  s_mount   00008996  s_msgctl  00009322  s_msgget  00008edc
+s_msgrcv  00009184  s_msgsnd  00008f86  s_mult    000081c4  s_open    00002e10
+s_pause   0000d72e  s_phys    000087a4  s_pipe    000032fc  s_printf  000095dc
+s_ptrace  0000acb2  s_rdbyte  00003964  s_rdline  00003b34  s_rdseq   000039e8
+s_semctl  0000ba9c  s_semget  0000b60c  s_semop   0000b708  s_setdate 000052e8
+s_setdir  00004c0c  s_setgroup                    00005552  s_setlev  0000ae42
+s_setmode 00003ddc  s_setpos  00003c24  s_setprior                    00005614
+s_settime 00005386  s_setuser 0000544c  s_shell   00009fa4  s_shmat   0000c4c2
+s_shmctl  0000c706  s_shmdt   0000c644  s_shmget  0000c37a  s_signal  0000d306
+s_sleep   0000d642  s_trunc   0000325a  s_uchstat 00005008  s_unlock  00008074
+s_unmount 00008b8c  s_update  000056ac  s_ustat   00004eac  s_version 000056c6
+s_wait    0000a19c  s_wrbyte  000039b6  s_wrline  00003b9e  s_wrseq   00003aa2
+saveffp   00002c3c  sched.c   0000b3fe  sem.c     0000c2a6  semexit   0000b4f4
+seminfo   00019b88  seminit   0000b408  setaccess 0000789e  setbkmode 00001b2a
+setcacr   00000ba6  setctime  000122e2  setffp    00002d50  setlev    00000b74
+setmap    0000ec50  setpage   000075ba  setumap   0000ed50  sgcheck   0000d516
+sghupreset                    0000d4d8  sghupset  0000d47c  sginherit 0000d5ae
+sgremove  0000d612  sgsend    0000d38c  sgtest    0000d594  sgttysig  0000d414
+shm.c     0000c982  shmexit   0000c322  shminfo   00019b78  shminit   0000c2b0
+sht.c     0000d258  shtexit   0000c9cc  shtinfo   00019ba0  shtinit   0000c98c
+signal.c  0000d854  sio.c     000121f0  siobreak  00012180  sioclose  00011fa6
+siodisable                    00011fea  sioenable 00011fe2  sioin     00012194
+sioinit   00011e3c  sioopen   00011f6a  sioout    000121b0  sioregin  00011ff2
+sioregout 00012052  siospeed  00012092  sleep     0000b03e  ssopen    00002ea6
+ssrdseq   00003a50  sswrseq   00003af6  startmem  000072a6  startusr  000007e4
+stdc.c    000140cc  stdc_b    0001a886  stdcdma   00018594  stime_c   0001a294
+strcmp    0000e636  strlen    0000e670  stty.c    00011e32  stty_c    0001a4b4
+switime   00017c50  sys68000  0000d85c  syscall.c 0000e454  sysdev.c  000122b8
+sysdev_c  0001a588  systimer.c                    00010148  table     000198c8
+table.c   0000e5ee  talloc    0000e4a6  testaccess                    00007ad6
+testline  0000e994  testpage  0000761a  testread  00007a12
+teststring                    0000e93c  testuread 00007952  testuwrit 000079b2
+testwrit  00007a74  tim_sched 0000b270  timer_c   0001a5e8  trabort   0000ae8c
+traceh    0000ac64  tu_enable 000140fc  tu_init   00012598  tuart.c   0001413c
+tuenable  000140d4  tuinit    00012578  u_printf  000099e6  unimpl    00005d12
+unlockall 00008162  unlockev  000085d8  unputq    00006e9e  usexmm    00017c5a
+usignon   00019bac  usrcnt    00019b48  usreturn  0000e3f8  usrfst    00017bcc
+usrnxt    00017bd0  util.c    0000eae8  utime     0000e6c6  uzap      0000e904
+wakedebug 0000aeec  wakeup    0000b13a  xmm.c     0000eede
+xmmdisable                    0000ee0a  xmmenable 0000ed8e
+xmmerrreset                   0000ee6c  xmmoff    0000ee52  xmmon     0000ee36
+zap       00000dae
+
+Address    Size     Attributes
+000000     016598     RE
+017000     0038e4     RWU

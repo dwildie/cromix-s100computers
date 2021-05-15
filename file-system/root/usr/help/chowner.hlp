@@ -1,0 +1,48 @@
+utility:      CHOWNER
+purpose:      This program changes the owner or group of a file.
+
+user access:  privileged user
+
+summary:      chowner [-gv] ownername file-list
+
+arguments:    name or number of the user to whom ownership is to be transferred
+
+              or
+
+              name or number of the group to which ownership is to be
+              transferred
+
+              and
+
+              one or more filenames
+
+options:      -g    change group
+              -v    verbose
+
+Description
+
+The Chowner utility changes the owner or group associated with any type of
+file. If the file abc is in the current directory and is owned by mark, the Ls
+utility might display it as:
+
+     system[1] ls -l abc
+     27   1 rewa re-- re-- mark    Mar-11 19:59  abc
+
+Using the Chowner utility, ownership can be transferred to cindy:
+
+     system[1] chowner cindy abc
+     system[2] ls -l abc
+     27   1 rewa re-- re-- cindy   Mar-11 19:59  abc
+
+Options
+
+The -g option allows the Chowner utility to change the group associated with
+the file. This option is used in the manner previously described, substituting
+the group name for the owner name.
+
+The -v option displays the name of each file as its ownership is changed.
+
+Notes
+
+When the ownership of a file is changed, the group with which the file is
+associated changes to that of the new owner.

@@ -1,0 +1,74 @@
+utility:      DDUMP
+purpose:      This program converts and copies a file from
+              one device to another.  It can handle direct
+              physical I/O from devices such as the tape
+              driver.
+
+user access:  all users
+
+summary:      ddump options
+
+              Option          Function
+
+              if=pathname     specify input file pathname
+              -i pathname     specified input file pathname
+              of=pathname     specify output file pathname
+              -o pathname     specified output file pathname
+              ibs=n           input block size
+              obs=n           output block size
+              cbs=n           conversion buffer size
+              cbufsz=n        conversion buffer size
+              iskip=n         skip the first n input blocks
+                              before starting to copy
+              oskip=n         skip the first n output blocks
+                              before starting to copy
+              icount=n        copy only n input blocks
+              conv= ascii     convert EBCDIC to ASCII
+                    ebcdic    convert ASCII to EBCDIC
+                    ucase     convert alphabetic characters
+                              to uppercase
+                    lcase     convert alphabetic characters
+                              to lowercase
+                    strip     strip trailing blanks in the
+                              conversion buffer
+                    nostop    do not stop processing on an
+                              error (such as a file read
+                              error)
+
+                              Several conversions, separated by commas,
+                              may be specified in one argument.
+
+Description
+
+Ddump converts and copies data from one file or device to another. Since the
+input and output block sizes can be specified, it is useful for gaining access
+to devices that store data in raw form.
+
+Conversions are done in the conversion buffer.  Each block read from the input
+file is transferred to the conversion buffer, one buffer at a time.  The
+conversions specified are performed there before writing the result to the
+output file.  For example, if the strip conversion option is specified,
+trailing spaces are stripped and a newline added before sending the result to
+the output file.
+
+Example:
+
+jim[1] ddump if=/dev/tp1 of=file1 conv=ascii,lcase,strip
+
+This example causes input to be read from /dev/tp1 and written to disk file
+file1.  EBCDIC characters are converted to ASCII, uppercase to lowercase, and
+trailing blanks are not copied to file1.  The end of the tape file is
+indicated by an EOF tape mark written when the tape was created.
+
+Notes
+
+The following is a list of default values for options.
+
+     input file            standard input
+     output file           standard output
+     conversion buffer     80 bytes
+     disk input buffer     512 bytes
+     disk output buffer    512 bytes
+     tape input buffer     8192 bytes
+     tape output buffer    8192 bytes
+

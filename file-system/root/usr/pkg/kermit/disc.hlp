@@ -1,0 +1,9 @@
+
+DISC - Disconnect remote server.
+
+		Usage:
+
+		DISC
+
+The DISC command is used to terminate and log off the remote file serving
+Kermit.

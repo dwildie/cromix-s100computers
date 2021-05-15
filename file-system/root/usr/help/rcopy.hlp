@@ -1,0 +1,132 @@
+utility:      RCOPY
+purpose:      This utility copies a file or block device
+
+user access:  privileged user
+
+summary:      rcopy [options] arguments
+
+arguments:    two file pathnames
+              or
+              one or two block device pathnames
+              or
+              a file pathname and a block device pathname
+
+options:      -b #  first block on input device
+              -e #  last block on input device
+              -d #  first block on output device
+              -s #  block count (swath)
+              -l #  I/O buffer size
+
+              -c    compare mode
+              -f    forced write mode
+              -p    physical mode (Cflop only)
+              -r    read-only mode
+              -t    terse mode
+              -v    verify mode
+
+Description
+
+Rcopy (for privileged users) copies a file or block device to another file or
+block device. Rcopy is primarily intended for copying a hard disk onto
+cartridge tape or another hard disk. Files saved with Ftback (68000 Cromix
+version 20.65) cannot be restored with Rcopy. Rcopy can be used with version
+20.08 or higher of the Tar utility. A "-" in place of a file or device name
+indicates the standard input or standard output.
+
+Options
+
+-b   The number following -b is the first block of the input
+     device to be read; without this option, reading begins at block 0. This
+     option is useful for copying specific data, such as a hard disk label
+     (block 0) or alternate track table (block 19).
+
+-e   The number following -e is the last block of the input device
+     to be read; without this option, reading stops at the last block (unless
+     the end of the output device is reached first).
+
+-d   The number following -d is the first block of the output
+     device to be written; without this option, writing begins at block 0.
+
+-s   The number following -s is the total number of blocks to be
+     read.
+
+-l   The number following -l is the length of the I/O buffer in
+     units. If the CTD is used for input or output, a unit is 17K; otherwise a
+     unit is 1K. Without this option, the buffer is 10 units (170K for the CTD
+     and 10K for all other files/devices). A buffer of 510K (-l 30) yields
+     an optimum speed of 2 Mbytes/minute when copying between a CTD and a hard
+     disk. This option is ignored when copying between uniform (UNIX) floppy
+     disks.
+
+-c   After copying to or from a cartridge tape, repeat the Rcopy
+     command with the -c option to verify that the input and output are
+     identical. For all other files or devices, use the -v option to copy
+     and verify on the same pass.
+
+-f   Overwrites the existing output file (use only when output is to a
+     file).
+
+-p   Reduces copying time when both input and output devices are
+     Cromix-Plus floppy disks (large or small, single- or double-sided, single-
+     or double-density). In this case the buffer size equals the cylinder size,
+     regardless of the -l setting.
+
+-r   Reads the input file or device for errors, but creates no output
+     (only one argument is required).
+
+-t   Provides a terse progress report as copying proceeds.
+
+-v   Compares the copied output with the input and sends an error message
+     if they are not the same. Do not use the -v option for cartridge tapes;
+     verification of cartridge tapes requires a second execution of Rcopy
+     with the -c option.
+
+Examples
+
+When copying to an entire hard disk (std31 or std63), be sure not to overwrite
+the disk label (block 0) or alternate track table (block 19). To save blocks 0
+and 19 on floppy disk files label and alttable, enter (for an 8" diskette
+mounted in drive A as /a):
+
+     system[1] rcopy -t -s 1 /dev/std0 /a/label
+     system[2] rcopy -t -b 19 -s 1 /dev/std0 /a/alttable
+
+To restore these blocks in the event of a hard disk crash, enter:
+
+     system[1] rcopy -t -s 1 /a/label /dev/std0
+     system[2] rcopy -t -d 19 -s 1 /a/alttable /dev/std0
+
+If the CTD is the input or output device, copying and verifying requires
+separate Rcopy commands. To copy partition std3 to floppy tape, and then
+verify the copy, enter:
+
+     system[1] rcopy -t /dev/std3 /dev/ftcd
+     system[2] rcopy -tc /dev/std3 /dev/ftcd
+
+Since the tape is rewound after each Rcopy command, it is correctly positioned
+for the second pass.
+
+To create and verify a Tar archive of directory /usr/data on a tape cartridge,
+enter:
+
+     system[1] tar -cvf - /usr/data | rcopy - /dev/ftcd
+     system[2] tar -cvf - /usr/data | rcopy -c - /dev/ftcd
+
+Tar writes directory /usr/data to the standard output (the dash after the f
+option). Rcopy takes the data from standard input (the dash for the input
+file), and writes it to the tape. In this case, Tar issues the progress
+reports (v option selected).
+
+To restore a specific file or directory from a tape created with the Tar
+utility, enter:
+
+     system[1] rcopy /dev/ftcd - | tar -xvf - filename
+
+To list the contents of a tape created with the Tar utility, enter:
+
+     system[1] rcopy /dev/ftcd - | tar -tvf -
+
+To dump the contents of a tape created by Rcopy alone, enter:
+
+     system[1] rcopy /dev/ftcd - | dump
+

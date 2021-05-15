@@ -1,0 +1,177 @@
+utility:      LS (List)
+purpose:      This program lists directory or file information.
+
+user access:  all users
+
+summary:      ls [-abdeilmrst] [file-list]
+
+arguments:    optional file or directory pathname(s)
+
+options:      -a   all
+              -b   brief
+              -d   directory information
+              -e   everything
+              -i   inode number
+              -l   long list
+              -m   medium list
+              -r   reverse order
+              -s   summary
+              -t   time modified
+
+Description
+
+The Ls program lists directory or file information in alphabetical order.  If
+no pathname is specified, it lists the contents of the current directory. If a
+directory pathname is given, the contents of that directory are listed. If a
+file pathname is given, information about that file is listed.
+
+Options
+
+The -a option lists the names of all files, including invisible files (those
+files whose names begin with a period).
+
+The -b option makes a brief list, which contains only filenames.
+
+The -d option lists information about the directory, rather than the contents
+of the directory.
+
+The -e option lists everything about a file.
+
+The -i option lists an inode number, rather than the file size.
+
+The -l (long) option makes a long list of information. This option does not
+display as much information as the -e option.
+
+The -m option makes a medium list (more information than -b, less than -1),
+containing file size, number of links, and name.
+
+The -r option performs the sort specified in reverse order. Thus, an
+alphabetical listing is given in reverse alphabetical order, and a time-date
+listing is listed as the most recent file first.
+
+The -s option generates a summary of disk space used.
+
+The -t option sorts the file list in order of time-last-modified. This order
+is from oldest to most recent unless the -r option is used.
+
+Notes
+
+The meaning of the file-size information displayed by the Ls utility is as
+follows. If the file listed is a regular (data) file, the number associated
+with the file is its size in bytes (or number of characters). If the file is a
+directory, the number is the number of files stored in that directory. If the
+file is a device file, the numbers are the major and minor device numbers.
+
+When options are combined on the command line, the most extensive option
+prevails.
+
+Example:
+
+Samples of the output from the Ls utility follow. Each is preceded by a note
+as to the option utilized. Without options, Ls displays a sorted, columnar
+list of filenames.
+
+The following shows an output of Ls with the -b option, containing only
+filenames.
+
+     apa
+     apa1
+     apb
+     apc
+     apd
+     ape
+
+The following shows an output of Ls using the -m option. For a filename, the
+field on the extreme left contains the number of bytes in the file. This is
+followed by the number of links to the file, and the filename. If the entry
+represents a directory, as in the first entry shown, the leftmost number shows
+the number of files in the directory. The D indicates it is a directory. The
+last two fields show the number of links and the directory name.
+
+        3 D    1 cromix.doc
+     1,559     1 default.fm0
+
+A sample of the output of Ls using the -e option is shown below.  This is the
+most complete display. The name of each file in the directory is displayed on
+the extreme left. To the right, on the same line, is the number of bytes in
+the file. The first column of the remaining lines lists the operations
+performed on the file: created, modified, accessed, or dumped. To the right of
+each operation is the date and time the operation was last performed.
+
+The rightmost column contains additional information. At the top the read,
+execute, write and access privileges for the owner, group, and all other users
+are shown. The second line is the login name of the file owner. The third
+entry lists the number of links to the file, and the final entry is the inode
+number.
+
+To the extreme right of the owner's login name is an entry showing the group
+name of the user: in this case, pubsl.
+
+Directory:  cromix.doc
+locktest                          9   directory
+      created:  Oct-21-1984 13:56:57   rewa re-- re--
+      modified: Oct-21-1984 13:56:57  karen        pubs1
+      accessed: Nov-19-1984 12:49:41  links:  1
+      dumped:   000-00-1900 00:00:00  inode:  734
+
+pipetest                          10  directory
+      created:  Oct-21-1984 13:56:13   rewa re-- re--
+      modified: Oct-21-1984 13:56:13  karen        pubsl
+      accessed: Nov-19-1984 12:49:33  links:  1
+      dumped:   000-00-1900 00:00:00  inode:  781
+
+system.c                        1,641
+      created:  Oct-21-1984 13:56:10   rewa re-- re--
+      modified: Oct-21-1984 13:56:11  karen        pubsl
+      accessed: Nov-31-1984 12:17:05  links:  2
+      dumped:   000-00-1900 00:00:00  inode:  782
+
+The following example shows the Ls program output using the -i, or inode
+number, option. This display first shows the directory name. The names of all
+files and directories within the subject directory are listed on the right.
+The inode number associated with the file is shown to the left.
+
+     Directory:cromix.doc
+         734   locktest
+         781   pipetest
+         782   system.c
+
+The following example shows the Ls program output using the -l option. If the
+second field in the entry is a D, for directory, the leftmost field indicates
+the number of files in that directory. If the second field is blank, the entry
+is a file, and the leftmost field shows the number of bytes in the file.
+Moving to the right, the third field indicates the number of links to the file
+or directory.
+
+The next field shows the delete protect attribute, shared text attribute,
+read, execute, write, and append access of the directory or file for the
+owner, group, and all other users, in that order. Immediately to the right of
+the access privileges is the login name of the owner. The three rightmost
+fields in this format are the most recent date and time when the file was last
+modified, and the file or directory name. If the file was last modified not in
+this year the time will be replaced ty the year.
+
+Directory:  cromix.doc
+        9  D   1    rewa re-- re-- karen   Oct-21 13:56     locktest
+       10  D   1    rewa re-- re-- karen   Oct-21 13:56     pipetest
+     1,641     2 PS rewa re-- re-- karen   Oct-12 1984      test.bin
+
+The following is a sample of Ls program output using the -s and -m options.
+This display is the same as that obtained using the -m option, except that the
+last line of the display is a summary showing, from left to right, the number
+of files, number of blocks, and total bytes in the directory.
+
+     Directory:  cromix.doc
+        9 D      1 locktest
+       10 D      1 pipetest
+     1,641       2 test.bin
+     3 files     6 blocks       2,313 bytes
+
+What follows is a sample of Ls program output using the -t and -m options.
+These files are listed in order of the time last modified.
+
+     Directory:  cromix.doc
+     1,641       2 system.c
+       10 D      1 pipetest
+        9 D      1 locktest
+

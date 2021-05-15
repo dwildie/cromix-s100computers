@@ -1,0 +1,30 @@
+utility:      VDT
+purpose:      Special terminal functions
+
+user access:  all users
+
+summary:      vdt function
+
+arguments:    keyword which identifies function
+
+options:      none
+
+Description
+
+The argument to the Vdt utility is a keyword which identifies the actual
+command. The commands available are:
+
+     clear       Clear screen.
+     cursor      Turn cursor on.
+     cursoff     Turn cursor off.
+     wrapon      Turn wrap around on.
+     wrapoff     Turn wrap around off.
+
+     clock       Set hard clock.
+
+If the keyword is followed by a message, the message is loaded into status
+line of the terminal. if there is no message, the status line is cleared.
+
+Note
+
+The Vdt command is intended to be used only on a C-5 or a C-10 terminal.

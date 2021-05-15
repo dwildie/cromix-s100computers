@@ -1,0 +1,105 @@
+utility:      DCHECK
+purpose:      This program verifies the integrity of a file system.
+
+user access:  all users
+
+summary:      dcheck [-s] [devname(s)]
+
+arguments:    optional device name(s)
+
+options:      -s   salvage directory structure
+
+Description
+
+The Dcheck utility verifies the integrity of a file system's internal
+directory structure. If possible, Dcheck with the -s option should be run on
+an unmounted file system. If the file system that needs to be fixed is the
+root, Dcheck should be run by itself, with no other users or tasks running
+concurrently. If another task is writing to the disk, the results of Dcheck
+may be incorrect.
+
+If the -s option is used while another task or user is using the disk, the
+directory on the disk may be irreparably damaged.
+
+MESSAGES RETURNED BY DCHECK
+
+Cannot read super block
+The super block cannot be read.
+
+Insufficient memory
+There is not enough available memory to run Dcheck. Either free additional
+memory, or create a new disk with fewer inodes. (Use Cptree to transfer the
+contents of the disk to the new disk.)
+
+Inode xxxxx, Cannot read inode
+A disk I/O error occurred while trying to read the specified inode.
+
+Inode xxxxx, error reading directory
+A disk I/O error occurred while trying to read a directory.
+
+Inode xxxxx, file "ffffff" has bad inode
+Inode xxxxx is a directory inode that contains an active file with an
+impossible inode number. Use Ncheck to locate the directory. Then delete the
+offending file, and run Dcheck with the -s option.
+
+Inode xxxxx, directory with more than 1 parent
+A directory is linked to more than 1 parent directory. Use Ncheck to locate
+the names of the files, and delete all but one link. Then run Dcheck with the
+-s option.
+
+Inode xxxxx, directory with wrong parent
+This error indicates the inode is pointing to the wrong parent. Use the Dcheck
+utility with the -s option to correct this error.
+
+Inode xxxxx, bad link count xxxxx, should be xxxxx
+The number of names pointing to this inode from various directories is greater
+or less than expected. Use Dcheck with the -s option to correct this error.
+
+Inode xxxxx, more than 255 links
+There are more than 255 names for this inode. Use Ncheck to find all the
+names. Delete some names to bring the total number of names to 255 or less.
+Then run Dcheck with the -s option.
+
+Inode xxxxx, bad inode number in inode
+Each inode contains its own inode number. This error means the inode specified
+has the wrong number. Use Dcheck with the -s option to correct this error.
+
+Inode xxxxx, unallocated inode with xxx links
+Although this inode is unallocated, names point to it. Use Ncheck to find
+these names, then delete them.
+
+Inode xxxxx, allocated inode with 0 links
+This inode is still allocated, though there are no names for it. Use Dcheck
+with the -s option to correct this error.
+
+Inode xxxxx, bad directory entry count
+This inode is a directory. The number of directory entries in the inode
+differs from the actual number of directories. Use Dcheck with the -s option
+to correct this error.
+
+End of dcheck (This is the last message)
+
+The program has finished executing.
+
+Options
+
+The -s option fixes problems reported by dcheck. The program corrects an
+incorrect inode number when:
+
+1.  The inode is allocated;
+
+2.  The inode link is nonzero; and/or
+
+3.  The inode is being pointed to (i.e., is in use).
+
+The program does not correct an incorrect inode number if the inode is
+unallocated.
+
+Notes
+
+Immediately after running Dcheck with the -s option, run Icheck with the -s
+option. After both programs are run, the system must be rebooted. Refer to the
+Boot utility for additional information.
+
+It is not necessary to reboot if the -s option is not used or if Dcheck is run
+on an unmounted device.

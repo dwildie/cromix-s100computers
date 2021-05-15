@@ -1,0 +1,206 @@
+utility:      ACCESS
+purpose:      This program changes the access privileges associated with a file.
+
+user access:  all users         files owned by the user
+              privileged user   any file
+
+summary:      access access-string file-list
+
+arguments:    access-privilege-specifier string
+
+              one or more pathnames
+
+options:      none
+
+Description
+
+The Access utility allows a user to change file-access privileges.
+
+The access-privilege-specifier string (first argument) contains three clusters
+of access flags separated by periods. The first cluster indicates owner
+permitted access, the second indicates group access, and the third indicates
+public access. Each cluster is composed of zero or more of the following
+flags, given in any order:
+
+     +         add the specified privileges
+     r         read access
+     e         execute access
+     w         write access
+     a         append access
+
+The first cluster may be preceded by the shared text attribute:
+
+     s or +s   add shared text attribute
+     -s        remove shared text attribute
+
+and/or the delete protect attribute:
+
+     p or +p   add delete protect attribute
+     -p        remove delete protect attribute
+
+Access privileges under the Cromix-Plus system are discussed in detail in the
+following paragraphs.
+
+File Protection
+
+The Cromemco Cromix-Plus Operating System offers protection for files on many
+levels.
+
+All files may be opened for exclusive or nonexclusive access. A file opened
+for exclusive access may not be opened by another process until it is closed
+by the process that originally opened it. If a file is opened for nonexclusive
+access, it may be simultaneously opened and accessed by more than one process.
+
+File access privileges are divided into three population segments and four
+types of file accesses.
+
+The first population segment is the owner of the file. This is normally the
+creator of the file. The second population segment is the group to which the
+owner belongs. A user's group number can be verified in the /etc/passwd file.
+The third population segment is the general public. This segment includes all
+system users.
+
+There are four types of file access for each population segment. The first is
+read access. Read access allows the designated user to read the file. If a
+user has read access for a directory, the user may list the contents of the
+directory.
+
+The second is execute access. Execute access allows the user to execute the
+file. If the user has execute access for a directory, the user may use the
+directory in a pathname.
+
+The two remaining types of access are write access and append access. Write
+access allows the user to write to the file, meaning the user may write over
+or change data in the file.
+
+Append access allows data to be added to the end of the file. Data may then be
+written to the file at a point past the end of file, and the end-of-file
+indicator is moved to the end of the newly added data. If append access is the
+only access specified, data written to the file may not be read.
+
+Append access does not imply write access, but write access implies append
+access.
+
+One type of access privilege for a population segment does not imply any other
+access privilege for that population segment. The categories of access
+privileges should be combined to provide meaningful data handling. For
+example, a user with write access to a file normally has read access.
+
+One important point to consider when determining file access privileges is
+that the file's owner is a member of a group and a member of the public.
+Implicitly, the user has all access privileges granted to the public and to
+the group. Any member of the group enjoys all access privileges granted to the
+public.
+
+All files are created with default access privileges as follows: read,
+execute, write, and append access privileges for the owner; read and execute
+access privileges for the group and public. The default owner is the user who
+executed the command creating the file. The system gathers its information on
+user name from the /etc/passwd file. (This default access may be changed by
+generating a new operating system with the Crogen utility.)
+
+When files are created by programs that a user is running (e.g., CE, etc.),
+those files take on default attributes as described. These same programs can
+also alter existing files. In this case, the owner name is unchanged, but file
+access attributes may change. For instance, the CE Editor does not change file
+attributes after an editing session. However, since this effect may vary from
+command to command within a single program, and from program to program, users
+should be aware that file attributes are not immutable.
+
+Access privileges take on a different meaning when applied to a directory.
+Read access for a directory means the user can use the Ls utility to see the
+contents of the directory. Execute access means the directory may be used in a
+pathname or that the user has access through the directory. Write access means
+the user can alter, create and delete files in the directory.
+
+The ls utility program with the -l option may be used to check the access
+privileges associated with a given file. For example, the following command
+will list the access privileges of file xyz:
+
+     jim[1] ls -l xyz
+     312 1  rewa re-- re-- jim Mar-09 18:25 xyz
+
+Reading this display from left to right, two items precede the access
+information: the numbers of bytes in the file (312) and the number of links to
+the file (1). The access information is displayed as three clusters of four
+characters. The four characters are r (read), e (execute), w (write) and a
+(append). The presence of one of these characters indicates that the specified
+population segment is endowed with the specified access privilege.  The
+population segments are, from left to right owner, group, and public.  Thus,
+in the above display, the owner has all four access privileges, while the
+group and public have only read and execute access privileges.
+
+The last four items in the preceding display are: the name of the owner of the
+file (jim), the date and time the file was modified and, finally, the name of
+the file.
+
+Users working within the Cromix-Plus file system must explicitly check the
+access attributes of files and directories they work in, use, or create for
+other users. Users must be aware of accessory files that may be required by
+programs they are running--help files, libraries, and so forth. Access and
+ownership of the accessory file--and access and ownership of parent
+directories all the way to the root--must be compatible with the operation of
+the program being executed.
+
+For all errors implying access limitations, always check access privileges and
+the ownership of the directories, files, and ancestor directories involved.
+
+Shared text attribute
+
+Executable (68000) .bin files may have the shared text attribute. If an
+executable file has a shared text attribute, only one copy of the file will be
+loaded into memory even if more than one user is running it. Each invocation
+will get its own stack, all invocations will run on the same code in memory.
+The shared attribute should NOT be set for files that were not created
+accordingly. The rules are very complex and it is difficult to create a
+program that may be shared. Examples of such files are Shell.bin and Gtty.bin
+in the /etc directory.
+
+Example
+
+     jim[1] access +s foo.bin
+
+will declare the file foo.bin to have the shared text attribute.
+
+Delete protect attribute
+
+File names can be protected against deletion. If a file has the delete protect
+attribute set, the Delete command (or deltree command) will not delete it.
+Only the owner of the file or a privileged user can change the delete protect
+attribute. The delete protect attribute refers to file name, not to inode.
+This means that a file can have more than one name (link).  Protecting one
+name does not protect other names. Delete protect attributes means only what
+it says: a file protected against deletion is not protected against rewriting
+unless other access attributes are used.
+
+Example
+
+     jim[1] access P foo.bar
+
+The file foo.bar cannot be deleted until the delete protect attribute is
+removed:
+
+     jim[2] access -P foo.bar
+
+Notes
+
+The Access utility allows the user to change file access privileges in several
+different ways. The first of these is to re-enter each access privilege for
+each population segment, making the desired changes. For example:
+
+     jim[1] access rewa.rw.a xyz
+     jim[2] ls -l xyz
+     312 1  rewa r-w- ---a jim Mar-09 18:25 xyz
+
+The second method for specifying access privileges involves the use of the
+plus sign (+) in one or more of the access population clusters. When used in
+this manner, the plus sign means that the attributes for the specified
+population segment remain the same. The plus sign may also be followed by
+access privileges to be added for the given population segment.
+
+     jim[1] ls -l abc
+     517 1  rewa re-- re-- jim Mar-09 18:26 abc
+     jim[1] access +.+.+a abc
+     jim[2] ls -l abc
+     517 1  rewa.re.re-a jim Mar-09 18:26 abc
+

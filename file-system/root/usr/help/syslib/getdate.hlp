@@ -1,0 +1,21 @@
+function:       getdate
+purpose:        Get current date.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getdate(date)
+                struct sys_date *date;
+
+Description
+
+The current date as kept by the system is stored in the structure pointed to
+by date.
+
+The function returns:
+
+     0           if successful;
+     ERR         if error.
+

@@ -1,0 +1,19 @@
+function:       getuser
+purpose:        Get the user ID of the calling process
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getuser(idtype)
+                int idtype;
+
+Description
+
+The value of idtype should be one of the following:
+
+     id_effective        return effective user id
+     id_login            return user id from the login file
+     id_program          return user id of the owner of the program
+

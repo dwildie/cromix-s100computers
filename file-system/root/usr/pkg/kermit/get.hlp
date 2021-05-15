@@ -1,0 +1,13 @@
+
+GET, G - Get files from the remote fileserver.
+
+		Usage:
+
+		GET files
+		GET
+
+The Get command is used to direct the remote server to send a file or files.
+If no arguments are given, Get will prompt the user for the file name.  This
+will also allow one to specify a file name under which to receive that file.
+The file specification can include wildcarding using the remote server's 
+notation.  

@@ -1,0 +1,158 @@
+utility:      INITTAPE
+purpose:      This program initializes a floppy tape in error correcting format.
+
+user access:  privileged user
+
+summary:      inittape [[-cdefvx] [-p #] [-s #[,#] devname]]
+
+arguments:    Cromix device name
+
+options:      -d   detached mode
+              -f   fast mode (no retension delay)
+              -p   number of verification passes
+              -s   STREAMS to initialize
+              -v   verbose
+
+              and at most one of the following:
+
+              -c   check mode (verify tape only)
+              -e   edit VTOC only
+              -x   examine VTOC only
+
+Description
+
+The Inittape program is used to initialize floppy cartridge tapes in the new
+error correcting format (SCSI tapes need not be initialized). Parameters may
+be passed from the command line or entered interactively as the program
+executes. Inittape disables interrupts during formatting or verifying of the
+entire stream (approximately 90 seconds) so the program can only be aborted
+between streams.
+
+Options
+
+The -d option skips the edit option of the error map.
+
+The -c option verifies the tape and displays the VTOC (bad sector map), but
+skips initialization.
+
+The -e option displays the existing VTOC and allows editing. No verification
+or initialization is performed. This option can be used to quickly convert an
+old style tape into the new error correcting format without having to run an
+initialization or verification pass. The old VTOC entries are preserved.
+
+The -f option defeats the tape retension delay. Using it while the tape is
+being retensioned results in a device open error.
+
+The -p option, followed by a number, specifies the number of verification
+passes (the default is 3).
+
+The -s option, followed by a single number (0 through 5), formats the stream
+number specified. Using two numbers separated by a comma formats a range of
+streams from the first stream number through the second.
+
+The -x option skips initialization and only displays the VTOC.
+
+The -v option displays a progress report of the initialization when Inittape
+is run from the command line.
+
+Example
+
+A typical interactive session to format a cartridge tape is shown below (user
+responses are boldfaced). Press RETURN to select the default response
+(displayed in angle brackets) of any prompt. To begin, enter Inittape (as a
+privileged user) and press RETURN.
+
+     Inittape version xx.xx
+
+     Press:  RETURN to supply default answers CTRL-C to abort program
+     Warning:inittape will destroy all disk data
+
+             Do you wish retension delay of 180 seconds (Y/N) <N> ?  n
+             Device name?  ftp1
+             Do you wish to examine VTOC only (Y/N) <N> ?  n
+             Do you wish to edit VTOC only (Y/N) <N> ?  n
+             Do you wish to VERIFY tape only (Y/N) <N> ?  n
+             Number of VERIFY passes (0-10) <3> ?  3
+
+All tape cartridges are retensioned (run from beginning to end and back to the
+beginning) when first placed in the drive. If the retension cycle is over (the
+drive motor has stopped), press RETURN for the first prompt; otherwise enter
+"Y" and Inittape will sleep for 3 minutes.
+
+The next prompt is for device name of the tape drive. Enter the device name of
+the drive connected to your system, such as ftp0 or ftp1. Be sure to specify
+the device name correctly, as initialization destroys all data on the tape.
+Entering a device name while the tape is being retensioned results in a device
+open error and a repeated prompt for the device name.
+
+Enter "Y" to the next prompt to skip initialization and display the VTOC (bad
+sector map). Enter "Y" to the edit VTOC only prompt to allow editing of the
+VTOC without doing a verify pass. Enter "Y" to the "VERIFY tape only" prompt
+to verify the tape's current formatting (initialization is skipped). Verifying
+a tape deletes the previous VTOC and generates a new one.
+
+The last prompt above selects the number of verification passes (the default
+is 3). To verify a tape, select at least one pass; to initialize a tape
+without generating a VTOC, select 0 passes.
+
+     Formatting
+     First stream (0-5.)?  <O> RETURN
+     Last stream (0-5.)?  <5.> RETURN
+
+Inittape prompts for the numbers of the first and last stream to be formatted.
+On occasion, you may want to format a portion of a tape (e.g., when a single
+stream has frequent errors). Press RETURN at both prompts to format the entire
+tape. When Inittape is called with a device name as an argument, the responses
+to the preceding prompts are taken from the command-line options. If no
+options are specified, all streams are selected by default.
+
+The stream numbers are displayed as the tape is formatted (the entire stream
+is formatted in streaming mode, with interrupts disabled).
+
+               Initializing stream 0
+               .
+               .
+               .
+               Initializing stream 5
+               Verify pass 1 on stream 0
+               .
+               .
+               .
+               Verify pass 3 on stream 5
+
+               ******************** ERROR MAP ********************
+
+               Stream   Segment   Sectors
+
+                   0    6    1#    2*    3
+               Total bad sectors 3
+
+               Do you wish to edit error map (Y/N) <N> ?  y
+               Command (Add, Delete, End) ?  d
+               Enter side,segment,sector ?  0,6,3
+               Command (Add, Delete, End) ?  e
+
+               ******************** VTOC ********************
+
+               Stream   Segment   Sectors
+
+                   0     6    1    2
+               Total bad sectors 2
+
+After the tape is formatted and/or verified, the list of bad sectors is
+printed. Each sector number is followed by a "#" (sector bad on all passes), a
+"*" (sector bad on more than one, but not all, passes), or a space (sector bad
+on only one pass).
+
+Inittape allows you to add or delete entries in the error map. To delete or
+add a sector, enter the side (stream), segment, and sector numbers separated
+by commas. Any field (side, segment, or sector) entered as a negative number
+means all valid entries for that field.
+
+Each tape may only have 199 bad sectors mapped out. If the error map contains
+more than 199 entries, an error message will be printed and you must either
+edit the table to contain 199 or less entries or abort Inittape and try to
+initialize the tape again. If you are using the -d option, and the error map
+contains more than 199 entries, the VTOC will be truncated to 199 entries.
+This means that there will be unmapped bad spots on the tape and it should not
+be used.

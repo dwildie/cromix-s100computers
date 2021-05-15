@@ -1,0 +1,1027 @@
+
+
+
+
+
+
+
+
+
+
+		       CROMIX KERMIT v1.32
+			 PROGRAM GUIDE
+
+			   September 1987.
+
+		       Manual written by
+			 Maxim Dynin and
+			 Dina Desai.
+
+		       Program written by
+			 Maxim Dynin
+		       and modified by
+			 Dina Desai,
+			 Wolfgang Boehm,
+			 Adrian Pickering,
+			 Roland Kreuzer and
+			 Eva Kreuger.
+
+
+		       Cromix Kermit is based on the
+		       Kermit concept developed
+		       at the Columbia University and,
+		       in part, on the Unix version
+		       by Bob Cattani, Frank Da Cruz
+		       et al.
+
+
+
+
+
+	(c) 1987 VSL International Ltd.
+
+	Permission is granted to any individual or organisation to
+	use or to copy this document and the programs described
+	therein, except for strictly commercial purposes.
+
+
+   Cromix Kermit Program Guide
+
+
+
+		      CONTENTS.
+		      ---------
+
+
+     I.     Introduction  . . . . . . . . . . . . . . . . .  1
+
+     II.    Data Structure  . . . . . . . . . . . . . . . .  2
+
+     III.   Program Structure . . . . . . . . . . . . . . .  5
+
+     IV.    Algorithm . . . . . . . . . . . . . . . . . . . 11
+
+     V.     Miscellaneous . . . . . . . . . . . . . . . . . 19
+
+     Appendix. Kermit Configuration . . . . . . . . . . . . 20
+
+
+   Cromix Kermit Program Guide                                Page  1
+
+
+
+	       I.  Introduction.
+	       --  -------------
+
+
+	 The Kermit protocol is described in the Kermit User Guide,
+     5th Edition, Revision 1, and the Kermit Protocol Manual, 5th
+     Edition, published by the Columbia University. Cromix Kermit
+     is fairly consistent with most of the ideas put forth in those
+     manuals. Changes from the user's  standpoint are documented
+     in the Cromix Kermit User's Guide, which is the acommpanying
+     document with this publication. However, in case of any
+     inconsistencies, this document takes priority.
+
+	 This document contains a description of the data structures
+     of the Cromix Kermit program, the physical structures of the
+     program, the algorithm, and an overview of files used and
+     specifications of the program.
+
+	 The Cromix Kermit Version 1.32 is designed for the Cromix
+     Plus system. It could be adapted for Unix or any other system
+     which supports the C language without much difficulty by changing
+     the Cromix Plus specific system calls.
+
+
+		       Disclaimer.
+
+	 No warranty of the software nor the accuracy of the
+     documentation surrounding it is either expressed or implied,
+     and VSL International Ltd. cannot assume any liability
+     resulting from program or documentation errors.
+
+   Cromix Kermit Program Guide                                Page  2
+
+
+	       II.  Data Structures.
+	       ---  ----------------
+
+	This section describes the most important data structures
+     and major global variables used in the program. They can be
+     classified according to whether they are used to control
+     different aspects of file transfer or whether they are used
+     in the shell.
+
+     2.1.  File Transfer Control Structures.
+
+	     There are many control variables, which are described
+	   adequately in the source code ; the following are the most
+	   important :
+
+	       packet is a buffer used by the functions sinit and
+	       sfile to send data to the remote host.
+
+	       recpkt is the buffer used to receive the data
+	       contained in the packet sent by the remote.
+
+	       filelist is the list of files to send, and filecount
+	       is the number of files to send. Fileas contains the
+	       name a file is sent as, if a file name different from
+	       the Cromix file name has been specified. filnam is
+	       the pointer to the current file name.
+
+	       fp is the file pointer to the file being sent or
+	       received. dpfp is the file pointer to the log file.
+	       ttyfd is the file descriptor of the current
+	       communication line, while Infile is the file
+	       descriptor actually used .
+
+     2.2.  Shell Variables.
+
+	     Shell variables are likewise  documented in the source
+	   code. Thus, only the most important ones have been
+	   described here.
+
+	   Two major structure types have been defined for shell
+	   variables :
+
+	       sctable is a table of strings and their internal
+	       representation. It is used for storing commands, set
+	       options and other items that could be entered by the
+	       user.
+
+	       dtable  is a table of user-defined options. It
+	       contains fields for the option name, its
+	       representation in standard argument form, and the
+	       number of arguments that it stands for.
+
+   Cromix Kermit Program Guide                                Page  3
+
+
+
+	   Another major structure type which is explicitly defined
+	   is the argument list, represented as a two dimensional
+	   array. The initial reason for the implementation of the
+	   two dimensional array was that it seemed that it would
+	   save time  while not increasing the space requirements
+	   excessively. It turned out that this array did increase
+	   the space requirements substantially, but it was not
+	   apparent until the development of certain advanced
+	   features, by which time the concept was alreadly solidly
+	   entrenched in the program. The argument list is thus
+	   always defined as an array indexed by argument number
+	   and character position of each argument.
+
+	   Here is a list of several shell variables :
+
+	       Ft is a stack of file pointers, indexed by Flevel,
+	       whose top element is the current input file pointer.
+
+	       Commands is a table of commands and their internal
+	       representations.
+
+	       Options is a table of set options.
+
+	       Speeds is a table of baud rates.
+
+	       Doptions is a table of debugging options.
+
+	       Yesno is a table of different ways of putting yes
+	       and no.
+
+	       Duplex is a table of duplex settings.
+
+	       Filep is a table of file parameters.
+
+	       Parity is a table of parity settings.
+
+	       Sendrec is a table of send and receive options.
+
+	       Handshake is a table of handshaking types.
+
+	       Impopt is a table of options that are listed in a
+	       Show command given without arguments.
+
+	       Delim is a list of delimiters in shell commands.
+
+	       Handchars is a table of handshake characters, indexed
+	       by the internal values of the handshake mnemonic
+	       representation strings.
+
+	       Defopt is a table of user-defined options.
+
+   Cromix Kermit Program Guide                                Page  4
+
+
+
+	   Finally, a structure used to supply arguments to an
+	   auxiliary process   :
+
+	       Leapfrog is used to invoke Leapfrog, the screen
+	       output process for the Connect command.
+
+
+
+
+   Cromix Kermit Program Guide                                Page  5
+
+
+
+	       III.  Program Structure.
+	       ----  ------------------
+
+
+	The program is divided into eight modules and one separate
+     program for an auxiliary process, plus a library file.
+
+     3.1.  kermit.h
+
+	     This is the Kermit definition file, included into all
+	   of the other Kermit modules. It contains constant and
+	   macro definitions and global variable declarations.
+
+     3.2.  kext.c
+
+	     This is the global variable module. It contains all of
+	   the external variables except those used only within
+	   Kfilter.c.
+
+     3.3.  ksendrec.c
+
+	     This module contains the functions that perform the
+	   non-server file transfer operations, except the lowest-
+	   level functions.
+
+	       Function        Description
+
+	       sendsw          state table switcher for
+			       sending files
+
+	       sinit           send initiate packet
+
+	       sfile           sends file header
+
+	       sattr           sends an attribute packet
+
+	       sdata           sends a data packet
+
+	       seof            sends an EOF packet
+
+	       sbreak          sends an end of transmission
+			       packet
+
+	       recsw           state table switcher for
+			       receiving files
+
+	       rinit           receives initial packet
+
+	       rfile           receives file header packet
+
+	       rdata           receives a data packet
+
+   Cromix Kermit Program Guide                                Page  6
+
+
+
+     3.4.  kserver.c
+
+	     This module contains server functions and functions
+	   used to perform shell commands that invoke server-
+	   related functions.
+
+	       Function        Description
+
+	       rserver         server state switcher
+
+	       rservsw         server receive state switcher
+
+	       execp           executes a Kermit command line
+
+	       isend           sends an initiate packet
+
+	       get             sends a file send request to a
+			       server
+
+	       getfiles        shell interface for get
+
+	       sendgen         sends general server command
+			       packet
+
+	       sendrem         sends remote server command line
+
+
+     3.4.   kutil.c
+
+	      This module contains the lowest-level utilites used
+	    in file transfer and terminal setup as well as the init
+	    function.
+
+	       Function        Description
+
+	       dopar           performs parity conversion
+
+	       spack           send a packet
+
+	       writef          write filtered
+
+	       rpack           receives a packet
+
+	       rectime         timeout execution address (breaks
+			       out of receive cycle)
+
+	       recbreak        cntrl-C execution address
+
+	       cinchar         gets a parity adjusted character
+			       from the file and adds it to the
+			       checksum
+
+   Cromix Kermit Program Guide                                Page  7
+
+
+
+	       inchr           reads a character from the
+			       communication line and performs
+			       any necessary parity stripping
+
+	       bufill          get a bufferful of data from the
+			       file being sent ; control, repeat
+			       count, and *-bit quoting are done
+			       here
+
+	       enter           enter a character into the buffer
+
+	       bufemp          writes the packet to the file
+
+	       gnxtfl          gets the next file in the file
+			       list
+
+	       spar            fill the packet with send
+			       parameters
+
+	       rpar            interpret the parameters sent by
+			       the remote Kermit
+
+	       flushinput      clears the input buffer
+
+	       printmsg        prints a Kermit message
+
+	       shellmsg        prints a message locally unless in
+			       server mode
+
+	       error           prints a Kermit message if local,
+			       sends an error packet otherwise
+
+	       prerrpkt        prints a Kermit message received
+			       from the remote host
+
+	       ttbin           prepare a terminal to serve as a
+			       communication line
+
+	       ttres           restore the terminal to its
+			       original setting
+
+	       init            initialise all the Kermit
+			       variables
+
+   Cromix Kermit Program Guide                                Page  8
+
+
+
+     3.5.   kconnect.c
+
+	      This module contains the functions for the Kermit
+	    Connect command.
+
+	       Function        Description
+
+	       connect         connects to a remote host
+
+	       getnc           get a character from the line
+
+
+     3.6.   library.c
+
+	    This module contains utility functions such as those
+	    used to handle strings.
+
+	       Function        Description
+
+	       strchr          finds a character in a string
+
+	       strcmp          compares two strings
+			       lexographically
+
+	       atoi            ASCII-to-integer (this version-
+			       unsigned integer only)
+
+	       strcat          concatenates strings
+
+	       strlen          determines the length of a string
+
+
+     3.7.   kshell.c
+
+	    This module contains the Kermit shell.
+
+	       Function        Description
+
+	       getword         gets the next word from a line
+
+	       inter           command interpreter ; loops
+			       executing a command and outputting
+			       theKermit prompt
+
+	       scan            finds a command in the command
+			       table
+
+	       parse           interprets a command
+
+	       nshell          invoke shell or execute a shell
+			       command
+
+   Cromix Kermit Program Guide                                Page  9
+
+
+	       help            switcher for helpout
+
+	       helpout         outputs a helpfile associated
+			       with a command
+
+	       lgets           gets a line and converts it to
+			       lowercase
+
+	       send            sends a file or a list of files
+
+	       receive         receives a file or a list of
+			       files
+
+	       set             looks up options and tries to set
+			       them (calls setopt)
+
+	       setopt          sets an option
+
+	       show            displays all options or the
+			       specified options on the screen
+
+	       disset          displays all the predefined options
+			       on the screen
+
+	       display         displays a single option
+
+	       rscan           reverse scan for options - finds
+			       the ASCII representation
+
+	       cstring         character string representation
+			       of a character
+
+	       rshow           displays a single options
+
+	       take            execute a group of Kermit command
+			       files
+
+	       takefile        execute a Kermit command file
+
+	       defopt          define an option
+
+	       deffind         finds a defined option in a
+			       table
+
+	       defscan         gets a defined option
+
+	       showdef         shows the value of a defined
+			       option
+
+	       transmit        transmits a file bare
+
+   Cromix Kermit Program Guide                                Page 10
+
+
+	       execl           execute a line
+
+	       stats           displays the statistics of the
+			       last file transfer
+
+
+
+     3.8.  kwild.c
+
+	     This module contains the function getnames, which is
+	   used to fill a file list according to a pattern, and
+	   the function match, which is used for pattern matching.
+	   Match was originally written for li, the listing
+	   utility, and has been adapted for Kermit.
+
+     3.9.  kmain.c
+
+	   This module contains the function main.
+
+
+     3.10. leapfrog.c
+
+	   This module contains a program that is ran as a seperate
+	   process by Kermit during a connect command. It copies the
+	   contents of the communication line to the screen.
+
+
+
+
+
+
+
+
+   Cromix Kermit Program Guide                                Page 11
+
+
+
+	       IV. Algorithm.
+	       --- ----------
+
+
+       This section contains a brief summary of the algorithm used
+     in the Kermit program. For more details refer to the source.
+
+     Main program (main)
+
+       initialises certain global variables (init)
+       if there is more than one argument (command(s))
+	   execute the command(s) (execl)
+       else
+	   execute the Kermit shell (inter)
+
+
+     Execute the commands
+
+       For each argument (command)
+	   check that the command is legal
+	   and transfer the argument list to an array format
+	   execute the command (parse)
+
+
+     Kermit shell
+
+       While exit has not been pressed
+	   disable cntrl-C
+	   if the file level is not at any level
+	       output the prompt
+	   if there is a command
+	       read it (getword)
+	   check the legality of the  command
+	   if it is illegal
+	       output( invalid command )
+	   else
+	       read the arguments if any (getword)
+	   execute the command (parse)
+
+
+   Cromix Kermit Program Guide                                Page 12
+
+
+
+     Execute the command
+
+       if the command is
+	   (command table)
+
+	   exit :
+		if at file level 0
+		    exit Kermit and enter Cromix Plus
+		decrease the file level by a factor of 1
+	   connect :
+		set up the terminal to act as a communication line
+		call leapfrog to echo line output on the terminal
+		  read characters and send them to the remote host
+		until an escape character followed by 'C' is
+		encountered
+		stop leapfrog
+		restore old terminal setting
+	   help :
+		if there are arguments
+		    output HELP.hlp
+		else
+		    output the help file corresponding to the
+		    argument (command(s))
+	   send :
+		clear stacked NAKs
+		if there are no arguments
+		    ask the user to input file name
+		else
+		    convert the argument list to a file list format
+		    get the first files name
+		    if file send (sendsw) is successful
+			output( Done )
+		    else
+			output( Send failed )
+		    if the file pointer is not NULL
+			close the file
+	   receive :
+		get the receive file name
+		set up the terminal to act as a communication line
+		if the receive (recsw) is successful
+		    output( Done )
+		else
+		    output( receive failed )
+		restore the old terminal setting
+		if the file pointer is not NULL
+		    close the file
+
+   Cromix Kermit Program Guide                                Page 13
+
+
+
+	   show :
+		if there are arguments (commands)
+		    display the specified options (display)
+		else
+		    display everything (disset, dismac)
+	   set :
+		if no arguments then
+		    output( No argument given for a set command )
+		for the number of arguments
+		    find the option in the option
+		    if it is a predefined option
+			set it ( setopt)
+		    else
+			it is a macro
+			and define the option (defopt)
+	   shell :
+		if there are arguments
+		    create the argument list
+		else
+		    set the argument list to 0
+		execute the Cromix command
+	   take :
+		if no arguments then
+		    output( no file given )
+		else
+		    for each argument (file name)
+			if the file level has not exceeded the
+			    specified number
+			    increment the file level
+			    and execute the file
+	   def :
+		define an option (defopt)
+	   transmit :
+		if a file name is present
+		    if the opening of the file is successful
+			write the file to the communication line
+			close the file
+		    else
+			output( Can't open the file )
+		else
+		    output( No files to transmit )
+	   stats :
+		output the statistics of the last file transfer
+
+   Cromix Kermit Program Guide                                Page 14
+
+
+
+	   cwd :
+		if no arguments
+		    change to the home directory
+		else
+		    if possible
+			change to the specified directory
+		    else
+			output( Can't change that directory )
+	   server :
+		execute the server (rserver)
+	   get :
+		if there are no arguments
+		    ask the user for the file name
+		    and get the file (get)
+		else
+		     for each argument (file)
+			 get the file (arguments) (get)
+	   finish :
+		send generic command for Finish (sendgen)
+	   disc :
+		send generic command for Disc (sendgen)
+	   initial :
+		initialise parameters
+		send parameters
+		if a YAK is received then
+		    receive remote host's parameters
+		else
+		    if error packet
+			output a message and abort
+	   remote :
+		concatenate the command line to form a single string
+		while the number of tries is smaller than the maximum
+			 no of tries
+		    send a Kermit packet (type K)
+		    if an error packet is received
+			 output a message
+		    else
+			a YAK is received
+	   push :
+		increase the file level by one
+	   otherwise :
+		output( Invalid command )
+
+
+
+   Cromix Kermit Program Guide                                Page 15
+
+
+
+     Send
+
+       initialise state, message, number of entries, input file
+       initialise statistical entries
+       prepare a location for cntrl-C
+       state is S
+       repeat following until an exit state is reached
+	   if the state is
+	       S :
+		  send an init packet
+		  receive an init packet
+		  state is F
+	       F :
+		  send file header
+		  receive a YAK
+		  if attributes enabled
+		      state is T
+		  else
+		      state is D
+	       T :
+		  send file attributes
+		  receive a YAK
+		  state is D
+	       D :
+		  send a data packet
+		  receive a YAK
+		  if EOF
+		      state is Z
+		  else
+		      state is D
+	       Z :
+		  send an EOF packet
+		  receive a YAK
+		  if there are more files
+		      state is F
+		  else
+		      state is B
+	       B :
+		  send an End-Of-Transmission packet
+		  receive a YAK
+		  state is C
+	       C :
+		  file transfer complete
+		  exit state reached
+	       A, timeout :
+		  abort file transfer
+		  if no transmit error and not remote
+		      send an error packet
+
+
+   Cromix Kermit Program Guide                                Page  16
+
+
+     Receive
+
+       initialise state, message, number of tries, input file
+       initialise statistical entries
+       prepare a location for cntrl-C
+       state is R
+       repeat until an exit state is reached
+	   if state is
+	       R :
+		  receive a packet
+		  if it is
+		     S :
+			get parameters
+			reply with own parameters
+			send a YAK
+			state is F
+		     timeout :
+			send a NAK
+		     otherwise :
+			abort file transfer
+			state is A
+	       F :
+		  receive a packet
+		  if it is
+		     F :
+			get file header
+			state is D
+		     B :
+			send a YAK
+			state is C
+		     timeout :
+			send a NAK
+		     otherwise :
+			abort file transfer
+			state is A
+	       D :
+		  receive a packet
+		  if it is
+		      D :
+			 write the packet to a file
+			 send a YAK
+			 state is D
+		      Z :
+			 close file
+			 send a YAK
+			 state is F
+		      timeout :
+			 send a NAK
+		      otherwise :
+			 abort file transfer
+			 state is A
+
+   Cromix Kermit Program Guide                                Page  17
+
+
+
+	       C : file transfer complete
+		   exit state received
+	       A : close file
+		   if incomplete file save on
+		       delete file
+		   if no transmission error or not remote
+		       send an error packet
+
+
+     Execute a server
+
+       prepare a location for cntrl-C
+       initialise
+       while in server mode
+	   receive a packet
+	   if it is
+	       I :
+		  send server's parameters with a YAK packet
+	       S :
+		  send server's parameters with a YAK packet
+		  receive the file
+		  if file receive is not successful
+		      output an error message
+		      if the file pointer is not NULL
+			  close the file
+			  file pointer is pointing to NULL
+	       R :
+		  while there is file to send
+		      send the file
+		      if the file pointer is not NULL
+			  close the file
+			  file pointer is pointing to NULL
+	       K :
+		  scan the command
+		  if illegal
+		      send an error packet
+		  else
+		      execute the command
+	       G :
+		  if the receive packet is
+		      C :
+			 if possible
+			     change working directory
+			     send a YAK
+			 else
+			     output error
+			     send an error packet
+
+   Cromix Kermit Program Guide                                Page 18
+
+
+
+		      L :
+			 close any open files
+			 send a YAK
+			 restore old terminal settings
+			 kill the kermit process
+		      K :
+			 send a YAK
+			 server mode is off
+			 restore old terminal settings
+		      otherwise :
+			 output( Function not implemented )
+			 send an error packet
+	       timeout :
+		  send a NAK
+	       otherwise :
+		  output( Function not implemented )
+		  send an error packet
+       server mode is off
+       restore old terminal settings
+
+
+
+     Get the file
+
+       while the number of tries is smaller than the maximum
+		number of retries and in server mode
+	   send a receive file name packet
+	   if the incoming packet is of type S (send)
+	       send a NAK
+	       and receive the file
+	   else
+	       if error packet is received
+		   print the contents of the error packet
+
+
+     Send a generic command for Finish/Disc
+
+       while the number of tries is smaller than the maximum
+		number of retries and in server mode
+	   send a generic packet
+	   if an error packet is received
+	       return FALSE
+	   else
+	       if a YAK is received
+		   return TRUE
+
+   Cromix Kermit Program Guide                                Page 19
+
+
+
+	       V. Miscellaneous.
+	       -- --------------
+
+
+	The communication line used for a local Kermit should not
+     be defined in the file /ETC/TTYS because this line will be
+     regarded as a terminal. Otherwise the file is to be edited and
+     the system reset with the command "kill -1 1". Also in the RS232
+     interface the pins 4, 5, 6 should be bridged together, and
+     likewise pins 8 and 20.
+
+	The directory /kermit/kerbin contains the help files.
+     After finding the .hlp file corresponding to the specified
+     command, the function help executes the process 'command.hlp'.
+
+	Note the inconsistency in the order of arguments in spack
+     and rpack. spack is called with the packet type, packet number,
+     packet length, and the packet contents. rpack is called with
+     the packet length, packet number, and the packet contents;
+     rpack returns the packet type.
+
+	The AUTOSET constant constant controls the automatic setting
+     of the baud rate and parity when a new communication line is set.
+     It is always safer to set AUTOSET to FALSE in Kermit.h, but
+     this makes the Kermit shell slower. It is entirely up to the
+     support person's descision whether to set it or not.
+
+
+
+   Cromix Kermit Program Guide                                Page 20
+
+
+
+	       Appendix.  Kermit Configuration.
+	       ---------  ---------------------
+
+
+     1.  To install the Cromix Kermit, load the diskette, mount it
+	 on the floppy disk drive. If you have Kermit on a 5 1/4 "
+	 diskette then type
+
+	     # mount sfda /a
+
+	 otherwise type
+
+	     # mount fda /a
+
+	 Now, type
+
+	     # d /a
+	     # install
+
+	 The following directories will be created :
+
+	     /usr/pkg/kermit/sources, containing the source files
+	     /usr/pkg/kermit/text, containing the documentation
+	     /usr/pkg/kermit, containing the executable files
+
+	 In addition, kermit.bin will be linked to /bin/kermit.bin,
+	 so that kermit can be invoked by typing
+
+	     # kermit
+
+
+     2.  To compile the Cromix Kermit, compile each one of the
+	 following files and link .obj files together with
+	 syslib.obj, clib.obj, and paslib.obj :
+
+	     kext.c
+	     kconnect.c
+	     kmain.c
+	     ksendrec.c
+	     kserver.c
+	     kshell.c
+	     kwild.c
+	     kutil.c
+	     library.c
+
+	 Call the output file kermit.bin and make a link or copy in
+	 /bin.
+
+	 Then, compile leapfrog.c. The .obj file should be linked
+	 with syslib.obj, paslib.obj, clib.obj linked with
+	 library.obj.
+
+
+
+

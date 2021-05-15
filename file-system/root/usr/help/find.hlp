@@ -1,0 +1,169 @@
+utility:      FIND
+purpose:      This program locates files.
+
+user access:  all users
+
+summary:      find pathname [!] expression
+
+arguments:    pathname
+
+              [!]
+
+              expression(s)
+
+options:      File specifiers:
+                -name
+                -type x
+                -links n
+                -user name or number
+                -group name or number
+                -size n
+                -blocks n
+                -mtime n
+
+              Action Specifiers:
+                -exec command-line
+                -ok command-line
+                -print
+
+              Logical Operators:
+                -a
+                -o
+
+Description
+
+The Find utility locates a file.  The pathname is the pathname  of  the  tree,
+directory,  or  file  to  be  searched, and the expression is the string to be
+found and what is to be done with it.
+
+Expressions are combinations of file criteria and operations.   Refer  to  the
+following list.
+
+Parentheses may be used to change the order of evaluation of the items in the
+Find expression. Used with parentheses, the expression must be enclosed within
+quotation marks so that the Shell passes them to the Find utility.
+
+When  one  of  the  action specifiers is used to execute a program, the return
+value of that program can be evaluated and used within the expression.
+
+The ! operator may precede the expressions to negate the sense of the tests.
+
+Options
+
+File Specifiers
+
+-name file-list
+
+The file-specifying keyword name is followed by a list of one or more unique
+or ambiguous filenames. If an ambiguous filename is used, it must be enclosed
+within quotation marks. The Find utility finds all files that match the file
+list.
+
+-type b  block device"
+      c  character device
+      f  file
+      d  directory
+
+The file-specifying keyword type is followed by either b, c, f, or d, as
+shown. The Find utility finds all files of that type.
+
+-links n
+
+The file-specifying keyword links is followed by a number, n. The Find utility
+finds all files with that number of links. If the number is preceded by a plus
+sign, all files with more than that many links are found; if a minus sign is
+used, all files with fewer than n links are found.
+
+-user name
+
+The file-specifying keyword user is followed number by a user name or number.
+The Find utility finds all files owned by the specified user.
+
+-group name
+
+The file-specifying keyword group is followed number by a group name or
+number. The Find utility finds all files owned by the specified group.
+
+-size n
+
+The file-specifying keyword size is followed by a number, n. The Find utility
+finds all files of the specified size, in bytes. If the number is preceded by
+a plus sign, all files with more than that number of bytes are found; if a
+minus sign is used, all files with fewer than n bytes are found.
+
+-blocks n
+
+The file-specifying keyword blocks is followed by a number, n.  The Find
+utility finds all files using that number of blocks (actual number of blocks
+occupied by the file). If the number is preceded by a plus sign, all files
+occupying more than the specified number of blocks are found; if a minus sign
+is used, all files with fewer than n blocks are found.
+
+-mtime n
+
+The file-specifying keyword mtime is followed by a number, n. The Find utility
+finds all files modified n days ago. If the number n is preceded by a plus
+sign, all files modified n or more days ago are found; if a minus sign is
+used, all files modified fewer than n days ago are found.
+
+Action Specifiers
+
+-exec command-line
+
+The action-specifying keyword exec is followed by a command line. This may be
+any valid command line, that is, any line that can be entered in response to
+the Shell prompt. This command line is then executed each time the Find
+utility finds a file meeting the find criteria. A pair of braces ({}) may be
+placed within the command line. They will be replaced by the name of the file
+found.
+
+-ok command-line
+
+The action-specifying keyword ok is used in the same manner as exec. When ok
+is used, the Find utility prompts the user prior to executing each command
+line. The user may respond with a y to execute the command line or n to
+prevent its execution.
+
+-print
+
+The action-specifying keyword print is used to display the pathnames of files
+found.
+
+Logical Operators
+
+-a   The -a operator is used to logically AND two items in the
+     Find expression.
+
+-o   The -o operator is used to logically OR two items in the
+     Find expression.
+
+Notes
+
+The expression used with the Find command is evaluated from left to right.
+Items to be found and actions to be performed may be combined logically by use
+of the -a and/or -o logical operators. Either operator combines the sum of the
+expression to its left with the subsequent item in the expression. For
+example:
+
+     system[1] find / -name ted -a -print
+
+     system[2] find / -name ted -o -name mary -a -print
+
+The first example finds all files with the filename ted and prints the
+pathnames of these files. If the print instruction is omitted, all of the
+correct files are found, but no action is taken: their names are not
+displayed.  The second example demonstrates the use of the logical OR. All
+files with the filename ted OR mary are found and their pathnames printed.
+
+Examples:
+
+The following example finds all subdirectories of the current directory,  then
+executes an ls command with the -d and -e options.
+
+     jim[1] find .  -type d -a -exec ls -de {}
+
+The next example finds all entries with a .c extension, then lists the entry
+with the -l option.
+
+     system[1] find / -name "*.c" -a -exec ls -l {}
+

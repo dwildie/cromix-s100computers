@@ -1,0 +1,56 @@
+function:       msgctl
+purpose:        Message queue control operations
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <ipc.h>
+                <msg.h>
+
+synopsis:       int msgctl(msqid,cmd,buf)
+                int msqid, cmd; struct msqid_ds *buf;
+
+Description
+
+Msgctl provides a variety of message queue control operations as specified by
+cmd. The following commands are available:
+
+IPC_STAT       Place the current value of each member of the data
+               structure associated with the message queue identifier msqid
+               into the structure pointed to by buf.
+
+
+IPC_SET        Set the values of the following members of the data
+               structure associated with msqid to the corresponding values
+               found in the msqid_ds structure pointed to by buf:
+
+                      msg_perm.uid
+                      msg_perm.gid
+                      msg_perm.mode (low order 9 bits only)
+                      msg_qbytes
+
+               This cmd can only be executed by the super user or by a
+               process that has an effective user ID equal to the msg_perm.uid
+               in the data structure associated with the msqid. Only the super
+               user can raise the value of msg_qbytes.
+
+IPC_RMID       Remove the message queue identifier specified by msqid
+               from the system and destroy the message queue and data structure
+               associated with it. This command can only be executed by a
+               privileged user or by the creator of the message queue.
+
+The function returns:
+
+     0           if succesful;
+     ERR         if error.
+
+Common errors:
+
+     _badvalue           Invalid command or msqid not a valid message
+                         queue identifier.
+     _ipcaccess          Operation permission is denied to the calling
+                         process.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

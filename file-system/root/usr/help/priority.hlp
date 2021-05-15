@@ -1,0 +1,36 @@
+Shell
+command:      PRIORITY or PRI
+purpose:      This command changes the priority of a process.
+
+user access:  all users         (priorities 0 through +40)
+              privileged user   (priorities +40 through -40)
+
+summary:      pri [+priority-number][command-line]
+
+arguments:    priority number (optional)
+
+              command line (optional)
+
+options:      none
+
+Description
+
+The Priority command establishes the priority of a process.  Priority numbers
+range from -40 (highest) to +40 (lowest). The highest priority a nonprivileged
+user may specify is 0, the lowest is +40. A privileged user may specify any
+priority.
+
+If the Priority command is executed without a priority number, the default
+value is +10. All processes run without using the Priority command are
+assigned a priority of 0.
+
+If a command line is given as an argument, the priority specified applies to
+the process(es) initiated by the command line. If no argument is given, the
+priority applies to the current shell and all children of the current shell
+created after execution of the Priority command.
+
+All ready processes are handled in a "round-robin" fashion. The higher the
+priority, the longer the process is allowed to run before the next process is
+executed. A -40 priority gets a "time-slice" of 576 milliseconds, a +40
+priority gets 16 ms, and a 0 priority gets 96 ms (distribution varies
+exponentially).

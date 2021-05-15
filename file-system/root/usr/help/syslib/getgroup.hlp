@@ -1,0 +1,20 @@
+function:       getgroup
+purpose:        Return group ID.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getgroup(idtype)
+                int idtype;
+
+Description
+
+Get the group number of the type idtype (id_effective, id_login, id_program).
+
+The function returns:
+
+     group number     if successful
+     ERR              if error
+

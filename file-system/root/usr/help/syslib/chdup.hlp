@@ -1,0 +1,27 @@
+function:       chdup
+purpose:        Create a duplicate channel number.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int chdup(channel)
+                int channel;
+
+Description
+
+The chdup call duplicates a channel. The function will return the lowest
+available channel number which can be used instead of the original channel
+number.
+
+The function returns:
+
+     new channel number       if successful
+     ERR                      if error
+
+Common errors:
+
+     _notopen       The specified channel is not open.
+     _toomany       There are no free channels left.
+

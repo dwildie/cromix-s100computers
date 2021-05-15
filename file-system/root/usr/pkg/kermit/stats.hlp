@@ -1,0 +1,9 @@
+
+STATISTICS, STATS - Show stastistics.
+
+		Usage:
+
+		STATISTICS
+
+The STATISTICS command displays information about the last file transfer
+(if there was one).

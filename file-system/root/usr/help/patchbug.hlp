@@ -1,0 +1,22 @@
+utility:      PATCHBUG
+purpose:      This program corrects a bug in paslib.obj
+
+user access:  all users
+
+summary:      patchbug file-list
+
+arguments:    file list
+
+options:      none
+
+Description
+
+Paslib.obj version 02.45 and earlier contains a bug which prevents any program
+"crolinked" with this library from running successfuly with XMM enabled.  The
+Patchbug utility can be used to enable such .bin (or .obj) files to work with
+the XMU.
+
+Example:
+
+     system[1]  patchbug c.bin jcode.bin /usr/lib/paslib.obj
+

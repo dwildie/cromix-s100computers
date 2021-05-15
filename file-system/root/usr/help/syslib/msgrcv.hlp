@@ -1,0 +1,92 @@
+function:       msgrcv
+purpose:        Receive a message from a message queue
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <ipc.h>
+                <msg.h>
+
+synopsis:       int msgrcv(msqid,msgp,msgsz,msgtyp,msgflg)
+                int msqid, msgsz, msgflg; long msgtyp;
+                struct msgbuf *msgp;
+
+Description
+
+Msgrcv reads a message from the message queue associated with the message
+queue identifier msqid and places it in the structure pointed to by msgp. The
+structure is composed of the following members:
+
+     long        mtype;          /* Message type          */
+     char        mtext[];        /* Message text          */
+
+Mtype is the received message's type as specified by the sending process.
+Mtext is the text of the message. Msgsz specifies the size in bytes of mtext.
+The received message is truncated to msgsz bytes if it is larger than msgsz
+and (msgflg & MSG_NOERROR) is "true". The truncated part of the message is
+lost and no indication of the truncation is given to the calling process.
+
+Msgtyp specifies the type of message requested as follows:
+
+     If msgtyp is equal to zero, the first message in the queue is
+     received.
+
+     If msgtyp is greater than zero, the first message of the type
+     msgtyp is received.
+
+     If msgtyp is less than zero, the first message of the lowest
+     type that is less than or equal to the absolute value of msgtyp
+     is received.
+
+Msgflg specifies the action to be taken if a message of the specified type is
+not on the queue. These are as follows:
+
+     If (msgflg & IPC_NOWAIT) is "true", the calling process will return
+     immediately with the return value of ERR and errno set to _ipcnomsg.
+
+     If (msgflg & IPC_NOWAIT) is "false", the calling process will suspend
+     execution until one of the following occurs:
+
+          A message of the desired type is placed on the queue.
+
+          Msqid is removed from the system. When this occurs, errno
+          is set to _ipcremove, and value ERR is returned.
+
+          The calling process receives a signal that is to be caught. In this
+          case a message is not received, errno is set to _ssignal,
+          and the value ERR is returned.
+
+Upon successful completion the following actions are taken with respect to the
+data structure associated with msqid:
+
+     Msg_qnum is decremented by one.
+
+     Msg_lrpid is set equal to the process ID of the calling process.
+
+     Msg_rtime is set equal to the current time.
+
+The function will return:
+
+     The number of bytes actually placed into mtext  if successful
+     ERR                                             if error.
+
+Common errors:
+
+     _badvalue           Msqid is not a valid message queue identifier.
+     _ipcaccess          Operation permission is denied to the calling
+                         process.
+     _badvalue           Mtype is less than one.
+     _ipc2big            Message to be received is longer than msgsz and the
+                         truncate bit in msgflg is not set.
+     _ipcagain           No message of the required type is waiting right
+                         now and the nowait bit is set in the msgflg.
+     _badvalue           Message size is less than zero.
+     _ipcremove          While the system call was waiting to receive the
+                         message, the message queue was removed from the
+                         system.
+     _ssignal            A signal was received by the process while it was
+                         waiting for the message to be received.
+     _badaddress         The address passed to the system call does not belong
+                         to the user's address space.
+

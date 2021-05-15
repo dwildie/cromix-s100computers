@@ -1,0 +1,18 @@
+
+SHELL, SH, ! - Get a CROMIX shell.
+
+		Usage:
+
+		SHELL <shellcommand>
+		SHELL
+
+Use the shell command when you want to perform some CROMIX functions.
+If no arguments are specified, a subshell is created.  Otherwise, the command
+line following the command SHELL is executed.  Don't try to use wildcards
+in the shell arguments - use an interactive shell for this.
+
+Note that you cannot use the D command to change your directory, since, once
+you come back to Kermit, the old directory will again become your current
+directory.  If you want to change your directory, use the Kermit CWD
+command.  Type HELP CWD for details.  To find out where you are then the
+shell command 'd' can be used by typing '! d' at the Kermit prompt.

@@ -1,0 +1,23 @@
+utility:      TOUCH
+purpose:      This program changes the modification times of files to the
+              current time.
+
+user access:  all users
+
+summary:      touch [-c] filename(s)
+
+arguments:    pathnames of one or more files
+
+options:      -c   do not create files if they do not exist
+
+Description
+
+The Touch program changes the modification time of a file to the current time.
+If the file does not exist, Touch creates the file unless called with the -c
+option.
+
+The Touch program is for use with the Make program.
+
+Options
+
+The -c option prevents Touch from creating files if they do not exist.

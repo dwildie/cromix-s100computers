@@ -1,0 +1,9 @@
+
+FINISH, FIN - Stop the remote file server.
+
+		Usage:
+
+		FINISH
+
+The FINISH command terminates the remote server, if any, and returns the remote
+to the Kermit command level.

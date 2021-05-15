@@ -1,0 +1,90 @@
+utility:      MOUNT
+purpose:      This program enables access to a file system.
+
+user access:  privileged users
+
+summary:      mount [-r] [devname dummyname]
+
+arguments:    device name
+
+              file pathname
+
+options:      -r    read only
+
+Description
+
+The Mount utility enables access to a file system.
+
+When called without arguments, Mount lists the currently mounted devices.
+
+The Mount utility looks on the disk to be mounted for the file /etc/passwd.
+Finding that file, it looks for the special user name mount.  If this name is
+present and has a password associated with it, Mount prompts the user for the
+password before mounting the disk. Thus, it is possible to protect disks from
+being mounted by an unauthorized user.
+
+User Access
+
+By editing the file /etc/mutab, a privileged user can allow selected, non-
+privileged users to mount specified devices. The Mount utility consults this
+file whenever a non-privileged user gives the Mount command.
+
+Each line in mutab has up to four fields, separated by colons:
+
+          flag :  device :  username :  groupname
+
+Flags can be zero (entry disabled) or one (entry enabled). The device field
+must be the name of a block device in the /dev directory.  Username is the
+user allowed to mount that device. If groupname is specified (field 4), all
+members of that group may mount the device. If username or groupname is not
+specified, all users may mount the device.
+
+A typical mutab file is shown here:
+
+          0:fda
+          1:fdb :  tom
+          1:fdb :  :  users
+
+Line 1:   Because a username or groupname is not specified, any user
+          can mount device fda. In the example, this entry is disabled
+          by a zero flag in field 1.
+Line 2:   User tom may mount device fdb
+Line 3:   All members of the users group may mount device fdb.
+
+Options
+
+The -r option causes the file system to be mounted for read-only access.  The
+Mount utility will fail if the user tries to mount a write protected device
+without the -r option.
+
+Notes
+
+A file system that has been mounted must be unmounted by the use of the
+Unmount utility before the mounted disk is removed from the system. If this is
+not done, the integrity of the data on the mounted system cannot be assured.
+
+Do not attempt to mount a file system on a nonexistent device. Devices which
+do not exist may be deleted from the /dev directory.
+
+Example:
+
+          jim[1] create newfilesys
+          jim[2] mount fdb newfilesys
+          jim[3] ls -m
+          .
+          .
+          .
+          145 D newfilesys
+
+          jim[4]
+
+In the example above, the user first creates a dummy file. After mounting, the
+name of this dummy file becomes the root directory name of the file system to
+be mounted. After unmounting, this name becomes a dummy filename once again.
+
+The Mount command is given with the device name where the file system is
+located. Refer to the _C_r_o_m_i_x-_P_l_u_s _S_y_s_t_e_m _A_d_m_i_n_i_s_t_r_a_t_o_r'_s _G_u_i_d_e for a complete
+list of device names.
+
+The Ls utility shows that the new file system has been mounted and gives the
+name of the root directory.

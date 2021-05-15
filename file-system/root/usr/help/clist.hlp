@@ -1,0 +1,19 @@
+utility:      CLIST
+purpose:      This program displays files with page headings and line numbers
+
+user access:  all users
+
+summary:      clist [file-list]
+
+arguments:    one or more file pathnames
+
+options:      none
+
+Description
+
+The Clist program displays the files specified by its argument(s). When
+displaying a file, Clist numbers each line and adds a heading showing the
+filename and the time the file was last modified.
+
+When called without an argument, Clist waits for input from the standard
+input.

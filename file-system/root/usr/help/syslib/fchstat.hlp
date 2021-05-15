@@ -1,0 +1,115 @@
+function:       fchstat
+purpose:        Change status information of a file.
+
+user access:    see below
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int fchstat(pathname,statustype,statusvalue)
+                char *pathname; int statustype, statusvalue;
+
+                or
+
+                int fchstat(pathname,statustype,statusvalue,statusmask)
+                char *pathname; int statustype, statusvalue, statusmask;
+
+                or
+
+                int fchstat(pathname,statustype,statustime)
+                char *pathname; int statustype;
+                struct st_time *statustime;
+
+Description
+
+The fchstat system call changes various components in the inode identified by
+pathname. The first two arguments are always the same. The remaining arguments
+depend on statustype:
+
+     fchstat(pathname,st_owner,statusvalue)
+
+Only a privileged user can change the owner ID of the file to statusvalue.
+
+     fchstat(pathname,st_group,statusvalue)
+
+Only a privileged user can change the group ID of the file to statusvalue.
+
+     fchstat(pathname,st_aowner,statusvalue,statusmask)
+
+Only a privileged user or owner of the file can change the access permissions
+of the owner. Statusmask specifies which bits are to be changed, statusvalue
+specifies new bit values.  Both statusvalue and statusmask should be formed as
+described below.
+
+     fchstat(pathname,st_agroup,statusvalue,statusmask)
+
+Only a privileged user or owner of the file can change the access permissions
+of the group. Statusmask specifies which bits are to be changed. Statusvalue
+specifies new bit values.  Both statusvalue and statusmask should be formed as
+described below.
+
+     fchstat(pathname,st_aother,statusvalue,statusmask)
+
+Only a privileged user or owner of the file can change the access permissions
+of the public. Statusmask specifies which bits are to be changed. Statusvalue
+specifies new bit values.  Both statusvalue and statusmask should be formed as
+described below.
+
+     fchstat(pathname,st_stext,statusvalue)
+
+Only a privileged user or owner of the file can change the shared text flag.
+The low order bit of statusvalue is used to define the shared text flag.
+
+     fchstat(pathname,st_protect,statusvalue)
+
+Only a privileged user or owner of the file can change the delete-protect
+flag. The low order bit of statusvalue is used to define the delete-protect
+flag.
+
+     fchstat(pathname,st_tcreate,statustime)
+
+Only a privileged user can change the time the file was created.
+
+     fchstat(pathname,st_tmodify,statustime)
+
+Only a privileged user can change the time the file was modified.
+
+     fchstat(pathname,st_taccess,statustime)
+
+Only a privileged user can change the time the file was accessed.
+
+     fchstat(pathname,st_tdumped,statustime)
+
+Only a privileged user can change the time the file was dumped.
+
+To change the access permissions, statusmask and statusvalue should be formed
+from:
+
+     ac_read          read permission
+     ac_exec          execute permission
+     ac_writ          write permission
+     ac_apnd          append permission
+
+For example:
+
+     statusmask       ac_read|ac_writ
+     statusvalue      ac_read
+
+will change read and write access permission to allow read and disallow write.
+
+The function returns:
+
+     0           if successful
+     ERR         if an error occurred
+
+Common errors:
+
+     _filaccess       The user does not have permission to change
+                      the file attributes.
+     _priv            The user must be a privileged user to execute
+                      such a call.
+     _notexist        The file does not exist.
+     _badname         The file is referenced by an illegal pathname.
+     _badaddress      The address passed to the system call does not
+                      belong to the user's address space.
+

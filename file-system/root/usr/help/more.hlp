@@ -1,0 +1,104 @@
+utility:      MORE
+purpose:      This program displays pages from pipes or from user files.
+
+user access:  all users
+
+summary:      more [-cfs] [-n number] [file-list]
+
+arguments:    optional list of files
+
+options:      -c    draw pages from top of screen
+              -f    count true lines (not screen lines)
+              -s    do not display multiple blank lines
+
+Description
+
+The More utility allows examination of continuous text, one screenful at a
+time. Under normal circumstances, More will display a screenful of text and
+wait for a command. When the user presses the SPACE bar, the next screenful
+will be displayed (See the Help utility description).
+
+The More utility will display all given files one after another. If no file is
+specified, the More utility will display text from STANDARD INPUT. This allows
+results of a program to be piped into the More utility to be viewed at
+leisure. As the More utility can receive the text to be displayed from
+STANDARD INPUT, it also uses /dev/tty (user's terminal) for reading commands
+and displaying data.
+
+Following the screenful of data, the More utility prints the text --More-- at
+the bottom of the screen and waits for a command to be typed.  If More is
+displaying an ordinary file, it will also print the percentage of the total
+text displayed so far.
+
+More reads the commands in CBREAK mode with no echo. This means that the
+command typed in will not be echoed and will be acted upon the moment it is
+recognized. Usually, a single keystroke will suffice.
+
+All commands can be preceded by a decimal integer which defaults to value one
+when not given explicitly. This number, if it has any meaning at all, is the
+replication factor. In the description below the replication factor is denoted
+by [n].
+
+The available commands are:
+
+[n]SPACE      Skip n-1 screenfuls of data and display next
+              screen of data.
+
+[n]RETURN     Advance display by n lines.
+
+=             Print current line number (and file name if applicable).
+
+DELETE        Cancel partially typed command and redisplay the --More--
+              prompt.
+
+h or H        Print short overview of available commands.
+
+b or B        Move back to the beginning of file. Illegal if viewing piped
+              input.
+
+[n]n or N     Go to the n-th next file in the list. If this will
+              try to move past the last file, the last file will be displayed.
+
+[n]p or P     Go to the n-th previous file in the list. If an
+              attempt is made to move past the first file, the first file will
+              be displayed.
+
+q or Q        Terminate the More session.
+
+Options
+
+Without the -c option, text is displayed by simply writing out lines and
+scrolling old lines from the screen.  With the -c option the More utility will
+start writing at the top of the screen and erase each line before writing to
+it.  This option will only be effective if the terminal has the ce (clear to
+the end of line), and ho (cursor home) terminal capabilities.
+
+The -f option will change the way lines are counted. Without the -f option
+each screen line will count as one. This means that a long source line will be
+displayed as multiple lines also and counted as a multiple line. With the -f
+option, only the new line character increments the line count.
+
+The -s option will cause multiple blank (screen) lines to be replaced by a
+single screen line.
+
+The -n option must be followed by an integer specifying the number of lines
+that form a screenful. Without the -n option the screenful size is defined to
+be li - 1 where li is the termcaps value of the number of lines on the screen.
+
+Notes
+
+The More utility uses the following termcaps values. None are mandatory-More
+can work with dumb terminals.
+
+li     Number of lines on the screen (set to 24 if not defined).
+
+co     Number of columns on the screen (set to 80 if not defined).
+
+ce     Clear to the end of the line (-c option ineffective if not defined).
+
+ho     Cursor home (-c option ineffective if not defined).
+
+so     Start highlighting (not used if not defined).
+
+se     Stop highlighting (not used if not defined).
+

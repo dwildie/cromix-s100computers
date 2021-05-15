@@ -1,0 +1,38 @@
+function:       exec
+purpose:        Execute a program.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int exec(pathname,argv)
+                char *pathname, *argv[];
+
+Description
+
+The exec system call replaces the current code with the code of a new program.
+If an error is encountered after the original code has been scrapped, the
+original program quietly terminates.
+
+This implementation of the exec system call differs in two aspects from the
+implementation of the exec system call in the older versions of Cromix-Plus
+(older than 31.11):
+
+     -    The new code actually overlays the old code so that at no
+          point the old and the new code reside in memory.
+
+     -    Only the channels stdin, stdout, and stderr
+          are retained as opposed to all channels.
+
+Array argv of pointers to the arguments must be terminated by a NULL pointer.
+
+Common errors:
+
+     _notexist             The file to be executed does not exist.
+     _filaccess            The user coes not have execute access to the file
+                           to be excuted.
+     _nomemory             There is not enough memory to load the program.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

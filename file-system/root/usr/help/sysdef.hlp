@@ -1,0 +1,365 @@
+utility:      SYSDEF
+purpose:      This program generates a configuration file for
+              the Crogen utility.
+
+user access:  all users
+
+summary:      Sysdef output_file input_file
+
+arguments:    Pathname of system configuration file followed by the pathname
+              of configuration description file.
+
+options:      none
+
+Description
+
+The Sysdef utility is a specialized compiler which generates the configuration
+module used by the Link68 utility to generate a new cromix.sys file (See the
+Crogen utility description). The input file, usually called Sysdef, contains a
+Shell like description of the system parameters. The following are general
+rules:
+
+Each line has a number of fields separated by white space. The first field is
+the name of the parameter being defined, the remaining fields are the
+arguments. Their precise form depends on the parameter being defined. A
+percent sign marks the end of useful information. The text in a line following
+the percent sign is a comment. All numbers are entered in decimal form. The
+order of definition of individual system parameters is arbitrary.
+
+The remainder of this text describes the precise meaning of the system
+parameters.
+
+Maxmem
+
+The Maxmem variable defines the size of the system memory in 256K units.  This
+unit is chosen because the smallest memory card is 256K bytes. The number of
+such units supported must follow the command name. One memory unit is the
+smallest reasonable value and defines a minimal Cromix-Plus system which would
+be quite limited. During the initialization process, Cromix-Plus will verify
+all maxmem memory units in 16K units. Each 16K unit will be reported as
+present (+), absent (-), or erroneous (E). This means that a Cromix-Plus
+system can be built with an arbitrarily large maxmem (62 being the largest
+reasonable value). This would cause Cromix-Plus to check a large amount of
+nonexisting memory. Memory units above maxmem will not be referenced, memory
+units below maxmem will be used if they exist and are usable. Example:
+
+     maxmem   2
+
+means 1/2 Megabyte of memory, a reasonable amount of memory in which to run
+Cromix-Plus.
+
+CDEV
+
+Cromix supports 16 character drivers, numbered from 1 to 16. These numbers are
+also used as (character device) major device numbers. The CDEV command must be
+followed by the major device number. If a device number is not used, further
+data is not required. If the device number is to be used, the device number
+must be followed by the driver name and if necessary, by the arguments the
+driver requires. If a driver requires arguments, they must be integers
+separated by white space. The list of driver names supplied in the iolib.o68
+file, together with the explanation of the meaning of the arguments if
+applicable, can be found at the end of the sysdef file supplied with Cromix-
+Plus in the /gen directory. Example:
+
+          CDEV  01    tty  0 2 5
+          CDEV  02
+          CDEV  03    sysdev
+          ...........................
+
+says that major device number 1 is the tty driver which will support the minor
+device numbers 0, 2, and 5, (eg. the FDC terminal and two TUART terminals
+hooked the first TUART). Next, the major device number 2 will not be
+supported, major device number 3 will be the system device (required), and so
+on.
+
+BDEV
+
+Cromix-Plus supports 12 block device drivers, numbered from 1 to 12. These
+numbers are used as (block device) major device numbers. The BDEV command must
+be followed by the major device number. If a device number is not to be used,
+further data is not required. If the device number is to be used, the device
+number must be followed by the driver name and by any arguments the driver
+might require. If a driver requires arguments, they must be integers separated
+by white space. The list of driver names, supplied in the iolib.o68 file,
+together with the explanation of the meaning of the arguments, can be found at
+the end of the sysdef file supplied with Cromix-Plus in the /gen directory.
+Example:
+
+          BDEV  01    cflop
+          BDEV  02    uflop
+          BDEV  03
+          ...........................
+
+This says that the major device number 1 is the (Cromix) floppy driver which
+can support up to four 8 inch or 5 inch floppies. Major device number 2 will
+support up to four uniform style floppies, major device number 3 will not be
+used, etc.
+
+RAW
+
+Cromix-Plus uses the concept of a raw character driver. This is a very simple
+driver which is not accessible to user programs. It is used by the system only
+for:
+
+     - memory test display during startup
+     - definition of root device during bootstrap
+     - display of error detailed error messages such as disk I/O errors
+     - display of catastrophic error messages when the normal system functions
+       are considered to be too dangerous to use (e.g.  unexpected interrupt)
+
+Example:
+
+          RAW      raw_fdc
+
+defines the FDC terminal (terminal connected to 64FDC/FDX controller) to be
+(also) a RAW terminal.
+
+The raw driver is used as an input device only to determine the root device if
+the root device was not defined in the sysdef file when the system was
+generated. This means that Cromix-Plus can run with the RAW terminal not
+connected at all. However, this practice is not recommended. A normal solution
+is to use the FDC terminal both as a RAW terminal and as a normal terminal
+(tty1).
+
+Cromix 11.XX and Cromix 20.XX did not have a sufficient number of process
+tables and/or Shell buffers since both were bound to be allocated in the
+single 64K bank which was occupied by the kernel and the drivers. A gain of a
+few K worth of memory was important. Cromix-Plus does not have this
+limitation: all of the available memory can be used for process tables if a
+user so decides.
+
+Tty terminals were inferior to qtty terminals as the tty terminals could lose
+characters when interrupts were disabled for substantial periods of time. This
+problem has been greatly reduced and a tty terminal is nearly as reliable in
+this respect as a qtty terminal.
+
+ROOT
+
+The file cromix.sys which is to be booted may be read from any device
+(automatically from Reset or explicitly using the Boot command).  When the
+system file begins execution it must determine which device is going to be the
+root device. The ROOT command offers 3 possibilities.
+
+     ROOT     none
+
+means that Cromix will ask the operator (using the RAW device) to determine
+the root device.
+
+     ROOT     boot
+
+means that the root device should be the same as the device from which the
+file cromix.sys was read.
+
+     ROOT     6 0
+
+For example, means that the root device is to be the device with the major
+device number 6 and the minor device number 0 (presumably std0).
+
+LOGMSG
+
+During the login procedure, the system identifies itself. Identification
+consists of three lines:
+
+     Version of the operating system
+     Copyright message
+     LOGMSG message
+
+The third line is determined by whatever follows the LOGMSG command. For
+example:
+
+     LOGMSG My Customized Version from Nov 3, 1984
+
+It is recommended that the user always modify the LOGMSG message whenever a
+sysdef file different from the distributed version is used.
+
+ACCESS
+
+The ACCESS command defines the access permissions which newly created files
+will be given by Cromix-Plus (until the access permission is changed). For
+example:
+
+     ACCESS rewa.r.r
+
+The argument following the ACCESS keyword has the same form as for the access
+utility.
+
+Bufcnt
+
+Cromix-Plus keeps Bufcnt disk blocks in the memory. This implements the idea
+of a virtual disk: blocks are read from the main memory and written to the
+main memory. In the case where a requested block is not residing in main
+memory, it will actually be read from the disk (or written to the disk to make
+room for other blocks). A bigger Bufcnt might substantially increase
+throughput. The trade-off is that more memory is used (each block takes 544
+bytes) and more widespread damage may occur in the case of a power failure.
+Note that the Shell contains the Sync command which will flush buffers at
+request. Also, the Flush utility should be run in the background.
+
+Inocnt
+
+Cromix-Plus keeps Inocnt inodes in memory. This implements the idea of a
+virtual disk: inodes are read from main memory and are written to main memory.
+In the case where a requested inode is not residing in main memory it will
+actually be read from the disk (or written to the disk to make room for other
+inodes). A bigger Inocnt might substantially increase throughput. The trade-
+off is that more memory is used (each inode takes 144 bytes) and more
+widespread damage may occur in the case of a power failure.
+
+Filcnt
+
+Filcnt defines the total number of files that can be open simultaneously.
+Each file structure takes 18 bytes.
+
+Chcnt
+
+Chcnt defines the number of files a process can open simultaneously. Each
+channel takes four bytes in every process table so that the total amount of
+memory taken by channels is 4*chcnt*usrcnt bytes.
+
+Usrcnt
+
+Usrcnt is the number of process tables. Usrcnt defines the maximum number of
+processes which can exist at any time. Each process table takes 1,554 bytes.
+The maximum number of processes allowed is 255.
+
+Ptbcnt
+
+Ptbcnt defines the number of page tables being used for memory management. The
+page tables are used as follows. Each page table covers a segment (512K) of
+memory positioned on a segment boundary. Each process must get a page table
+for every segment it has access to. In general, one page table will do unless
+a process uses a lot of memory or is unluckily split across segment
+boundaries. The kernel itself will also take a page table for each segment
+that belongs to it. Also the shared code management will make a copy of page
+tables for shared code. Each page table takes 256 bytes.
+
+Shtmni
+
+Shtmni defines the number of different shared text that might be used
+simultaneously. Unless the user (carefully) writes a shared text himself, only
+the following programs use this possibility: Shell, Gtty, and Z80.
+
+Mntcnt
+
+Mntcnt defines the number of devices that can be mounted at the same time.
+Each entry has a price of 22 bytes.
+
+Lckcnt
+
+Lckcnt defines the number of locks (See _lock system call) that can be
+installed in the system. The price is 24 bytes for each lock.
+
+Freecnt
+
+The system has a small alloc-free mechanism used to obtain small chunks of
+memory. Freecnt is its size. Do not change it unless you understand the
+ramifications completely.
+
+Argvcnt
+
+All Cromix releases up to release 153 inclusive, severly restricted the size
+of arguments passed to a forked program. The limit was 1024 bytes. Releases
+154 and later allow argvcnt bytes of arguments to passed to forked programs.
+The Shell utility, source version 1.23 and higher, will expand any number of
+arguments, limited only by the amount of available memory. However, if the
+generated list exceeds argvcnt limitation, the program will not execute.
+
+Charcnt
+
+Every character device uses a number of character queues, usually three. Each
+character queue is limited to 20 character buffers. (Each character buffer
+uses 16 bytes and can hold up to 12 characters.) If a character driver cannot
+find a free character buffer when needed, the process is put to sleep until
+one is available. All Cromix releases up to release 154 inclusive, use 64
+character buffers. Release 155 introduced the Charcnt parameter to define the
+number of character buffers.
+
+Maxlev
+
+Occasionally users want to write very unusual programs that want to have
+interrupts disabled while they are running. The correct solution in such a
+case is to write a driver and let the driver fiddle with interrupts. As this
+seems to be an unpopular solution, Cromix-Plus provides the setlev system call
+to set the interrupt level of the processor to a prescribed level. Maxlev
+value is the maximum value accepted by the setlev system call. Users are
+strongly encouraged to set the Maxlev parameter to zero. This has the effect
+that setting the interrupt level to zonzero value is an illegal operation,
+setting it to level zero has no effect.
+
+Msgcnt
+
+Msgcnt is the number of bytes that the system will set aside for the formation
+of message queues. The _msgsnd system call will go to sleep or return an error
+if there is not a sufficient number of bytes left in the message pool.
+
+Msgmax
+
+Each message send by the _msgsnd system call can have at most Msgmax bytes.
+
+Msgnmb
+
+One message queue can contain at most Msgnmb bytes of messages.
+
+Msgmni
+
+The system can support up to Msgmni message queue identifiers. (Each message
+queue identifier takes up 46 bytes).
+
+Msgtql
+
+The total number of messages the system can support is equal to Msgtql.  (Each
+message header takes 18 bytes of memory).
+
+Shmmax
+
+One shared memory segment can be at most Shmmax bytes. The system will always
+assign shared memory segments in full 4K pages.
+
+Shmni
+
+The system will support up to Shmni shared memory identifiers. (A shared
+memory identifier takes 42 bytes of memory).
+
+Shmseg
+
+One process can request up to Shmseg shared memory segments.
+
+Shmall
+
+The total memory size used by shared memory segments can be up to Shmall
+bytes.
+
+Semcnt
+
+The semaphore pool will have Semcnt bytes. Each semaphore needs eight bytes
+from this pool.
+
+Semmni
+
+The system will support up to Semmni semaphore identifiers. Semaphore
+identifiers take 46 bytes each.
+
+Semmsl
+
+Each semaphore group, that is, each semaphore identifier, can have up to
+Semmsl semaphores.
+
+Semopm
+
+The _semop system call can do a number of semaphore operations in parallel.
+This number of simultaneous operations is limited to Semopm operations.
+
+Semmnu
+
+The system has room for Semmnu semaphore undo structures. The memory usage is
+6 + 8 * Semume bytes per undo structure.
+
+Semume
+
+One process can use up to Semume undo entries.
+
+END
+
+The END command is a delimiter which indicates that the rest of the file is
+considered to be comment. In this section you will find the names of drivers
+together with descriptions of arguments (if applicable).

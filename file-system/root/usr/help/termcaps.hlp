@@ -1,0 +1,291 @@
+Data base:    TERMCAPS
+purpose:      The file /etc/termcaps is a data base describing various
+              Terminal capabilities.
+
+Description
+
+The file /etc/termcaps describes the Terminal capabilities of various
+Terminals. A user program can always get the name of its own Terminal using
+the ustat system call. The Term command prints it out or, if called with an
+argument, changes it. The initial Terminal name is obtained from the ttys file
+and is passed from one process to another.
+
+User programs may inspect the /etc/termcaps file to find the descriptions of
+Terminal capabilities for their own Terminal. Once the capabilities have been
+extracted, the user program can take the differences between Terminals into
+account.
+
+Structure of the /etc/termcaps file
+
+Please be aware of the difference between the use of the words "Line" and
+"line".
+
+The /etc/termcaps file consists of a number of Lines, each Line describing one
+Terminal type. In practice it turns out that Lines are too long. A Line
+consists of the beginning line followed by a number of continuation lines. If
+a line is Terminated by the backslash character (), the next line is
+considered its continuation. So: a Line consists of a sequence of lines, each
+of them except the last is Terminated by the backslash character.
+
+Comment lines are ignored. Comment lines are either blank lines or lines
+having the pound sign (#) character in the first column.
+
+A Line consists of a number of fields Terminated by colons. The characters in
+fields are case sensitive, white space should not be used to increase
+readability. To increase readability empty fields can be inserted.
+
+The first field in each Line identifies the Terminal type and has a special
+structure. It consists of three subfields separated by vertical bars. The
+first subfield has two characters and can be used to identify the Terminal
+type. The second subfield is the official Terminal type. It should be four
+characters long, as it must match the Terminal type coming from the system as
+described above. The third subfield is arbitrary and can describe the Terminal
+type in human readable form.
+
+The remaining fields are used to describe one Terminal capability each. The
+field must start with the capability name. The capability name consists of two
+case sensitive alphanumeric characters. The capability names are otherwise
+arbitrary. As some software relies on finding particular capabilities in the
+Termcaps file some rules must be observed.
+
+Capabilities listed in the UNIPLUS System V User's Manual are reserved.
+Cromix intends to use the capabilities with Unix names to mean the same thing.
+In addition, the capabilities listed in this document are also reserved. They
+are either identical to Unix capabilities or Cromix specific capabilities used
+by Cromemco software. Note that the list of reserved capabilities will change
+with time.
+
+The rest of the capability field depends on the capability form. Each
+capability is of some form. These forms are:
+
+          boolean
+          numeric
+          string
+
+The boolean form has no further information in the field. The idea is that if
+such a capability name is included in the Line, the Terminal is believed to
+have such a capability. If it is not listed, the Terminal is believed not to
+have such a capability.
+
+The numeric form is followed by the "#" sign which in turn is followed by the
+numeric value, encoded decimally.
+
+The string form is followed by an equal sign which in turn is followed by the
+string forming the capability. The string extends to the end of the field
+(colon).
+
+If the first character after the equal sign is a decimal digit, it does not
+belong to the string. The string should be padded with that number of NULL
+characters at the end.
+
+Special characters may be imbedded in the string:
+
+          \n        means newline character
+          \r        means RETURN character
+          \t        means TAB character
+          \b        means backspace character
+          \f        means form feed character
+          \E        means ESC character
+          \xxx      means the character with the octal value xxx
+          \<char>   means character <char>.  This allows to put
+                    the backslash or up arrow character in to string.
+          ^<char>   means character <char> ANDed with 0x1f.
+
+To be able to describe escape sequences such as cursor movement, it is
+intended that such escape sequences are first encoded by a function similar to
+printf. This means that arguments can be inserted in the string at appropriate
+places. The following forms should be recognized:
+
+          %d       same effect as in printf
+          %2       same effect as %2d in printf
+          %3       same effect as %3d in printf
+          %.       same effect as %c
+          %+x      add x to value then %.
+          %>xy     if value > x add y; will take effect at next %.
+          %r       reverse next two arguments; will take effect at
+                   next two arguments
+          %i       increment all arguments by 1
+          %%       single %
+
+WARNING:  Some capabilities define character sequences that are
+          transmitted by certain keys. Note that you cannot have two character
+          sequences such that one sequence is the leading subsequence of another
+          sequence. For example, if the "kl" sequence for the "left arrow"
+          key is defined to be "E[D", you cannot declare the editor escape
+          "kE" sequence to be "E". If you do, the characters "E[D"
+          transmitted by the left arrow key will be interpreted as the "kE"
+          character followed by the '[' and the 'D' character.
+
+The Termcaps decoding function, tgread, understands the "tc" Terminal
+capability. The capability "tc" is a string capability. Its value must be the
+Terminal name of some other Terminal (four characters). If this capability is
+used, it must be the last one. The "tgread" function will erase the "tc" entry
+and append the contents of the Terminal description at the end of the current
+Terminal. This process may be recursive. The final result returned by "tgread"
+is one long string which is the concatenation of all referenced Terminals. If
+this mechanism is used, it may happen that some Terminal capability is defined
+more than once. The "tgread" decoding functions will always find the first
+one.
+
+If Terminal capabilities of one Terminal refer to capabilities of another
+Terminal, it may be necessary to delete a Terminal capability. A Terminal
+capability, followed by a "@" character, e.g.
+
+          :dl@:
+
+means that all definitions of the "dl" capability, which occur textually after
+the "delete-capability" entry, will be deleted.
+
+Example:
+
+Terminal description:
+
+          xx|xxxx|terminal xxx:\
+          :co#132:\
+          :ho@:\
+          :tc=yyyy:
+
+should be interpreted as follows:
+
+          Take description of Terminal "yyyy"
+          Delete all definitions of capabilities "ho" and "co"
+          Add definition of capability "co"
+
+This interpretation is correct independently of how the description of the
+"yyyy" was built.
+
+Here is the list of currently defined capabilities. Each capability is given
+its name, type and a short description.
+
+al str    Insert line at cursor.
+
+am bool   Terminal has automatic margins
+
+ba bool   Terminal has automatic screen blank-out feature
+
+cd str    Clear to the end of screen.
+
+ce str    Clear to the end of line.
+
+cl str    Clear screen, including move cursor to home position
+
+cm str    Cursor addressing sequence.
+
+co num    Number of columns on the screen.
+
+ct str    Toggle cursor on-off.
+
+dc str    Delete character at cursor position.
+
+dl str    Delete line at cursor.
+
+do str    Move cursor down one line.
+
+ei str    Exit insert line mode.
+
+fc str    Turn cursor off (make it invisible).
+
+ho str    Send cursor to home position.
+
+Ic str    Insert a space (page mode) at cursor position.
+
+ic str    Insert a space (line mode) at cursor position.
+
+il str    A string specific to C-05. It must be followed by
+          character count and that number of characters. These characters
+          will overwrite the leftmost column of the screen.
+
+im str    Enter insert line mode.
+
+ir str    A string specific to C-05. It must be followed by a
+          character count and that number of characters. These characters
+          will overwrite the rightmost column of the screen.
+
+is str    Terminal initialization string. It is written to the Terminal
+          whenever the Terminal type is selected.
+
+kE str    Gives the string used to turn off insert mode for Shell editing
+          capability, or to exit any CE mode.
+
+kI str    Gives the string used to turn on insert mode for Shell editing
+          capability.
+
+kR str    Gives the character used for the Shell History capability.
+          The History capability (Retype capability in previous
+          versions) is always enabled and can work even on a "dumb" Terminal.
+
+kc str    Defines the "Enter control character" key. If not defined, CE
+          will use CNTRL-V.
+
+kd str    String sent by down arrow key.
+
+kl str    String sent by left arrow key.
+
+kr str    String sent by right arrow key.
+
+ku str    String sent by up arrow key.
+
+li num    Number of lines on the screen.
+
+mo str    Go to the monitor mode sequence. This capability is used by CE to
+          display control characters on Terminals that do not provide the "write
+          invisible cursor" mode that is used on the 3102, C-10, C-5.
+
+mf str    Exit monitor mode (see above). If the mo capability is defined,
+          mf has to be defined as well.
+
+mt bool   If the mf sequence gets echoed (like on Wyse Terminals),
+          mt should be set so that CE can take corrective action. For more
+          details on that subject check the CE help file section on control
+          characters.
+
+nb str    Nondestructive backspace (move cursor left).
+
+nd str    Nondestructive space (move cursor right).
+
+NR bool   No Retype capability.
+
+oc str    Turn cursor on.
+
+pe str    String to turn off insert mode entered with the pi sequence.
+
+pi str    String to enter page insert mode. This causes subsequent typing
+          to wrap the rest of the characters to the next line, all the way to
+          end of screen.
+
+pd str    String to delete character at cursor position in page mode. This
+          causes the rest of characters all the way to end of screen to move up.
+
+rs str    Remove standout.
+
+sd str    Select a screen for display
+
+se str    Exit standout.
+
+so str    Enter standout. Sequence to turn on some highlighting.
+
+sq str    Inquiry - which screen is currently active
+
+sw str    Select a screen for write
+
+tc str    Continue with the definition of the Terminal identified by string
+          str. This capability, if used, must be the last one.
+
+up str    Move cursor up one line.
+
+wi str    Write with invisible cursor at given position. If wi is
+          defined, so we must be as well.
+
+we str    Terminating string for write with invisible cursor. The whole
+          invisible write consists of the wi string, string to be written, and
+          the we string.
+
+wf str    Turn wrap off. Insert in page mode will not shift the last
+          character of each line to the first position of next line.
+
+wo str    Turn wrap on. Insert in page mode will shift the last character
+          of each line to the first position of the next line. If the wo
+          string is defined, wf must be as well.
+
+xs bool   Standout not erasable by writing over it.
+

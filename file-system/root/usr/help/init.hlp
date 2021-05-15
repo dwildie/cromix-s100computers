@@ -1,0 +1,44 @@
+utility:      INIT
+purpose:      Changes or displays run level
+
+user access:  privileged user
+
+summary:      init [level]
+
+arguments:    optional run level
+
+options:      none
+
+Description
+
+Run level is a mechanism that allows the privileged user to enable and disable
+selected terminals without changing the /etc/ttys file.
+
+Run level is recorded in the file /etc/level. Run level can be any number in
+the range 1 .. 15. When the system starts running, the run level equals 1
+(one), even if the init command has not been executed.
+
+Each terminal has the run levels defined in the first field of every line in
+the /etc/ttys file. In releases prior to 159, the first field of every line in
+the the /etc/ttys file was:
+
+     0    terminal disabled
+     1    terminal enabled
+
+In release 159 and later, the first field of every line in the /etc/ttys file
+can contain a list of run levels (1 .. 15), separated by spaces.
+
+If the list contains the number zero, the terminal is disabled, independent of
+other run levels as well as the processor run level.
+
+If the list contains the number one, the terminal is enabled for all processor
+run levels.
+
+If the list contains neither the number zero nor the number one, the terminal
+is enabled only if the processor is running at a level which is included in
+the list of terminal run levels.
+
+Note
+
+Be sure you have at least one terminal running at level 1. This will ensure
+that you will not lock yourself out.

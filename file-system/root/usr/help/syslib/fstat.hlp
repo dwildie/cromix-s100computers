@@ -1,0 +1,139 @@
+function:       fstat
+purpose:        Return status information of a file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int fstat(pathname,statustype,inodebuffer)
+                char *pathname; int statustype; char inodebuffer[128];
+
+                or
+
+                int fstat(pathname,statustype)
+                char *pathname; int statustype;
+
+                or
+
+                int fstat(pathname,statustype,statustime)
+                char *pathname; int statustype;
+                struct st_time *statustime;
+
+Description
+
+The function fstat extracts various components from the inode identified by
+the pathname. The first two arguments are always the same. The remaining
+arguments depend on statustype:
+
+     fstat(pathname,st_all,inodebuffer)
+
+          Copy all of the inode into 128 byte inodebuffer.  Return zero.
+
+     fstat(pathname,st_owner)
+
+          Return the owner ID of the file.
+
+     fstat(pathname,st_group)
+
+          Return the group ID of the file.
+
+     fstat(pathname,st_aowner)
+
+          Return the access mask for the owner.
+
+     fstat(pathname,st_agroup)
+
+          Return the access mask for the group.
+
+     fstat(pathname,st_aother)
+
+          Return the access mask for the public.
+
+     fstat(pathname,st_stext)
+
+          Return the shared text flag.
+
+     fstat(pathname,st_protect)
+
+          Return the delete-protect flag.
+
+     fstat(pathname,st_ftype)
+
+          Return the file type (is_ordin, is_direct, is_char, is_block,
+          is_pipe).
+
+     fstat(pathname,st_size)
+
+          Return the file size in bytes.
+
+     fstat(pathname,st_nlinks)
+
+          Return the number of file links.
+
+     fstat(pathname,st_inum)
+
+          Return the inode number.
+
+     fstat(pathname,st_tcreate,statustime)
+
+          Store the time the file was created into the structure pointed
+          to by statustime. Return zero.
+
+     fstat(pathname,st_tmodify,statustime)
+
+          Store the time the file was modified into the structure pointed
+          to by statustime. Return zero.
+
+     fstat(pathname,st_taccess,statustime)
+
+          Store the time the file was accessed into the structure pointed
+          to by statustime. Return zero.
+
+     fstat(pathname,st_tdumped,statustime)
+
+          Store the time the file was dumped into the structure pointed
+          to by statustime. Return zero.
+
+     fstat(pathname,st_devno)
+
+          Return the device number of the device specified by pathname.
+          If the pathname number does not refer to a device file zero
+          is returned.
+
+     fstat(pathname,st_pdevno)
+
+          Return the device number of the device specified by pathname.
+          If the pathname number does not refer to a device file zero
+          is returned.  If the device number happens to be zero the
+          device number of the controlling tty (character device) or
+          of the root device (block device) will be returned.
+
+     fstat(pathname,st_device)
+
+          Return the device number of the device where the file specified
+          by pathname resides.
+
+The access permission returned is build from the values
+
+     ac_read          read permission
+     ac_exec          execute permission
+     ac_writ          write permission
+     ac_apnd          append permission
+
+The device numbers returned are built like this:
+
+     majorno << 8 | minorno
+
+The function returns
+
+     as described above    if successful
+     ERR                   if an error occurred
+
+Common errors:
+
+     _badname         The file is referenced by an illegal pathname.
+     _badvalue        Illegal status type.
+     _badaddress      The address passed to the system call does not
+                      belong to the user's address space.
+

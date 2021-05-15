@@ -1,0 +1,25 @@
+function:       makdir
+purpose:        Create a directory file
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int makdir(pathname)
+                char *pathname;
+
+Description
+
+Makes a specified directory. The function returns:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _badname            Pathname points to an illegal path name.
+     _exists             The file identified by pathname already exists.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

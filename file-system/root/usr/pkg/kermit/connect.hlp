@@ -1,0 +1,18 @@
+
+CONNECT, C - Connect to remote system.
+
+		Usage:
+
+		CONNECT
+
+Use the connect command to connect to a remote Kermit.  If arguments are
+specified, they are SET prior to the execution of the CONNECT command.
+Note that a LINE must be SET for connect to work.  For more information
+on SET options, type HELP SET.
+
+When you are connected note the escape character given when the connected
+message appears.  To get out of the remote connection you must type this
+followed by 'C' (typically it would be ~C).  To actually transmit the
+escape character to the remote system type it twice (typically ~~ to get
+~ sent).
+

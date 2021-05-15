@@ -1,0 +1,22 @@
+function:       alarm
+purpose:        Send sigalarm to the calling process
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int alarm(snum)
+                int snum;
+
+Description
+
+The alarm function sends the alarm signal, sigalarm, to the current process
+after snum seconds have elapsed. If the call alarm(0) is issued after an alarm
+has been set up, the previous alarm is canceled.
+
+Return value:
+
+     0       if no error occurred;
+     ERR     if an error occurred.
+

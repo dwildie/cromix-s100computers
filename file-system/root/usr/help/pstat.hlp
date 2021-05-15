@@ -1,0 +1,44 @@
+Shell
+command:      PSTAT or PS
+purpose:      This command displays the status of a process.
+
+user access:  all users
+
+summary:      pstat [-abl]
+
+arguments:    none
+
+options:      -a   all
+              -b   brief display
+              -l   long display
+              -e   full display
+
+Description
+
+The Pstat command displays the following information on the status of a
+process:
+
+     PID           process identification number
+     state         state of process: Sleeping
+                                     Ready
+                                     Terminated
+     user id #
+     group id #
+     Ctty          controlling tty, the tty from which the process was started
+     Priority      priority of the process
+     Base          page number of the first memory allocated to the process
+     Size          amount of memory allocated to the process
+     Seconds       number of seconds the process has been executing
+     command line  command line which invoked the process
+
+Options
+
+The -a option lists the status of all processes. If the -a option is not
+selected, only those processes with the ID of the user giving the Pstat
+command are displayed.
+
+The -b option displays a list of processes and their brief status.
+
+The -l option displays a list of processes and their long status.
+
+The -e option displays a list of processes and their full status.

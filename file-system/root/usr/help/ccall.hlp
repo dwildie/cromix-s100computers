@@ -1,0 +1,148 @@
+utility:      CCALL
+purpose:      This program calls another Cromix (or non-Cromix) system using
+              a modem.
+
+user access:  all users
+
+summary:      ccall [-q] [-d dev-name] [-b baud]
+
+arguments:    none
+
+options:      -q   quiet (default is verbose)
+              -d   qtty device-name (default is /dev/modem)
+              -b   baud rate (default is current rate)
+
+Description
+
+The Ccall utility allows one Cromix-Plus system to act as a terminal to
+another Cromix-Plus system (or to another completely different system). For
+best performance, connect the modem to any serial port on the IOP/Quadart, or
+to any serial port on the new Octart. With some restrictions, Ccall can also
+run on a modem connected to the old OCTART or TU-ART. When connected to the
+IOP/Quadart, a 12-wire cable designed for this purpose should be used. When
+connected the the new Octart, the 5-wire cable as described in the
+Administrator guide should be used. The modems on each system must be
+compatible.
+
+Using the Maklink utility, make a link from the appropriate qtty device in the
+/dev directory to /dev/modem.
+
+Ccall provides no automatic calling or modem initialization. Once the baud
+rate on the /dev/modem device is set (if necessary), all characters typed on
+the terminal are sent to the modem, and any character received from the modem
+is echoed to the terminal. The following Ccall commands are also available
+(Ccall interprets lines beginning with a tilde (~) as escape sequences):
+
+~.                     Terminate Ccall
+
+"~~..."                Send the line:
+
+                            "~..."
+
+                       to the remote system.
+
+~< filename            Redirect the contents of a file
+                       to the remote system, as though the contents had
+                       been typed from the terminal.
+
+~> filename            Redirect output from the remote
+                       system to the specified file. Output redirected in
+                       this way is written to an ordinary file and to the
+                       standard output (for display).
+
+                       To write output to the specified file only, type a
+                       colon after the redirect symbol:
+
+                            ~>:  filename
+
+                       To append output to a file, use the
+                       redirect-and-append symbol (>>) with either form
+                       of the command.
+
+~>                     The command ~> ends redirection.
+
+~sh                    Invoke an interactive shell on the local system.
+                       To exit the Shell type EXit or CNTRL-Z.
+
+~sh command            Execute the command on the local system
+                       (via shell -c).
+
+~put [-f] file-list    Copy the specified files from the
+                       local system to the remote system. If ~put finds a
+                       file with the same name at the remote system, that file
+                       is not copied unless the -f option is used to overwrite
+                       the existing file.
+
+                       ~put uses the Sfile and Rfile utilities to
+                       perform error-free block transfers.
+
+~take [-f] file-list   Copy the specified files from
+                       the remote system to the current directory on the
+                       local system. The -f option overwrites files with the
+                       same name.
+
+                       ~take uses the Sfile and Rfile utilities
+                       to perform error-free block transfers.
+
+~h                     Print a summary of the Ccall commands.
+
+Options
+
+The -b option sets the baud rate of the transmitting device. Possible settings
+are 110, 150, 300, 1200, 2400, 4800, 9600, and 19200 baud. Without this
+option, the baud rate set for the device /dev/modem is used; if a baud rate
+has not been defined (or the device was discarded), 1200 baud is used.
+
+The -d option specifies a transmitting device (qtty) other than /dev/modem.
+
+The -q (for quiet) option reduces the number of Ccall messages.
+
+Notes
+
+The remote system should have a compatible modem that can automatically answer
+the phone call. On a remote Cromix-Plus system, the mtty terminal connected to
+the modem must be enabled in the /etc/ttys file. If the mtty baud rate is set
+to automatic (a), the caller can establish the baud rate by repeatedly
+pressing RETURN until the remote system recognizes the baud rate and responds
+with a login prompt. Ccall sets many of the modes for both the local and
+remote systems. The optional mode settings are described below.
+
+Remote system, mtty, SIGHUPall
+
+The mtty driver enables SIGHUPall on all mtty devices (and reenables it each
+time a device is DIScarded). When the communication link is broken, all
+processes on the remote system that use mtty as the controlling terminal are
+aborted (Shell processes are logged out) by the SIGHANGUP signal (unless this
+signal is trapped or otherwise ignored). If you disable SIGHUPall after
+logging in, a broken communication has no effect on the remote precesses, and
+you can reestablish the phone link and proceed from where you left off.
+However, disabling SIGHUPall is a serious security risk, as another user can
+call in and inherit the previous user's shell, password, and so on.
+
+Remote system, mtty, DIScard
+
+The mtty driver enables DIScard on all mtty devices. Thus, when an mtty device
+is finally closed (i.e., when the user EXits the Shell or when his Shell is
+killed by the SIGHUP signal), the device is reinitialized.
+
+Remote system, mtty, HUPenable
+
+The mtty driver disables HUPenable on all mtty devices. Thus, the driver does
+not try to hang up the phone when the mtty device is finally closed. Note that
+the modem may be configured to hang up if the data carrier is lost. If you
+enable HUPenable, exiting from the Shell will hang up the phone.
+
+Local system, modem
+
+Ccall does not change the DIScard and HUPenable modes of the local modem
+(SIGHUPall is ineffective). If you enable HUPenable before using Ccall, the
+phone will hang up when Ccall exits.
+
+If the phone is not automatically hung up upon exiting from Ccall, execute the
+command:
+
+     jim[1] mode modem hup
+
+If DIScard is not enabled, the next caller can use Ccall at the previous baud
+rate without having to specify the -b option; if DIScard is enabled, the baud
+rate will default to 1200 baud unless the -b option is used.

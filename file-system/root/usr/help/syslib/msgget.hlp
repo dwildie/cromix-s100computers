@@ -1,0 +1,62 @@
+function:       msgget
+purpose:        Get a message queue identifier
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <ipc.h>
+                <msg.h>
+
+synopsis:       int msgget(key,msgflg)
+                long key; int msgflg;
+
+Description
+
+Msgget returns the message queue identifier associated with key.
+
+A message queue identifier and associated message queue and data structure,
+are created for key if one of the following are true:
+
+     Key is equal to IPC_PRIVATE.
+
+     Key does not already have a message queue identifier associated
+     with it, and (msgflg & IPC_CREAT) is "true".
+
+Upon creation, the data structure associated with the new message queue
+identifier is initialized as follows:
+
+     Msg_perm.cuid, msg_perm.uid, msg_perm.cgid,
+     msg_perm.gid are set to be equal to the effective user ID and
+     effective group ID, respectively, of the calling process.
+
+     The low order nine bits of msg_perm.mode are set equal to the low
+     order nine bits of msgflg.
+
+     Msg_qnum, msg_lspid, msg_lrpid, msg_stime,
+     msg_rtime are set equal to zero.
+
+     Msg_ctime is set to be equal to the current time.
+
+     Msg_qbytes is set to be equal to the system limit.
+
+The function returns:
+
+     a non-negative message queue identifier   if successful;
+     ERR                                       if error.
+
+Common errors:
+
+     _ipcaccess          A message queue identifier exists for the key,
+                         but the operation permission as specified by the
+                         low order nine bits of msgflg will not be granted.
+     _ipcnoent           A message queue identifier does not exist for key
+                         and the create bit in msgflg is not set.
+     _ipcspace           There is no space in the system to create another
+                         message queue identifier.
+     _ipcexists          A message queue identifier exists for the key but
+                         both the create and the exclusive bits in the msgflg
+                         are set.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

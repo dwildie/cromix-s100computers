@@ -1,0 +1,339 @@
+utility:      SPOOL
+purpose:      This utility queues files and sends them to a printer.
+
+user access:  all users
+
+summary:      spool [[devname] pathname(s)]
+
+arguments:    device name
+
+              If no device name is specified, output is directed to /dev/prt.
+              The device name may be used to direct the output of the Spool
+              program to any of the system's printers.
+
+              pathname
+
+              Filenames must be used to add files to the printing queue.
+              Filenames or the sequence numbers assigned by the Spool program
+              may be used to delete or change priority.  If no pathname is
+              given, input from STDIN (terminated by CONTROL-Z) will be
+              spooled.
+
+options:      -a             all files
+              -d             enter and delete
+              -h             header
+              -f             FORTRAN filter
+              -v             verbose
+              -j             append NEWLINE at the end
+              -g             do not append FORM FEED at the end
+              -w [ON/OFF]    wrap around
+              -r [ON/OFF]    CRDEVICE flag
+              -p #           priority of spooled files
+              -m #           multiple copies
+              -b #           bottom margin
+              -s #           character width
+              -t #           line height
+              -u #           left margin
+              -z #           forms number
+              -n name        define file name
+
+              Commands
+              -l             list
+              -c #           change priority
+              -e #           change forms
+              -k             kill
+              -q             quit
+
+Description
+
+The Spool utility allows one or more users to send printing jobs to one or
+more printers in an orderly sequence that may be changed at any time.
+
+If no file is specified, input is taken from STDIN. This means the Spool
+utility can be used with redirected input or pipes.
+
+When the Spool utility is called to add files to the printing queue, the files
+are copied into a directory named /usr/spool.
+
+After the execution of the Spool program with any of its options, the
+specified files are sent to the printer. This is accomplished by a function
+intrinsic to the Cromix Operating System.
+
+Output from the Spool program may be directed to any character device located
+in the current directory or in the device table (/dev).
+
+If no device is specified, /dev/prt is assumed. The Cromix Operating System,
+as shipped, assumes a dot-matrix printer as the system printer. If a different
+printer is to be used as the system printer, change the printer type (refer to
+the Cromix-Plus System Administrator's Guide).
+
+As requests are made to print additional files, the Spool program forms a
+print queue. Each file entered into the queue is assigned a unique sequence
+number. Once in the printing queue, files may be referenced by their filename
+or sequence number.
+
+If two or more files in the queue have the same filename, a reference to that
+filename refers to all files with the same name. For example, if the -k (kill)
+option is used with a filename that appears more than once in the queue, all
+files with that name are deleted from the queue. The sequence number can
+always be used to refer to a specific file.
+
+Each file added to the printing queue is assigned a priority number ranging
+from 0 to 9. Zero is the highest priority and is reserved for a privileged
+user. If no priority is specified, a value of 5 is assigned automatically. A
+priority number must be specified when using the -c (change priority) option.
+
+If two users request a print job with the same priority, the requests are
+serviced on a first-come, first-serve basis.
+
+A user other than a privileged user has access only to files that the user
+placed in the printing queue. The priority of a file in the printing queue can
+be changed by the user who initiated the printing request or by a privileged
+user. In a similar manner, only the privileged user or the user who added a
+file to the printing queue can delete the file from the queue by using the -k
+(kill) option. Any user can list all of the files in the printing queue by
+using the -la (list all) options.
+
+Ambiguous file references must be used with caution. When an ambiguous file
+reference is expanded, it generates a list of filenames matching files in the
+current directory. An ambiguous file reference can be used when giving the
+Spool program files to add to the printing queue.
+
+Ambiguous filenames are expanded from a directory, and not from a spool queue.
+An ambiguous file reference does not work properly when killing or changing
+the priority of files in the printing queue if files with the same name do not
+exist in the current directory. This is the case when the -d (delete) option
+is used to add files to the printing queue, or if the current directory is
+changed by the user.
+
+If Spool is interrupted for any reason, such as a power failure, jobs are left
+in the queue. There are three ways to restart Spool. (Before restarting Spool,
+the printer should be manually brought to top-of-form.)
+
+The first method is to spool another job. This restarts printing at the
+beginning of the first job in the queue (the job that was interrupted).
+
+The second method, used when there are no more jobs to be spooled, is to enter
+the command line:
+
+     system[1] daemon /dev/yyy
+
+where yyy is the device name of the printer being spooled to (usually prt).
+This also restarts printing at the beginning of the interrupted print job.
+
+The third method is to delete all spool jobs using the command line:
+
+     system[1] spool -qa
+
+and then respool all unprinted jobs.
+
+Options for Spooling Files
+
+The -d option adds all specified files to the spool queue and deletes them
+from the directory in which they reside. This option may include a device
+name, and must include a list of one or more filenames.
+
+The -f option interprets the first character of each line according to FORTRAN
+conventions:
+
+          0     double vertical space before printing
+          1     formfeed before printing
+          +     no vertical movement
+          other single vertical space before printing
+
+The -j option causes the Daemon to append the NEWLINE character at the end of
+the user file.
+
+The -g option prevents the Daemon from appending the FORMFEED character at the
+end of the user file.
+
+The -h option causes all specified files to be preceded by a one-page header.
+The first line of the header page contains the name of the user who spooled
+the file, the date and time, and the name of the file. This is followed by the
+same information displayed in large characters. The large character portion of
+the header page truncates the user and filenames to eight characters. Note
+that the header uses the full width of standard 132-column paper.
+
+The -m option prints files a specified number of times. The maximum number of
+copies is 255.
+
+The -p option assigns a priority number to a printing job at the time it is
+initiated. The option must be followed by the desired priority number and may
+include a device name.
+
+The -v option displays the list of files being processed. It may be used with
+all options except -l.
+
+The -n option followed by a name may be used when spooling the standard input.
+In such a case -n can be used to define the spool name to be the name given
+instead of "----".
+
+Mode Options
+
+Mode options are stored with the spooled file. The printer Daemon sets the
+mode options, as specified by the Spool command, before printing each file and
+restores them after printing each file.
+
+The -w option, followed by ON or OFF, turns wraparound on or off. If
+wraparound is turned off, printed lines will be truncated. If the -w option is
+not selected, the printer Daemon will not set the mode.
+
+The -r option, followed by ON or OFF, turns CRDEVICE mode on or off. If the -r
+option is not selected, the printer Daemon will not set the mode.
+
+The -b option, followed by a number, defines the bottom margin, i.e., the
+number of lines not used at the end of a page. If the -b option is not
+selected, the printer Daemon will not set the mode.
+
+The -s option specifies the character width on a TYP printer. The -s option
+must be followed by a number defining the character width. If the -s option is
+not selected, the printer Daemon will not set the mode.
+
+The -t option defines the character height on a TYP printer. The -t option
+must be followed by a number defining the character height. If the -t option
+is not selected, the printer Daemon will not set the mode.
+
+The -u option, followed by a number, defines the left margin. If the -u option
+is not selected, the printer daemon will not set the mode.
+
+The -z option, followed by a form number, specifies which form of paper should
+be used for printing. Printing will not start until the printer driver is told
+that the printer contains the required paper form. If the -z option is not
+selected, the value zero is used. For details, refer to the Mode utility.
+
+Options for Listing Files
+
+The -l option lists all jobs in the printing queue that the user initiated.
+They are listed in a table with the following information:
+
+1.  Filename of print file
+2.  Name of user requesting printing job
+3.  Sequence number of printing job
+4.  Destination device of printing job
+5.  Priority of printing job
+6.  Pages in printing job
+7.  Lines in printing job
+8.  Copies to be printed
+9.  Forms number to be used
+
+A privileged user always gets a list of all jobs in the printing queue.
+
+The -la option lists all printing jobs in a table. Refer to the list option.
+
+Options for Changing Priority
+
+The -c option sets the priority of all specified files in the spool queue to
+the specified value. This option is followed by a priority number, and must
+include a list of one or more filenames or sequence numbers.
+
+Options for Changing Forms
+
+The -e option sets the forms number of all specified files in the spool queue
+to the specified value. This option is followed by a forms number, and must
+include a list of one or more filenames or sequence numbers.
+
+Options for Removing Files from the Spool Queue
+
+The -k option deletes all specified files from the spool queue. If a specified
+file is printing, the printing is aborted. This option must include a list of
+one or more filenames or sequence numbers.
+
+The -q option deletes all files that have been directed to the specified
+device from the spool queue.
+
+The -qa option may be used only by a privileged user. It deletes all files
+that have been directed to the specified device from the spool queue.
+
+Notes
+
+Where no option is specified, the files specified by the pathname are added to
+the printing queue. A device name may be specified.
+
+If more than one option is used, and one or more of the options requires an
+argument, the following syntax should be followed:
+
+     jim[1] spool -hv -m 3 -p 1 filename
+
+The options that do not require arguments (h and v above) are grouped,
+preceded by a hyphen (-), and followed by a space. This group is followed by
+the option(s) that require arguments. Each option is preceded by a hyphen and
+followed by a space, a number, and another space. Additional option and
+argument pairs may follow. Finally, the filename(s) of the file(s) to be
+spooled are entered.
+
+In the following examples, assume the print files t, u, w, x, y, and z exist
+in the current directory. First, place each of these files in the printing
+queue:
+
+     jim[1] spool -v t u w x y z
+     t
+     u
+     w
+     x
+     y
+     z
+     jim[2]
+
+Because the verbose option is used, the Spool program listed each file as it
+was copied to the spool directory. The list option is then used to display the
+printing queue:
+
+     jim[1] spool -l
+
+Filename User  Seq  Device   Pri   Pages    Lines   Copies   Form
+
+-> t     fred  36   5:5 prt  5     2        95      1        0
+   u     fred  37   5:5 prt  5     2        107     1        0
+   w     fred  38   5:5 prt  5     1        42      1        0
+   x     fred  39   5:5 prt  5     2        115     1        0
+   y     fred  40   5:5 prt  5     2        115     1        0
+   z     fred  41   5:5 prt  5     3        160     1        0
+
+The arrow at the upper left of the listing indicates the file currently being
+printed. All jobs have a priority of 5 because no priority was indicated when
+the jobs were put in the queue.
+
+Next, change the priority of file y to 2 and change the priority of the file
+with the sequence number 39 (file x) to 3. Then, delete the file u from the
+queue using the -k option. Finally, add a "message" to the printing queue, and
+display the revised printing queue. A "message" is input from the terminal
+(STDIN), which the user sends to the printing queue by typing CONTROL-Z (end-
+of-file).
+
+     jim[1] spool -c 2 y
+     jim[2] spool -c 3 39
+     jim[3] spool -k u
+     jim[4] spool
+     this is a message
+     ^Z
+     jim[5] spool -l
+
+Filename User  Seq  Device   Pri   Pages    Lines   Copies
+-> t     fred  36   5:5 prt  5     2        95      1
+   y     fred  40   5:5 prt  2     2        115     1
+   x     fred  39   5:5 prt  3     2        115     1
+   w     fred  38   5:5 prt  5     1        42      1
+   z     fred  41   5:5 prt  5     3        160     1
+  ----   fred  42   5:5 prt  5     1        2       1
+
+To spool multiple copies of a job, use the -m option.
+
+Example:
+
+The command:
+
+     jim[1] spool -m 3 pay7000
+
+prints 3 copies of the report pay7000.
+
+The command:
+
+     jim[1] spool -hm 3 pay7000
+
+prints 3 copies of pay7000 with one header page at the beginning of each copy.
+
+A pipe can be used to redirect output from a program to the printer. The
+following command line prints a list of the files in the current directory:
+
+     jim[1] ls | spool
+

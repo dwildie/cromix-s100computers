@@ -1,0 +1,18 @@
+
+DEFINE, DEF, D - Define set option macro.
+
+		Usage:
+
+		DEFINE <new-option> <option-list>
+		DEFINE <new-option>
+
+The first format allows one to define a new set option to represent one or
+more other options in a set command.  The second format allows one to undefine
+an option.  User-defined options may be displayed via the SHOW command.  If a
+complete list is desired, use SHOW OPT.  Note that if the first part of a set
+option is in the options list, the other parts should be there as well.
+To execute the macro use SET <new-option>.
+
+The initialisation file 'kermit.ini' can be used to store your set of useful
+DEF macros.  Kermit reads the site one in from the '/etc' directory and then
+looks in your current directory for more.

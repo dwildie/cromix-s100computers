@@ -1,0 +1,944 @@
+
+
+
+
+
+
+
+
+
+
+		       CROMIX KERMIT v1.32 USER MANUAL
+
+			      September 1987.
+
+		       Manual written by
+			 Maxim Dynin and
+			 Dina Desai.
+
+		       Program written by
+			 Maxim Dynin
+		       and modified by
+			 Dina Desai,
+			 Wolfgang Boehm,
+			 Adrian Pickering,
+			 Roland Kreuzer and
+			 Eva Kreuger.
+
+
+		       Cromix Kermit is based on the
+		       Kermit concept developed
+		       at the Columbia University and,
+		       in part, on the Unix version
+		       by Bob Cattani, Frank Da Cruz
+		       et al.
+
+
+
+
+
+	(c) 1987 VSL International Ltd.
+
+	Permission is granted to any individual or organisation to
+	use or to copy this document and the programs described
+	therein, except for strictly commercial purposes.
+
+
+   Cromix Kermit User Manual
+
+
+
+		      CONTENTS.
+		      ---------
+
+
+     I.     Introduction  . . . . . . . . . . . . . . . . .  1
+
+     II.    Cromix Kermit 1.32 Capabilities . . . . . . . .  2
+
+     III.   The Cromix Kermit 1.32 Shell  . . . . . . . . .  3
+
+     IV.    Set Options . . . . . . . . . . . . . . . . . .  9
+
+     V.     A Sample Session  . . . . . . . . . . . . . . . 14
+
+     VI.    A Summary of Commands . . . . . . . . . . . . . 15
+
+     VII.   A Summary of Set/Show Options . . . . . . . . . 17
+
+     VIII.  Miscellaneous . . . . . . . . . . . . . . . . . 19
+
+
+   Cromix Kermit User Manual                                Page  1
+
+
+
+	       I.  Introduction.
+	       --  -------------
+
+	 The Kermit file protocol is designed to allow for
+     errorless file transfer between different systems.  While
+     every system should have a Kermit written for that system
+     and designed for the capabilities of that particular system,
+     the file transfer should normally not be system-dependent.
+
+	 This document describes the Cromemco Cromix Kermit
+     Release 1.32.  It contains only system-specific information;
+     for a description of Kermit in general, please see the Kermit
+     User Guide. Fifth Edition, Revision 1, on which the present
+     version is based.
+
+	 Cromix Kermit Release 1.32 contains all the features of
+     standard Kermit, as well as several advanced ones.  Send and
+     Receive are fully implemented; options include eight-bit and
+     repeat quoting, incomplete file handling, full packet
+     debugging, alternate name and wildcard specifications, data
+     and text file transmission, bare transmission, transmission
+     statistics, timeouts, and flexible send/receive parameter
+     setting.
+
+
+	 The Connect command is also fully implemented, with
+     several options such as escape character and line selection,
+     automatic baud rate setting, and several line commands.
+
+	 There is also a user-friendly shell, which allows for
+     extensive on-line help, many commands, including Remote and
+     server commands, as well as a wealth of options to Set and
+     several show options which allow one to display several groups
+     of options.  A Define command is also available.
+
+	 Finally, there is a server which, while fairly limited, is
+     sufficient for file transfer and communication.  The structure
+     if Cromix made several common server commands unnecessary, since
+     they can also be executed by sending a Remote command to the
+     server.
+
+		       Disclaimer.
+
+	 No warranty of the software nor the accuracy of the
+     documentation surrounding it is either expressed or implied,
+     and VSL International Ltd. cannot assume any liability
+     resulting from program or documentation errors.
+
+   Cromix Kermit User Manual                                Page  2
+
+
+
+	       II.  Cromix Kermit 1.32 Capabilities.
+	       ---  --------------------------------
+
+	 Cromix Kermit Release 1.32 is capable of transferring
+     files in one of three modes: text, binary, and image.  It is
+     capable of transferring 8-bit data as long as the other
+     Kermit is also capable of handling such data.  A brief
+     description of the three modes follows.
+
+     2.1.  Text Mode.  Text mode should normally be used to
+	   transfer any text or source files.  It allows for more
+	   efficient transfer of newlines.
+
+     2.2.  Binary Mode.  While binary mode can be used to
+	   transfer any files, it is imperative that it be used
+	   to transfer any binary or executable files, since it
+	   reproduces the file exactly as submitted.  It is
+	   generally a little slower than transferring files in
+	   text mode.
+
+     2.3.  Image mode.  Image mode allows one to transfer files
+	   which contain eight-bit data without the use of 8-bit
+	   prefixing.  This will leave the 8th bit set and will
+	   cause problems on much of the communication equipment.
+	   While transferring files in image mode may be faster
+	   than in either of the other two modes, it is not
+	   recommended.
+
+     The default mode is Text; other modes could be set using
+     the SET FILE command.  Note that the same mode must be set
+     on the other system, unless it can handle file parameters,
+     in which case the two Kermits will figure it out between
+     themselves.
+
+	 While no exhaustive tests have been done, the speed of
+     transfer between two Cromemcos Corvus has averaged around 300
+     bytes/sec depending on packet size and file type.
+
+   Cromix Kermit User Manual                                Page  3
+
+
+
+	       III.  The Cromix Kermit 1.32 Shell.
+	       ----  -----------------------------
+
+	 When the Kermit command is invoked without arguments,
+     the user enters the Kermit Shell, a user-friendly
+     environment that is designed to facilitate the use of
+     Kermit.  Alternatively, a single Kermit command can be
+     issued from Cromix if it is given as an argument on the
+     Kermit command line. This is useful for once off invocations
+     such as:
+
+	 % kermit set file bin server
+
+	 or
+
+	 % kermit receive
+
+
+     3.1.  The order of events.  When Kermit is first entered,
+	   the Kermit logo is displayed.  Then, the file
+	   kermit.ini is executed, if one is present.  Finally,
+	   the Kermit prompt appears.  Kermit is now ready to
+	   accept commands.
+
+     3.2.  The basics.  The commands can be divided into several
+	   categories: control, environment, file transfer,
+	   terminal connection, server and server control commands,
+	   and on-line help.  Descriptions of commands by category
+	   follow.
+
+	   Every shell command is a line containing the command and
+	   its arguments separated by spaces, tabs, or commas.
+	   Since all input is normally converted to lower case,
+	   commands can be entered in either upper or lower case.
+	   To enter arguments containing uppercase letters, blanks,
+	   commas, or tabs, one should enclose them in double
+	   quotes (").  To enter a double quote, two double quotes
+	   should be typed in ("").  Note that the quotation
+	   character can be altered using the SET QUOTE command
+	   (see below).
+
+     3.3.  Control commands.  The following commands are used to
+	   control the execution of Kermit and to interface with
+	   the Cromix shell.
+
+     3.3.1.  Quit.  The quit command exits the Kermit shell.
+	     If a Quit command is entered within a Kermit command
+	     file, the control is returned to the controlling
+	     Kermit shell or command file.  Exit, Ex, and Stop
+	     are abbreviations for the Quit command.
+
+     3.3.2.  Take.  The Take command executes a Kermit command
+
+   Cromix Kermit User Manual                                Page  4
+
+
+
+	     file.  If the Take command is invoked with several
+	     arguments, it executes all of its arguments serially.
+	     T is an abbreviation for this command.
+
+	      Examples :
+
+	       Cromix-Kermit-> t setpars
+
+
+	       Cromix-Kermit-> take setpars ServCall
+
+
+     3.3.3.  Shell.  The Shell command executes a shell command or
+	     enters a Cromix shell if no arguments are given.
+	     Notice that the current version does not allow for
+	     the use of wildcards (*, ?, []) in shell command lines.
+	     If that is desired, please enter a subsequent shell.
+	     Use ex to exit the Cromix shell. Sh or ! is a synonm for
+	     this command.
+
+	      Examples :
+
+	       Cromix-Kermit-> sh ls -l
+
+
+	       Cromix-Kermit-> shell
+	       % ls -l
+	       % del test.doc
+	       % ex
+	       Cromix-Kermit->
+
+
+     3.3.4.  CWD.  The CWD command changes to the directory
+	     specified by the argument. Note that it would be
+	     useless to enter a shell d command, since, upon return
+	     to Kermit, the old directory would be re-entered.  Cd
+	     is a synonym for CWD.
+
+	      Examples :
+
+	       Cromix-Kermit-> cwd /usr/etc
+
+
+	       Cromix-Kermit-> cd filestore
+
+
+     3.4.  Environment commands.  The environment commands changes
+	   or displays the various Kermit parameters.  This
+	   includes file transfer parameters as well as several
+	   shell options.  One can also define macros which stand
+	   for one or more options.  Please refer to section on
+	   Kermit Options for a description of the options
+
+   Cromix Kermit User Manual                                Page  5
+
+
+
+	   available.
+
+     3.4.1.  Set.  The Set command sets an option or a set of
+	     options.  Note that if one wants to specify more than
+	     one setting for an option, the option name must be
+	     repeated. = is an abbreviation for Set.
+
+	      Example :
+
+	       Cromix-Kermit-> SET DEBUG PACKETS DEBUG STATES.
+
+     3.4.2.  Show.  The Show command displays the setting of an
+	     option.  If given with no arguments, it will display
+	     all the current settings and all of the defined
+	     macros.  One can display only the predefined options
+	     by typing in SHOW OPTIONS, while SHOW MACROS will
+	     display all of the user-defined macros.  Note that
+	     SHOW SEND and SHOW RECEIVE will display all of the
+	     set and receive parameters; to display a single
+	     parameter from the list, include the parameter after
+	     the SHOW command.  More than one option may be
+	     displayed with a single Show command; however, under
+	     Kermit 1.32, one must be careful to always include an
+	     argument to SEND or RECEIVE or place them last in the
+	     line. Abbreviations for Show are display, dis, stat,
+	     and status.
+
+	      Examples :
+
+	       Cromix-Kermit-> show line
+
+
+	       Cromix-Kermit-> dis send baud
+
+     3.4.3.  Define.  The Define command is used to define ones
+	     own macros.  A Set macro is defined as a list of
+	     option names and their settings which could then be
+	     set by the use of a single SET command by entering
+	     SET <macro name>,  Note that a macro list has to be
+	     self-contained; thus, a command SET <macro name>
+	     without any additional parameters has to execute
+	     properly.  The sequence DEFINE <macro name> will
+	     undefine that macro so it could be redefined or the
+	     space reused - only 15 macros are allowed.
+	     Abbreviations are def and d.
+
+
+     3.5.  File Transfer Commands.  File transfer commands perform
+	   what Kermit is all about - sending or receiving files.
+
+	   Cromix Kermit 1.32 clears the buffers automatically
+
+   Cromix Kermit User Manual                                Page  6
+
+
+
+	   prior to the beginning of a file transfer, so as to
+	   clear any previous packet traffic still in the buffer.
+	   Should the transmission get out of sync during a SEND,
+	   if the SYNC option is set, the Kermit will selectively
+	   ignore packets as to clear the backlog.
+
+     3.5.1.  Send.  Sends the specified file or files to the
+	     other Kermit.  The other Kermit must issue a Receive
+	     command, preferably just before the Send.  If no
+	     arguments are given, Kermit will ask the user to
+	     supply it with the name of the file to send and a
+	     name to send it under.  If no name is entered in the
+	     latter case, the file is sent under its own name.
+	     A wildcard specification may be given in place of a
+	     file name. S is an abbreviation for Send.
+
+	      Examples :
+
+	       Cromix-Kermit-> send test
+
+
+	       Cromix-Kermit-> s
+	       send : test
+	       as : newtest
+
+
+	       Cromix-Kermit-> s d*.doc
+
+     3.5.2.  Receive.  Receives file or files from the other
+	     Kermit.  If entered with a filename as an argument,
+	     it becomes the name of the first file received.
+	     R as an abbreviation for Receive.
+
+	      Examples :
+
+	       Cromix-Kermit-> receive
+
+
+	       Cromix-Kermit-> r next.file
+
+     3.5.3.  Get.  Instructs the remote server to send the
+	     specified file or files.  If no arguments are given,
+	     Kermit will ask the user for the file name and the
+	     file name to receive it under.  A wildcard
+	     specification may be entered in the remote server's
+	     format if the remote server supports such a function.
+	     G is an abbreviation for Get.
+
+	      Examples :
+
+   Cromix Kermit User Manual                                Page  7
+
+
+
+	       Cromix-Kermit-> get next.file
+
+
+	       Cromix-Kermit-> g
+	       get : next.file
+	       as : new.file
+
+
+     3.5.4.  Transmit.  Transfers the specified file bare,
+	     without protocol.  While its uses are definitely
+	     very limited, it could be used for applications such
+	     as transferring login sequences. Trans is an
+	     abbreviation for Transmit.
+
+	      Example :
+
+	       Cromix-Kermit-> trans start.file
+
+     3.5.5.  Statistics.  Displays the statistics about the last
+	     file transfer (transfers done using the TRANSMIT
+	     command are ignored).  If the transfer was totally
+	     unsuccessful, it says so. Stats is an abbreviation for
+	     this command.
+
+
+     3.6.  Connect.  The connect command can be used to connect
+	   over the line to the remote system and start Kermit
+	   there or perform any other activity.  An escape
+	   character, usually an ^, can be used to break the
+	   transmission (<escape character> followed by C), to
+	   make sure Kermit is still with you (followed by H), to
+	   find out what your options are (followed by ?), to
+	   transmit a NULL (followed by 0), or to transmit the
+	   escape character itself (followed by itself).  The
+	   escape character may be set to another value by
+	   entering the SET ESCAPE command. C is an abbreviation
+	   for Connect. Note the following:
+
+		Make sure that the correct terminal emulation and
+	   baud rate is set, and that the line can be used as a
+	   terminal on the remote system.
+
+	   If arguments are given, they are SET as in a SET
+	   command.
+
+
+     3.7.  Server and related commands.  The server should be run
+	   in remote mode.  It allows one to control all
+	   operations from the local Kermit, without having to
+	   switch physically between the two Kermits.  Several
+	   commands have been implemented for starting the server
+
+   Cromix Kermit User Manual                                Page  8
+
+
+
+	   and controlling it.  Two of them, send and get, are
+	   described in the file transfer section, the rest here.
+
+     3.7.1.  Server.  The Server command puts the Kermit into
+	     Server Mode.  That means that Kermit is waiting for
+	     commands in the form of packets, sending out periodic
+	     NAKs to make sure it has not missed a command.  To
+	     exit the server without leaving Kermit, issue a local
+	     FINISH command or type a Control C. Wildcard sending
+	     of files is possible with this version of Kermit.
+
+     3.7.2.  Remote.  The Remote command sends a command to the
+	     remote Kermit server in its own interactive language.
+	     It takes a number of command strings as arguments.
+	     Note, however, that every string consisting of more
+	     than one word should be enclosed in the current
+	     Cromix Kermit input quotes, so that it could be
+	     transferred in one piece. Rem is an abbreviation for
+	     this command.
+
+     3.7.3.  Finish.  The Finish command tells the remote Kermit
+	     to exit server mode and to return to interactive
+	     command processing. Fin is an abbreviation for Finish.
+
+     3.7.4.  Disc.  The Disc command tells the remote Kermit
+	     server to exit and log out.
+
+     3.8.  Help.  The Help command prints an online help message.
+	   HELP without arguments or HELP HELP will print out a
+	   list of commands with short descriptions, while HELP
+	   command or command ? will print out a description of
+	   that command. While these descriptions may be rather
+	   brief and presuppose a basic knowledge of Kermit, they
+	   should provide a complete reference on the arguments
+	   and the capabilities of a command. One can also type H.
+
+   Cromix Kermit User Manual                                Page  9
+
+
+
+			   IV.  Set Options.
+			   ---  ------------
+
+	 The following is a complete list of the options that can
+     be used in a Set or a Show command, as well as a list of
+     options that may only be used in a Show command.
+
+     4.1.  Line options.  These options are used to specify the
+	   physical characteristics of the communication line used.
+
+     4.1.1.  Line.  The full device name of the line is to be
+	     entered.  Thus, if we want to connect over qtty3,
+	     enter SET LINE /DEV/QTTY3.  The previous line's
+	     original setting is restored and the current line is
+	     set as per the other parameters.  Line can be
+	     abbreviated as L.
+
+     4.1.2.  Baud.  ( B, Baud-rate ) The baud rate desired for
+	     communication should be entered.  The legal baud
+	     rates are:
+
+		  110, 150, 300, 600, 1200, 2000,
+		  2400, 4800, 9600, 19200  AUTO ( A )
+		  and NOCH ( N ).
+
+	     Note that all communications equipment, including the
+	     Clearway if it is used, should be set to that baud
+	     rate and that if the Cromemco is connected to a
+	     remote system through the Connect command, the maximum
+	     baud rate that it is advisable to use is 1200 until a
+	     way is found to increase the size of the system
+	     buffers, which may or may not be possible.
+
+     4.1.3.  Parity.  ( P, Par ) The parity of the other line, which
+	     could be:
+
+		 MARK, M            8th bit is 1
+		 SPACE, S           8th bit is 0
+		 EVEN, E            number of set bits is even
+		 ODD, O             number of set bits is odd
+		 NONE, NO, N, -     8th bit could be used for
+				    data if the system allows
+				    it (default)
+
+     4.1.4.  Remote.  ( Rem ) The Remote option, which is a
+	     default, can allow one to set the terminal to be the
+	     communications line. The old terminal setting is
+	     normally saved.  To restore the old setting, type SET
+	     REMOTE OFF.  If another option follows REMOTE, use
+	     the parameter ON to follow REMOTE.
+
+   Cromix Kermit User Manual                                Page 10
+
+
+
+     4.2.  Connect options.  These options control the connect
+	   command parameters.
+
+     4.2.1.  Duplex.  ( Dup ) Setting Duplex to HALF (H) will cause
+	     the connect command to echo the input.  Most systems
+	     do it themselves, hence the default setting is FULL
+	     (F), which means that it's up to the remote system to
+	     echo the input.
+
+     4.2.2.  Escchr.  ( E, Escape, Esc ) This option allows the
+	     connect escape character to be reset . The default is
+	     ^, and the argument can be any legal character.  A
+	     character not likely to be used on the remote system
+	     should normally be selected.
+
+
+     4.3.  Set/Receive options.  There are two basic categories:
+	   options to be invoked with either SEND or RECEIVE
+	   preceding them in the argument list (which could be
+	   abbreviated as S and R or Rec) and those which do not
+	   take that prefix.
+
+     4.3.1.  Options that take the SEND/RECEIVE prefix.  These
+	     include:
+
+		PL      Packet length (maximum accepted--at most
+			94) (default: 94)
+		EOL     End of line--character to be sent after
+			the packet is transmitted (default: ^J)
+		TO      Timeout--how long to wait got a packet
+			before assuming it was lost (default: 10)
+		PAD     Number of padding characters to be used -
+			useless in all the known implementations
+			of Kermit (default: 0)
+		PADC    Padding character--the above note applied
+			(default: ^@)
+		QUOTE   Quotation character to prefix control
+			characters (default: #)
+		SOP     Start-of-packet character (default: ^A)
+
+     4.3.2.  Delay.  If the terminal is in remote mode (q. v.),
+	     wait for the number of seconds specified before
+	     transmitting the first packet.  The default is 10.
+
+     4.3.3.  Eight-bit.  ( 8-bit, Eight, 8 )  Eight-bit prefix. The
+	     design of Kermit makes both Kermits use the same
+	     repeat prefix.  Should not be set to any character
+	     whose ASCII value is greater than that of @.  (If you
+	     do not know its meaning, leave it.  The default is
+
+   Cromix Kermit User Manual                                Page 11
+
+
+
+	     &.)
+
+     4.3.4.  Repeat.  ( Rep )  Repeat prefix.  The note under
+	     Eight-bit prefixing applies.  The default is ~.
+
+     4.3.5.  File.  File parameters currently implemented are
+	     TEXT, BINARY, and IMAGE.  See section II for a
+	     description.
+
+     4.3.6.  Handshake.  ( Hand )  If the other line is half-duplex,
+	     it may have to send a turnaround character to indicate
+	     that it is ready to receive.  That character is called
+	     the handshake and is set with this command.  The
+	     following settings are available:
+
+			 XON, ^Q
+			 XOFF, ^S
+			 CR, RETURN, RET
+			 LF, LINEFEED, LINE
+			 ESC
+			 NONE, NO, N, OFF (default)
+
+     4.3.7.  Retry. ( Ret ) How many times to resend a packet
+	     before aborting.  The default is 10.
+
+     4.3.8.  Wild. ( Wildcard ) What the wildcard characters should
+	     be.  The keyword ALL (A)  or ONE (O) should follow,
+	     followed in turn by the character to use as the send
+	     wildcard. The defaults are @ for the string wildcard
+	     and ! for the single-characters wildcard.
+
+	     A wildcard is a character that can stand for any
+	     number of characters (a string wildcard) or any one
+	     character (a character wildcard.)
+
+	      Example :
+
+	       Cromix-Kermit-> send /usr/frog/k@.!
+
+	       will send the following files (assuming they
+	       are in the directory).
+
+	       kermit.h
+	       kshell.h
+	       kermit.1.0.c
+
+	       but not
+
+	       kermit.bin
+	       library.c
+	       kermit
+
+   Cromix Kermit User Manual                                Page 12
+
+
+
+     4.3.9.  Sync.  If ON, a Send would be ran with the Pyramid
+	     synchronisation scheme.  That scheme ignores packets
+	     on even retries which seem to have been generated as
+	     a result of a problem with synchronisation.  Unless
+	     the connection is really noisy, it is recommended that
+	     this option be set, as any synchronisation problems
+	     correct themselves very quickly. In fact, Sync is set
+	     initially.
+
+     4.3.10.  Warning.  ( Warn ) If this option is set, overwrite
+	      protection is on.  In remote mode, no file is
+	      overwritten. In local mode, the user is asked whether
+	      to overwrite the file prior to proceeding with the
+	      transfer.  Warning is set to ON by default.
+
+     4.3.11.  Incomplete. ( Inc ) If this option is set ( ON), as
+	      is the default, any incomplete files received are
+	      saved. Otherwise, they are deleted.
+
+     4.4.  Shell options.  The following options allow you to
+	   set certain shell parameters.
+
+     4.4.1.  Prompt.  ( Pr ) The Kermit prompt.  The default is
+	     Cromix-Kermit~>
+
+     4.4.2.  Inq.  ( Input-Quote ) Input quote setting--see the
+	     section on the Kermit shell.
+
+     4.4.3.  Debugging ( Debug, D )  Allows one to see what is
+	     happening to Kermit.  While this may not be of that
+	     much use to most of the Kermit users, it may be
+	     appreciated by the support personnel (currently the
+	     author of this document) if you could bring a printout
+	     of a log of your session with both the PACKETS and the
+	     STATES switches on if you encounter any problems. The
+	     following options are available:
+
+		   PACKETS, (P)            Packet debug
+
+		   STATES, (S)             Execution debug
+
+		   OFF, (NO, NONE)         No debugging (default)
+
+		   LOG filename,           Log to a file (or OFF to
+		    (LOGFILE filename,     send it to the terminal
+		     LOG-FILE filename)    (default)
+
+		   NOSTATES,               No execution debug
+
+   Cromix Kermit User Manual                                Page 13
+
+
+
+		    (-S, -STATES,
+		     NOSTAT)
+
+		   NOPACKETS,              No packet debug
+		    (NOPACK, -PACKETS
+		     -P)
+
+
+
+     4.5.  Show options.  These are the options that make sense
+	   only as arguments of a Show command.  Note that no
+	   options at all produces a full listing.
+
+     4.5.1.  Options. ( Set, Settings, =, O, Opt ) Display only
+	     the predefined options.
+
+     4.5.2.  Macros. ( M )  Display only the macros (user-defined
+	     options).
+
+   Cromix Kermit User Manual                                Page 14
+
+
+
+		   V.  A Sample Session.
+		   --  -----------------
+
+
+     Login to two cromemco and type
+
+	 % kermit
+
+     on both. The finally, the prompt:
+
+	 Cromix-Kermit~>
+
+     Then set the parameters  essential for communication and also
+     any desired ones by typing SET then the parameters, such as
+     LINE and BAUD. Since LINE is not set by default you must set
+     it before starting any file. You can now type
+
+	 SEND <file>
+
+     on one cromemco where <file> is whatever filename you prefer,
+     and press return and go to the other computer, where you press
+     Receive and a file name if desired when it flashes a box.
+     Depending on the packet size and the size of the file the
+     transmission should be complete in roughly two minutes.
+     When you have finished with Kermit issue the Kermit command
+
+	  STOP
+
+
+     You are now out of Kermit.
+
+   Cromix Kermit User Manual                                Page 15
+
+
+
+		   VI.  A Summary of Commands.
+		   ---  ----------------------
+
+
+     Command         Arguments               Meaning
+
+     QUIT, EXIT,     none                    Exit this level of
+     STOP, EX                                Kermit
+
+     TAKE, T         file names              Execute these
+					     filenames
+
+     SHELL, SH, !    shell command           Execute the shell
+					     command, or enter a
+					     shell if no arguments
+
+     SEND, S         files to send           Sends the specified
+					     files
+
+     RECEIVE, R      file name to receive    Receive a file or
+					     files; if an argument
+					     is specified, store
+					     the first file
+					     received under that
+					     name
+
+     SET, =          options                 Set Kermit options
+
+     SHOW, DISPLAY,  options                 Display a setting or
+     DIS                                     all settings if no
+		     OPTIONS, SET,           arguments; if the
+		     =, O, OPT               argument is MACROS
+					     or OPTIONS, display
+		     MACROS, M               what is appropriate
+
+
+     DEFINE,         option                  Define or undefine a
+     DEF, D                                  macro
+
+     CONNECT, C      options                 Connect to the remote
+					     system and set the
+					     options if any
+
+     TRANSMIT,       files to send           Transmit the file
+     TRANS                                   without protocol
+
+     STATISTICS,     none                    Display last transfer
+     STATS                                   statistics
+
+     CWD, CD         directory name          Change working
+					     directory
+
+   Cromix Kermit User Manual                                Page 16
+
+
+
+     SERVER          none                    Enter server mode
+
+     FINISH,         none                    Request remote server
+     FIN                                     to exit server mode
+
+     DISC            none                    Request remote server
+					     to exit and log off
+
+     REMOTE,         command strings         Request remote server
+     REM                                     to execute a Kermit
+					     command in its own
+					     language
+
+   Cromix Kermit User Manual                                Page 17
+
+
+
+		 VII.  A Summary of Set/Show Options.
+		 ----  ------------------------------
+
+
+     Option          Arguments/Defaults      Meaning
+
+     BAUD, B,        any legal baud rate     Set baud rate
+     BAUD-RATE
+
+     DEBUG, D,       STATES or S             State debug
+     DEBUGGING
+		     PACKETS or P            Packet debug
+
+		     -STATES, NOSTATES,      Turn off state
+		     NOSTAT, or -S           debugging
+
+		     -PACKETS, NOPACK        Turn off packet
+		     NOPACKETS, or -P        debugging
+
+		     OFF (default)           Turn all debugging
+					     off
+
+		     LOG-FILE, LOG,          With a filename, sets
+		     or LOGFILE              the log file; with
+					     none or OFF, sets it
+					     to the screen
+
+     DELAY           value in seconds (10)   Delay before the
+					     start of transmission
+					     in remote
+
+     DUPLEX, DUP     FULL/HALF (FULL)        Connect duplex
+
+     EIGHT-BIT,      any valid char (&)      Eight-bit prefix
+     EIGHT, 8,
+     8-BIT
+
+     ESCAPE, E,      any ASCII char (^)      Connect escape
+     ESC, ESCCHR                             character
+
+     FILE            TEXT (def.), IMAGE, BIN File parameters
+
+     HAND,           XON, XOFF, CR, LF, ESC, Handshake
+     HANDSHAKE       NONE (default)
+		     ( see above for other
+		       abbreviations )
+
+     INCOMPLETE,     ON, OFF                 Incomplete file
+     INC                                     handling
+
+     INQ,            any ASCII character (") Input quote
+     INPUT-QUOTE
+
+   Cromix Kermit User Manual                                Page 18
+
+
+
+     LINE, L         Full device name        Communication line
+
+     PARITY, P       EVEN, ODD, MARK, SPACE, Parity
+		     NONE (default)
+		     ( see above for other
+		       abbreviations )
+
+
+     PROMPT, PR      any character string    Kermit prompt
+		     (Kermit-Cromix>)
+
+     RECEIVE, R,     see above               Receive parameters
+     REC
+
+     REMOTE, REM     ON, OFF (ON)            Remote/local
+
+     REPEAT, REP     any valid char (~)      Repeat prefix
+
+     RETRY, RET      retry count             Retry on send/receive
+
+     SEND or S       see above               Send parameters
+
+     SYNC            ON, OFF                 Synchronisation
+
+     WARNING,        ON, OFF                 File overwrite
+     WARN                                    protection
+
+     WILD,           ALL or ONE and an ASCII String or character
+     WARNING         character               wildcard setting
+
+
+   Cromix Kermit User Manual                                Page 19
+
+
+
+		 VII.  Miscellaneous
+		 ----  -------------
+
+
+
+	The communication line used for a local Kermit should not
+     be defined in the file /ETC/TTYS because this line will be
+     regarded as a terminal. Otherwise the file is to be edited and
+     the system reset with the command "kill -1 1". Also in the RS232
+     interface the pins 4, 5, 6 should be bridged together, and
+     likewise pins 8 and 20.
+
+
+

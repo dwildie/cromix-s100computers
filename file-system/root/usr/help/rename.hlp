@@ -1,0 +1,19 @@
+Shell
+command:      RENAME or REN
+purpose:      This command changes the name and/or directory of a file.
+
+user access:  all users
+
+summary:      ren oldfile1 newfile1 [ ...  oldfileN newfileN]
+
+arguments:    one or more pairs of file pathnames (existing pathname first,
+              followed by new pathname)
+
+options:      none
+
+Description
+
+The Rename command changes a filename and/or the directory where it is
+located.
+
+This command does not move a file from one device to another.

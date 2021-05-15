@@ -1,0 +1,17 @@
+utility:      BAK
+purpose:      Deletes .bak files from the current directory
+
+user access:  all users
+
+summary:      bak
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Bak utility deletes files in the current directory with the filename
+extension .bak.
+
+

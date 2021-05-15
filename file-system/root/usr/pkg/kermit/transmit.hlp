@@ -1,0 +1,13 @@
+
+TRANSMIT, TRANS - Transmit a file neat.
+
+		Usage:
+
+		TRANSMIT <file-list>
+
+Transmit files bare, without protocol.  This might be useful as a means of
+simulating advanced Kermit 'scripts' (per UUCP).  Thus a transmit file might 
+contain the user input to login to a remote system and startup Kermit.  This 
+should work provided that the remote machine will cope with type-ahead during 
+the login sequence.
+

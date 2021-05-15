@@ -1,0 +1,10 @@
+
+SERVER - Set into server mode.
+
+		Usage:
+
+		SERVER
+
+The Server command puts the Kermit into server mode.  To get out at any time
+hit a ^C or get the other Kermit to issue a finish or shutdown command packet.
+

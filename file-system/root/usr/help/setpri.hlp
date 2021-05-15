@@ -1,0 +1,26 @@
+utility:      SETPRI
+purpose:      This command changes the priority of a process.
+
+user access:  all users         (priorities 0 through +40)
+              privileged user   (priorities +40 through -40)
+
+summary:      setpri process-id priority
+
+arguments:    process id number (PID)
+              priority number
+
+options:      none
+
+Description
+
+The Setpri utility assigns a priority number to a given process. Priority
+numbers range from -40 (highest priority) to +40 (lowest priority).  A non-
+privileged user can assign only non-negative priorities to his own processes;
+a privileged user can assign any priority to any process.
+
+Example
+
+To assign a priority of 20 to the process whose PID number is 456, enter:
+
+     jim[1] setpri 456 20
+

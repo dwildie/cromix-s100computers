@@ -1,0 +1,47 @@
+function:       memory
+purpose:        Allocate memory to the process
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int memory(mode,paddr,size,mask)
+                int mode; unsigned char **paddr;
+                unsigned long size, mask;
+
+Description
+
+The memory system call will allocate or deallocate user memory:
+
+     mode        action
+
+     0           Allocate size bytes according to mask and
+                 store the pointer to allocated memory into
+                 *paddr.
+     1           Deallocate size bytes of user memory pointed
+                 to by *paddr.
+
+The mask value used for allocating can be used to get memory aligned according
+to mask: the resulting pointer, if masked with mask, will be zero.  The normal
+value of mask should be zero (no special requirements). If, for example, the
+mask of 0xffff is used, the allocated memory will be at a 64K boundary.
+
+Only the memory obtained from the memory call, mode 0, can be deallocated by
+the memory call, mode 1.
+
+All memory obtained from one call will be contiguous. Two consecutive calls of
+memory will not necessarily return contiguous pieces of memory.
+
+The function will return:
+
+     0           if successful;
+     ERR         if error.
+
+Common errors:
+
+     _nomemory        There is not enough memory to fulfill the
+                      request.
+     _badaddress      The address passed to the system call does not
+                      belong to the user's address space.
+

@@ -1,0 +1,23 @@
+function:       getmode
+purpose:        Return characteristics of a device.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <modeequ.h>
+                <bmodeequ.h>
+                <tmodeequ.h>
+
+synopsis:       int getmode(channel,modenumber)
+                int channel, modenumber;
+
+Description
+
+See the modeequ.h files for the meaning of mode numbers and mode values.
+
+The function returns:
+
+     mode value       if successful
+     ERR              if error occurred.
+

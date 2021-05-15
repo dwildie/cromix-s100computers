@@ -1,0 +1,45 @@
+function:       getgrent, getgrgid, getgrnam, setgrent, endgrent
+purpose:        read and decode group file.
+
+user access:    all users
+
+include files:  <grp.h>
+
+synopsis:       struct group *getgrent()
+
+                struct group *getgrgid(gid)
+                int gid;
+
+                struct group *getgrnam(name)
+                char *name;
+
+                void setgrent();
+
+                void endgrent();
+
+Description
+
+Getgrent, getgrgid, and getgrnam each return a pointer to an object with the
+group structure (see /usr/include/grp.h).
+
+Getgrent when first called, returns a pointer to the first group structure in
+the file; thereafter it returns a pointer to the next structure in the group
+file. Successive calls can be used to search the entire file.
+
+The group file is kept open and can be rewound by the setgrent function, or
+closed by the endgrent function.
+
+Getgrgid searches from the beginning of the file until a numeric group id
+matching gid is found, and returns the pointer to the particular structure in
+which it was found.
+
+Getgrnam searches from the beginning of the file until a group name matching
+name is found, and returns the pointer to the particular structure in which it
+was found.
+
+The functions returning pointers return the NULL pointer if entry is not
+found.
+
+Note
+
+All data is kept in static memory and each call will overwrite previous data.

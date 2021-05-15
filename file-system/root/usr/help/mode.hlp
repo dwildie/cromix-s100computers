@@ -1,0 +1,862 @@
+utility:      MODE
+purpose:      This program displays or alters device modes.
+
+user access:  all users
+
+summary:      mode [devname] [characteristic(s)]
+
+arguments:    optional device name optional characteristic(s)
+
+options:      -v   verify
+
+Description
+
+The Mode utility displays or alters the operational characteristics (or modes)
+of a device. If Mode is run without arguments, the modes of the device that
+issued the Mode command are displayed (e.g., your terminal).
+
+To display the characteristics of another device, specify the device name as
+the first argument (you must have read access to the device, or else a "File
+not accessible" error occurs). If no modes are specified, Mode displays the
+characteristics of the selected device without changing them.
+
+Device modes can be altered by specifying the desired settings as arguments
+(you must have execute access to the device, or else a "Channel access error"
+occurs). For example:
+
+     system[1] mode lpt1 width 132 -tabexpand
+
+Some characteristics can be turned on by simply stating the appropriate name,
+and turned off by preceding the name with a dash (e.g., -tabexpand). Other
+characteristics must be followed by a number (e.g., width 132). All numbers
+are assumed to be decimal unless followed by an "h" for hexadecimal (e.g.,
+delaycode 7fh).
+
+Some characteristics use ASCII characters as values. A character value may be
+entered by pressing the ASCII key, or by typing its hexadecimal value.
+Control characters may also be entered by pressing the caret key (^) followed
+by the character. For example, the default line-kill character on terminal
+devices (CONTROL-U) can be changed to CONTROL-A in any one of three ways:
+
+1.Type "mode lkill", then hold down the CONTROL key and press A
+
+2.Type "mode lkill 01h"
+
+3.Type "mode lkill ^A"
+
+All commands are entered by pressing the RETURN key. Using method 2 or 3
+above, you could make the RETURN key the user-signal key ("mode sigchar 0dh"
+or "mode sigchar ^M").
+
+When displayed, the first part of each mode name is capitalized (e.g., Pause).
+The capitalized part of the name must be used when changing the characteristic
+(e.g., both "mode tty1 -pa" and "mode tty1 -pause" turn off the pause mode of
+tty1).
+
+Option
+
+The -v option displays the new mode settings after you change them.
+
+Notes
+
+In CBREAK, RAW, and BINARY modes, calls that read characters (.rdbyte,
+.rdline, or .rdseq) do not wait for a line terminator; they return after a
+single byte is entered. The Shell sets the mode to nonCBREAK, nonRAW, and
+nonBINARY each time it prompts for a new command line. A program, PROG, can be
+run in BINARY mode, by typing
+
+     jim[1] mode binary; prog
+
+The function keys on a 3102 terminal are disabled when the Cromix-Plus
+Operating System is booted up. The mode command "mode fn" enables the function
+keys ("mode -fn" disables them again). Each function key allows you to send a
+2-byte sequence (CONTROL-B (^B) and some other character) directly to a
+program. For example, CONTROL-B and "p" are sent when function key l is
+pressed. These 2-byte sequences can be used by application programs to perform
+special functions.
+
+The following table shows the available modes for each character device. The
+modes are then described in detail, followed by a similar discussion for block
+devices.
+
+CHARACTER DEVICES
+
+                        s
+                        y t     o q       u
+                u   o q s i u   s s   c   s s t   s
+                t t t t d m l l l l f n t l l a s c
+                t t t t e e p p p p f e y p p p c t
+                y y y y v r t t t t p t p t t e c p
+
+  ABortenable   + + + + - - - - - - - - - - - - + -
+  Append        - - - - - - - - - - - - - - - - - +
+  Baud          + + + + - - - - + + - - - + + - + -
+  BINary        + + + + - - + - + - - - - + - - + -
+  BLKsize       - - - - - - - - + - - - - + + - - -
+  BLKSwrt       - - - - - - - - - - - - - - - + - -
+  Block         - - - - - - - - - - - - - - - + - +
+  BMargin       + + + + - - + + + + - - + + + - - -
+  CBreak        + + + + - - + - + - - - - + - - + -
+  CHECK         - - - - - - - - - - - - + - - - - -
+  Correction    - - - - - + - - - - - - - - - - - -
+  Corr error    - - - - - - - - - - - - - - - + - -
+  CRDEVice      + + + + - - + + + + - - + + + - + -
+  CRIGNore      - - - - - - - - + - - - - + + - - -
+  CWidth        - - - - - - - - - - - - + - - - - -
+  DELAY         + + + + - - + + + + - - - + + - + -
+  DELECho       + + + + - - - - - - - - - - - - + -
+  DIScard       + + + + - - + + + + - - + + + - + -
+  ECho          + + + + - - - - - - - - - - - - + -
+  End of tape   - - - - - - - - - - - - - - - + - +
+  EOFclose      - - - - - - - - - - - - - - - + - +
+  Erase         + + + + - - - - - - - - - - - - + -
+  ESCreturn     + + + + - - - - - - - - - - - - + -
+  EVENparity    + + + + - - - - + + - - - + + - + -
+  FFexpand      + + + + - - + + + + - - - + + - + -
+  File          - - - - - - - - - - - - - - - + - +
+  File mark     - - - - - - - - - - - - - - - + - -
+  FLUSHtime     - - - - - + - - - - - - - - - - - -
+  FMark         - - - - - - - - - - - - - - - + - +
+  FNkeys        + + + + - - - - - - - - - - - - + -
+  FORMs         - - - - - - + + + - - - + + + - - -
+  GMToffset     - - - - - + - - - - - - - - - - - -
+  HANDshake     - - + - - - - - + - - - - - - - - -
+  Hard error    - - - - - - - - - - - - - - - + - -
+  High speed    - - - - - - - - - - - - - - - + - -
+  HUPenable     - - + + - - - - - - - - - - - - + -
+  IBsize        - - - - - - - - - - - - - - - + - -
+  INL           + + + + - - - - - - - - - - - - - -
+  IMmediateecho + + + + - - - - - - - - - - - - + -
+  LCase         + + + + - - + - + - - - - + - - + -
+  Length        + + + + - - + + + + - - + + + - + -
+  LHeight       - - - - - - - - - - - - + - - - - -
+  LKill         + + + + - - - - - - - - - - - - + -
+  LMargin       - - - - - - - - - - - - + - - - - -
+  Load          - - - - - - - - - - - - - - - - - +
+  Load point    - - - - - - - - - - - - - - - + - +
+  NLECho        + + + + - - - - - - - - - - - - + -
+  OBsize        - - - - - - - - - - - - - - - + - -
+  ODDparity     + + + + - - - - + + - - - + + - + -
+  ON LINE       - - - - - - - - - - - - + - - + - +
+  PAPER OUT     - - - - - - - - - - - - + - - - - -
+  PAuse         + + + + - - + - + - - - - + - - + -
+  PSthimble     - - - - - - - - - - - - + - - - - -
+  RAW           + + + + - - + - + - - - - + - - + -
+  READY         - - - - - - - - - - - - - - - + - +
+  RESume        + - + + - - + - + - - - - + - - + -
+  Rewind        - - - - - - - - - - - - - - - + - +
+  Rewinding     - - - - - - - - - - - - - - - + - -
+  RIBBON OUT    - - - - - - - - - - - - + - - - - -
+  Secure        - - - - - - - - - - - - - - - + - +
+  SIGAllchars   + + + + - - - - - - - - - - - - + -
+  SIGChar       + + + + - - - - - - - - - - - - + -
+  SIGenable     + + + + - - - - - - - - - - - - + -
+  SIGHUPall     - - + + - - - - - - - - - - - - + -
+  SOFTerr       - - - - - - - - - - - - - - - - - +
+  TABexpand     + + + + - - + + + + - - - + + - + -
+  TANdem        + + + + - - - - - - - - - - - - + -
+  TDelay        + - + - - - + - + - - - - + - - - -
+  Unload        - - - - - - - - - - - - - - - + - +
+  Width         + + + + - - + + + + - - + + + - + -
+  WRAParound    + + + + - - + + + + - - + + + - + -
+  Wrt protect   - - - - - - - - - - - - - - - + - +
+
+ABortenable
+
+When the ABortenable switch is on ("mode ab"), pressing CONTROL-C sends a
+SIGABORT signal to all processes controlled by the terminal; when off ("mode
+-ab"), CONTROL-C is treated like any other character.
+
+Append
+
+Position a tape to end of recorded data to allow appending to it.
+
+Baud
+
+The Baud parameter, followed by a number, sets the baud rate of a serial
+device (e.g., "mode b 9600" changes the baud rate of your terminal to 9600).
+
+The baud rates designated Auto, Nochg, and Ctswait are special cases. If Auto
+mode is used with a terminal, the driver tries different baud rates until it
+reads a RETURN from the input. If Nochg mode is used, the baud rate has been
+previously established (e.g., by RDOS). If Ctswait is used, the driver waits
+for a CTS signal from the modem.
+
+BINary, CBreak, and RAW
+
+If any of these parameters are enabled, any read from the device returns after
+each input character. These parameters serve to disable the action of various
+other parameters, as shown in the following table (+ means that the parameter
+causes the given effect, a space means it does not.)
+
+  Effect                           CBreak     RAW      BINary
+
+Return after each character input    +          +         +
+
+No erase, linekill, or EOF
+   (CONTROL-Z) characters            +          +         +
+
+No output PAuse or output Width
+   truncation                                   +         +
+
+Treat XOFF (CONTROL-S), XON
+   (CONTROL-Q) as regular input                 +         +
+
+No tandem mode - no input
+   buffer flow control                                    +
+
+Treat CONTROL-C and SIGChar key as
+   regular input                                          +
+
+No checking or changing of input
+   parity bit                                             +
+
+No delays after any output control
+   characters such as tabs                                +
+
+No echoing of input                                       +
+
+No function key decoding                                  +
+
+No character transformations -
+   ignore the LCase, CREDEVice,
+   and TABexpand settings                                 +
+
+BLKsize
+
+A serial printer can accept only a limited number of characters without some
+kind of handshaking. With the ETX/ACK protocol, the driver sends one block of
+characters followed by an ETX character and waits until the printer returns an
+ACK character before sending the next block. The number of characters in a
+block never exceeds BLKsize characters. If an escape sequence is detected, the
+current block is immediately terminated by an ETX character, thereby handling
+escape sequences correctly provided no escape sequence exceeds BLKsize
+characters. Refer to your printer documentation for the value of BLKsize.
+
+BLKSwrt
+
+BLKSwrt is the number of the blocks written when a tape file was last written
+to a tape device. It cannot be changed with the Mode utility.
+
+Block
+
+Block is the command for tape positioning. It should be followed by a space
+and the block number. Tape blocks are numbered 1, 2, 3, ..., up to the number
+of blocks in the file. If the specified block is larger than the total number
+of blocks in a file, the tape moves to the beginning of the next file.
+
+BMargin
+
+If a printer device is within BMargin lines of the bottom of the page, a
+formfeed takes the device to the top of the next page. The length of a page is
+determined by the parameter Length (see below).
+
+CBreak
+
+See BINary.
+
+CHECK
+
+CHECK indicates a malfunction, which can only be resolved by DISCARD or a
+power OFF/ON sequence.
+
+Correction This is the number of seconds per 100 days to be added to or
+subtracted from the system timer.
+
+Corr error
+
+Corr error is a flag that is set when the tape formatter detects a correctable
+error. The flag cannot be set by the Mode utility.
+
+CRDEVice
+
+The CRDEVice switch must be on for a carriage return device and off for a
+newline device. If CRDEVice is on, a RETURN character read from the device is
+translated into a newline character before being passed to the calling program
+(and a RETURN, linefeed sequence is echoed to the device). On output, newlines
+are translated into RETURN, linefeed sequences. If CRDEVice is off, no
+translations are made.
+
+The single newline character (0Ah) performs a RETURN, linefeed sequence.
+
+CRIGNore
+
+Some printers, such as the CLQ, need only a RETURN character (0Dh) to move to
+the start of a new line. If CRIGNore is on, the driver ignores all RETURN
+characters and translates newline characters into RETURN characters.
+
+CWidth
+
+The value of CWidth defines the width of each character in units of 1/120th of
+an inch. The default is 12, or 10 characters per inch.
+
+DELAY
+
+The DELAY is the decimal equivalent of a byte determining the amount of delay
+inserted after certain characters are sent to the output. If the TDelay switch
+is set, the output process is suspended for some multiple of one-tenth of a
+second. If the TDelay switch is reset, the delay is implemented by sending a
+number of NULL characters. The old drivers do not recognize the TDelay switch.
+The Tty driver behaves as if TDelay is always off, the Qtty driver behaves as
+if TDelay was always on.
+
+The bit assignments for DELAY are:
+
+Character       DELAY Bits    TDelay ON        TDelay OFF
+                              (seconds)        (chars)
+
+newline         0 and 1       0, .1, .2, .3    0, 4, 8, 12
+tab             2 and 3       0, .1, .2, .3    0, 4, 8, 12
+carriage return 4 and 5       0, .1, .2, .3    0, 4, 8, 12
+formfeed        6             0, .8            0, 128
+backspace       7             0, .1            0, 4
+
+For example, "mode qtty1 delay a3h" sets the QTTY1 newline delay to 0.3
+seconds, the RETURN delay to 0.2 seconds, the backspace delay to 0.1 seconds,
+and the TAB and formfeed delays to zero.
+
+DELECho
+
+On TTY, QTTY, and MTTY devices, the character following DELECho is echoed in
+response to any one of the delete characters. If the letter R follows DELECho,
+the echoed response to a delete character is: backspace, space, backspace.
+
+DIScard
+
+When a driver is first used, a data area for that device is initialized. Mode
+settings are determined at this time. Values are changed or not changed as the
+Mode calls dictate, and these values remain even if the device is closed.  If
+DIScard is set, closing a device discards all information, and all tables are
+reinitialized when the device is next opened.
+
+TTY and LPT drivers define the actual devices during system generation (refer
+to Crogen). To attach a parallel printer to a connector that was used for a
+TTY terminal, you must generate (and reboot) a properly configured Cromix-Plus
+Operating System.
+
+ECho
+
+If the ECho switch is on (no preceding dash), characters entered on the
+terminal are echoed to the screen. ECho cannot be changed by the Mode utility.
+
+End of tape
+
+End of tape is a flag describing the tape device status. It cannot be set by
+the Mode utility.
+
+EOFclose
+
+If EOFclose is set, the tape controller writes a double file mark when the
+device is closed.
+
+Erase
+
+The character following Erase serves as an extra erase character, along with
+DEL (7Fh) and CONTROL-H (08h, also referred to as backspace). For example, the
+command
+
+     jim[1] mode erase _
+
+selects the underscore as an auxiliary delete character. Note that DEL and
+backspace still function as delete characters.
+
+ESCreturn
+
+If this switch is enabled, the ESCAPE character terminates the .rdline and
+.rdseq functions as if RETURN had been pressed. EVenparity and ODDparity
+
+ODDparity  and  EVenparity
+
+Control the handling of the parity bit, as follows (+ means enabled, - means
+disabled).
+
+EVenparity  ODDparity      Function for Input Characters
+
+    -           -          does not check parity but strips parity bit
+    +           -          checks for even parity before stripping parity bit
+    -           +          checks for odd parity before stripping parity bit
+    +           +          leaves parity unchecked and unchanged
+
+EVenparity  ODDparity      Function for Output Characters
+
+    -           -          strips parity bit
+    +           -          makes character even parity
+    -           +          makes character odd parity
+    +           +          leaves parity bit unchanged
+
+FFexpand
+
+If FFexpand is on, each formfeed character (0bh) sent to a printer device is
+converted to enough newlines to move the paper to the top of the next page.
+The length of a page is determined by the Length mode. If FFexpand is off, the
+formfeed character is sent without conversion.
+
+File
+
+On a tape device, a file number following the File mode moves the tape to the
+start of that file. Tape files are numbered from 1 through the number of files
+on the tape. The following command moves the tape to the sixth file on TP1:
+
+     jim[1] mode tp1 file 6
+
+If the specified file number is larger than the total number of files recorded
+on the tape, the tape moves to the end of tape reel. This motion may be
+aborted by taking the tape drive off-line and entering CONTROL-C at the
+terminal keyboard.
+
+File mark
+
+File mark is a flag describing the tape device status. It cannot be set by the
+Mode utility.
+
+FLUSHtime
+
+The system will write out all modified disk buffers after FLUSHtime seconds of
+no activity.
+
+FMark
+
+FMark is a command to write the file mark on a tape device (e.g., "mode tp1
+fm").
+
+FNkeys
+
+If FNkeys is on, the driver echoes a CONTROL-B for each of the two bytes sent
+when a function key on the Cromemco 3102 terminal is pressed. This allows the
+2-byte function key sequences to be passed to a program.
+
+FORMs
+
+A printer driver that understands the concept of paper forms can be told what
+paper form is loaded into the printer (or made to recognize some other
+physically distinct change). The printer daemon prints only those files that
+were spooled with the same forms number (refer to the -z option of the Spool
+utility.)
+
+When the operator needs to change paper forms (print thimble, etc.), the FORMs
+number can be set to any unused value. Then, after the current file is
+printed, the operator can make the change, set any necessary modes, and select
+a new FORMs value. After the printer daemon is restarted, all files with the
+new FORMs value will be printed.
+
+The actual FORMs numbers are left to the System Administrator.
+
+GMToffset
+
+This is the number of hours to be added to GMT time to get local time.
+
+HANDshake
+
+This hardware handshaking (RTS - CTS signals). If this mode is enabled, the
+driver will drive and monitor the RTS/CTS lines. The other part of the
+communications system must also drive and monitor its side of RTS/CTS lines.
+
+Hard error
+
+The Hard error flag is set on a tape device when the tape formatter finds an
+error that it cannot correct. This flag cannot be set by the Mode utility.
+
+High speed
+
+High speed is a flag describing the tape device status. It cannot be set by
+the Mode utility.
+
+HUPenable
+
+If this switch is on and an IOP/OCTART terminal device closes, the modem on
+the IOP device is hung up.
+
+IBsize
+
+IBsize defines the length in bytes of the first block of the last file read
+from a tape device. It cannot be changed by the Mode utility.
+
+INL
+
+If INL is ON, the RETURN character will not be translated into a NEWLINE
+character, even if the device is a carriage return device. Output is not
+affected.
+
+IMmediateecho
+
+If IMmediateecho is on, characters typed ahead are echoed immediately, and
+echoed again when they are read. If IMmediateecho is off, characters are
+echoed only at the time they are read.
+
+LCase
+
+If LCase is on, terminal devices TTY, QTTY, and MTTY convert uppercase
+alphabetic input characters to lowercase.
+
+Length
+
+This is the page length in lines of the designated device. When the Mode
+utility displays the page length, the word length is followed by the specified
+page length. To change the page length, use the argument length followed by a
+space and the desired page length.
+
+LHeight
+
+The value of LHeight defines the height of a printed line in units of 1/48th
+of an inch. The default value is 8 (6 lines per inch).
+
+LKill
+
+The LKill character deletes the current input line for terminal drivers. This
+performs multiple deletes back to the last prompt character.
+
+LMargin
+
+The value of LMargin defines the first printable position, expressed in units
+of .1 inches (the default is 0).
+
+Load
+
+Load a new tape after the old tape has been unloaded.
+
+Load point
+
+Load point is a flag describing the tape device status. It cannot be set by
+the Mode utility.
+
+NLECho
+
+Determines if a newline character will be echoed.
+
+OBsize
+
+OBsize is a command to set the block length of files written to the tape
+device. Keyword OBsize should be followed by a blank and the desired size.
+The following command sets the output block length of TP3 to 4096 bytes:
+
+     jim[1] mode tp3 ob 4096
+
+ODDparity
+
+See EVENparity.
+
+ON LINE
+
+Signifies the device is on-line (powered on or loaded).
+
+PAPER OUT
+
+Signals the printer is out of paper.
+
+PAuse
+
+If PAuse is on, terminal devices pause after the number of lines specified by
+Length has been output. The output resumes only after a character is entered
+on the keyboard. Mode PAuse can also be used on new printer drivers. As a
+printer does not have a keyboard to enter XON, the same effect can be achieved
+by the "Mode prt resume" command.
+
+PSthimble
+
+When using the Typ driver to operate a "spinwriter" printer, the setting of
+PSthimble (proportional spacing) must agree with the print thimble in use. The
+default setting (-PSthimble) supports the normal (non-proportional) print
+thimble. If printed copy is unreadable (or readable, but erratically spaced),
+check the setting of PSthimble.
+
+RAW
+
+See BINary.
+
+READY
+
+READY is a flag describing the tape device status. It cannot be set by the
+Mode utility.
+
+RESume
+
+If a printer driver allows the mode to be set to PAuse, the printer will stop
+after a full page. Mode RESume will have cause the printer to continue
+printing.
+
+Rewind
+
+Rewind is a command to rewind the tape device (e.g., "mode tp1 r").
+
+Rewinding
+
+Rewinding is a flag describing the tape device status. It cannot be set by the
+Mode utility.
+
+RIBBON OUT
+
+Signals the printer is out of ribbon.
+
+Secure
+
+Secure is a command to erase the tape at high speed (e.g., "mode tp1 s").
+
+SIGenable, SIGChar, and SIGALLchars
+
+If SIGenable is on and SIGALLchars is off, pressing the SIGChar key causes
+terminal devices to send a SIGUSER signal to all processes controlled by the
+terminal. The SIGChar key character is not put into the input stream. If
+SIGenable is off, then the SIGChar key is treated in the same manner as any
+other key.
+
+The terminal which controls a process is the terminal on which the owner of
+the process logged on to the system.
+
+If SIGenable and SIGALLchars are both on, pressing the SIGChar key causes the
+SIGUSER signal to be sent to all processes controlled by the terminal, but the
+SIGChar key character is also put into the input stream.
+
+If SIGALLchars is on but SIGenable is off, every terminal keystroke pressed
+before a system call to read input has been made sends the SIGUSER signal to
+all controlled processes. (Only characters typed-ahead send signals.) The
+characters are also put into the input stream.
+
+Note that shells are set up to ignore SIGUSER signals, so that a user is not
+logged off by them. Any program running in a nondetached mode that does not
+either ignore or trap SIGUSER signals is aborted by them. The .signal system
+call provides a means for ignoring or trapping signals.
+
+SIGHUPall
+
+If this switch is on and the modem of an IOP terminal device hangs up, the
+signal SIGHANGUP is sent to all processes controlled by the device. A process
+is controlled by the terminal from which the user who initiated the process
+logged in. For example, a user who has logged in on QTTY1 and hangs up without
+logging out is logged off by the resulting SIGHANGUP signal, provided
+SIGHUPall is enabled.
+
+SOFTerr
+
+Number of soft (nonfatal) tape errors. Can be reset by "mode stp1 soft 0".
+
+TABexpand
+
+If TABexpand is on, every TAB character (09H) output is converted to enough
+spaces to bring the output to the next standard TAB stop. Standard tab stops
+are multiples of 8 at columns 1, 9, 12, etc., on the terminal.
+
+TANdem
+
+Tandem mode allows a receiving Cromix system to control the rate of input data
+using the DC1/DC3 handshaking protocol. The device sending data may be a
+Cromix system or another computer. When used to communicate between two Cromix
+systems, the ttys on the sending and receiving systems should not be selected
+in the ttys files. Both drivers should be set to the same Baud rates, have RAW
+mode enabled, and ECho and CRDevice disabled.
+
+The receiving system should have TANdem mode enabled, and the receiving
+program or command file should already be executing before sending begins. In
+TANdem mode, the receiving system sends a DC3 (XOFF) character when its tty
+driver buffer is full, and sends a DC1 (XON) character when the driver is
+ready to accept more characters.
+
+TDelay
+
+If the TDelay switch is on the delay after ceratin control characters is
+implemented by waiting some time after the character is sent out. If the
+TDelay switch is off, the delay is implemented by a number of NULL character
+being sent out after the control character.
+
+See the description of Mode DELAY.
+
+Unload
+
+Unload is a command to unload the tape device (e.g., "mode tp1 u")
+
+Width
+
+The Width function specifies the number of columns displayed before truncation
+or wrap-around. If Width = 0, no truncation or wrap-around occurs.
+
+WRAParound
+
+If WRAParound is on, and the device output column reaches the page Width, an
+extra newline is sent to the device. This allows the remainder of the output
+line to be printed on the next line. If WRAParound is off, the remainder of
+the line is truncated. If Width = 0, no truncation or wrap-around occurs.
+
+Wrt protect
+
+Wrt protect is a flag describing the tape device status. It cannot be set by
+the Mode utility.
+
+BLOCK DEVICES
+
+                    a   r
+                c u l   a t
+                f f l s m f     a e
+                l l m t d l s   m s
+                o o e d s o m h e d
+                p p m c k p d d m i
+
+  ADDress       - - - - + - - - - -
+  BSTEP         - - - + - - - - - -
+  CDOS          + + - + - - - + - +
+  CROMIX        + + - + - - + + - +
+  CYLinders     + + - + - + + + - +
+  DDensity      + + - - - - - - - -
+  DSide         + + - - - - - - - -
+  Free          - - - - - - - - + -
+  HARDerr       + + - + - + + + - +
+  ICACHE        - - - - - - - - + -
+  MFree         - - - - - - - - + -
+  MOUNTed       + + - + + - + + - +
+  MSys          - - - - - - - - + -
+  MTot          - - - - - - - - + -
+  READonly      + + - + + - + + - +
+  RETENsion     - - - - - + - - - -
+  RETRY         + + - + - + + + - +
+  RPM           + + - + - - - + - -
+  SECSIZ        + + - + - + + + - +
+  SECtors       + + - + - + + + - +
+  SIZE          + + - + + + + + - +
+  SOFTerr       + + - + - + + + - +
+  SURfaces      - - - + - + + + - +
+  VERIFY        + + - + + - + + - +
+  VERsion       + + - + + + + + - +
+  VOICEcoil     + + - - - - - - - -
+  WRITEprotect  + + - + - + + + - +
+
+ADDress
+
+This value indicates, in hexadecimal notation, the starting address of the RAM
+disk device.
+
+BSTEP
+
+This switch indicates whether the driver is using buffered step mode.
+
+CDOS
+
+This switch is set if the device is a CDOS device.
+
+CROMIX
+
+This switch is set if the device is a Cromix device.
+
+CYLinder
+
+This value indicates, in decimal notation, how many cylinders are on the
+device.
+
+DDensity
+
+This switch is set if the device is a double-density device.
+
+DSide
+
+This switch is set if the device is a double-sided device.
+
+ECache
+
+This flag describes the state of external cache memory. It can be turned on or
+off. Setting this switch is ineffective on the DPU or XPU board.
+
+Free
+
+The Free value is the total amount of unused memory (not necessarily
+continuous).
+
+HARDerr
+
+This is the total number of hard errors reported on the raw console. To change
+the accumulated total number, use the argument harderr followed by a space and
+the desired total.
+
+ICache
+
+This flag describes the state of the 68020 on-chip cache memory. It can be
+turned on or off. Setting this switch is ineffective on the 68000 or 68010
+processor.
+
+MFree
+
+The Mfree value is the remaining amount of continuous unused memory.
+
+MOUNTed
+
+This switch is set after the device has been mounted (_mount system call).
+
+MSha
+
+The Msha value is the amount of memory shared by many users (Shared code and
+shared data).
+
+MSys
+
+The amount of memory occupied by the operating system proper.
+
+MTot
+
+The total amount of memory the system is running on.
+
+READonly
+
+This switch is set if the device is mounted for read only.
+
+RETENsion
+
+This value indicates the number of tape repositions before a retension is
+performed on the floppy tape device. Setting this value to 0 (e.g., "mode ftcd
+reten 0") disables the retension feature. Setting this value to a negative
+number causes an immediate retension, but no change to the old value.
+
+RETRY
+
+This value indicates the number of times a read operation will be retried.
+
+RPM
+
+RPM value defines the rotational speed of the device (in revolutions per
+minute).
+
+SECSIZ
+
+This field defines the number of bytes per sector.
+
+SECtors
+
+This field defines the number of sectors per track.
+
+SIZE
+
+SIZE defines the size of the device, in kilobytes.
+
+SOFTerr
+
+This is the total number of soft errors (retries). To change the accumulated
+total number, use the argument softerr followed by a space and the desired
+total.
+
+SURfaces
+
+This field defines the number of surfaces on the devices.
+
+VERIFY
+
+This switch is set if the device reads back data after writing it to check for
+errors.
+
+VERsion
+
+VERsion indicates the version number of the firmware (if applicable) or the
+version number of the iolib library where the driver was introduced. The iolib
+library itself may have a higher version number if other components of the
+library have been changed.
+
+VOICEcoil
+
+This switch is set if the device uses a voice coil positioning mechanism.
+
+WRITEprotect
+
+This switch is set if the device is physically write protected.
+
+XMM
+
+This switch can be used to turn XMM memory management unit ON or OFF. Cromix
+version 31.13 and later will always try to use the XMM unit provided the XMM
+unit is present in the system. (XMM cannot be turned on if there is no XMM
+board in the system). With XMM enabled any user access to illegal memory will
+cause the offending process to be aborted with a Bus error. Details will be
+displayed on the raw terminal.

@@ -1,0 +1,111 @@
+utility:      MAIL
+purpose:      This program sends or displays mail.
+
+user access:  all users
+
+summary:      mail [-aegv] [-f file] [user-name ...]
+
+arguments:    optional list of user names
+
+              or
+
+              optional list of group names
+
+options:      -a        all
+              -e        check mail
+              -g        group
+              -v        verbose
+              -f file   mail file to read
+
+Description
+
+Given without arguments, Mail displays mail sent to the user. After each
+section of mail is displayed, the Mail utility will display a question mark.
+Enter one of the commands described in the Commands section.
+
+Given with one or more user names as arguments, the Mail utility sends mail to
+one or more users. To send mail, enter the message after pressing RETURN at
+the end of the command line. A CONTROL-Z terminates the message and returns
+control to the Shell.
+
+Options
+
+The -a option sends mail to all users. The list of users for this option is
+obtained from the /etc/passwd file.
+
+The -e option checks if the user has mail. No mail is read. The Mail uility
+returns
+
+     0    There is mail
+     1    There is no mail
+
+The -g option sends mail to members of a specified group(s). Group members are
+defined in the /etc/group file.
+
+The -v option displays the list of users who received mail.
+
+The -f option must be followed by a path name. The Mail utility will read the
+mail from the specified file instead of the file "/usr/mail/user-name".
+
+Commands
+
+After a section of mail is displayed, the user is prompted for what to do with
+the mail. A single line is read and interpreted as follows:
+
+     d              Delete the message and go on to the next section
+                    of mail.
+
+     +              Keep the current section of mail and display the next
+                    section of mail. Do nothing if there is no next
+                    section.
+
+     -              Keep the current section of mail and display the
+                    previous section of mail. Do nothing if there is
+                    no previous section.
+
+     p              Print the same section of mail again.
+
+     s [files]      Save the current section of mail into named files.
+                    The mail is appended to all the named files. The Mail
+                    utility called with the -f option can be used to
+                    inspect such saved mail. If there are no files
+                    specified, the mail is saved to the file "../mbox".
+
+     w files        The section of mail is written to all named files.
+                    The files should not previously exist The Mail is
+                    written without the Mail time stamp.
+
+     m users        Forward the section of mail the the named users.
+                    If there is no user named, the mail is forwarded
+                    to you.
+
+     !              command The Mail utility will execute this command.
+
+     q              Put back all undeleted mail and stop.
+
+     x              Put back all mail, deleted or not, and stop.
+
+     CONTROL-Z      Same as q.
+
+     CONTROL-C      Same as x.
+
+     Any other      Show a short help file.
+
+Notes
+
+Upon logging in to the system, a user is informed if there is mail.
+
+Command examples.
+
+! mail person
+
+     Immediatelly send the reply to the person.
+
+! ls
+
+     Execute the Ls utility.
+
+! shell
+
+     Start an interactive Shell.
+

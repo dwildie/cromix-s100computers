@@ -1,0 +1,32 @@
+Shell
+command:      DAEMON
+purpose:      This command prints the files spooled by the spool utility.
+
+user access:  all users
+
+summary:      daemon device-name
+
+arguments:    pathname of the device to be run by Daemon
+
+options:      none
+
+Description
+
+The Daemon command is usually run detached. Typically, it is started by the
+Spool utility, though a user can start it himself.
+
+The Daemon will examine the /usr/spool directory and select all files, one at
+a time, that are to be printed on the specified device. The files are selected
+in order of increasing priority. Files that were spooled with a forms number
+different than the current forms number are skipped. The Daemon keeps running
+until it runs out of eligible files, or until killed by the Spool utility or
+by the user. Only one Daemon can be running per device. If another Daemon is
+started to run the same device while the first one is still active, the new
+Daemon will die immediately.
+
+Example:
+
+     jim[1] daemon /dev/typ &
+
+This command starts a detached Daemon to print the files spooled on typ
+printer.

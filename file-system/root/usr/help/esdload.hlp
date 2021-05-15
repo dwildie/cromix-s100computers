@@ -1,0 +1,23 @@
+utility:      ESDLOAD
+purpose:      This program loads a program into an ESDC board.
+
+user access:  Privileged user
+
+summary:      esdload filename device
+
+arguments:    filename of program to be loaded
+
+              ESDC device to be loaded
+
+options:      none
+
+Description
+
+The Esdload utility loads a file into an Esdc board. (SCSI and hard disk
+controller). This utility is normally used to load the Esdc firmware
+(/etc/esdcfirm) into an Esdc. Esdload is found in the /etc directory.
+
+Note
+
+Only one device per controller need be downloaded, but that device can be
+either an SCTP device or an ESDC device.

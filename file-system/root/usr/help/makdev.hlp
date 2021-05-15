@@ -1,0 +1,36 @@
+utility:      MAKDEV
+purpose:      This program creates a device file.
+
+user access:  all users
+
+summary:      makdev [-c] devname b/c majornum minornum
+
+arguments:    device name
+
+              block or character device specification
+
+              major device number
+
+              minor device number
+
+options:      -c   conditional
+
+Description
+
+The Makdev utility associates a device drive number with a name. After the
+program is executed, references to the device name refer to the device
+indicated by the device number.
+
+Options
+
+The -c option displays an error message if no device driver corresponds to the
+specified device number.
+
+Notes
+
+Makdev calls for two numbers in its arguments: a major device number, which is
+the driver number, and a minor device number, which is the device number.
+
+Some utilities demand that certain devices be owned by bin. For example, Spool
+expects the print devices to be owned by bin. Use the Chowner utility to
+change device ownership as needed.

@@ -1,0 +1,289 @@
+library:      KSCLIB.OBJ
+purpose:      Object time library of C callable functions to communicate
+              with a Ksam process running in the backgroud.
+
+user access:  all users
+
+summary:      jlinker ... -lksc -lc
+
+Description
+
+The Ksam utility uses inter-process communications (IPC) facilities. This
+means that it can only run on Cromix-Plus version 31.06 or higher. The system
+must be "Crogened" with parameters for messages and shared memory (semaphores
+are not used).
+
+For user programs to be able to use Ksam calls, the Ksam utility must be
+running (in the background).
+
+Each Ksam user must first call the function ksstart (explained below) to
+establish communications with Ksam. The ksstart function must reference the
+the lockfile which Ksam was given as an argument when it was started.
+
+The functions from this library return:
+
+     0       Execution successful
+     > 0     Ksam error number
+     < 0     System error number in extern int errno
+
+User's viewpoint of Ksam
+
+From the user's viewpoint, Ksam is a set of functions which can be linked into
+his program. At present these functions are available only to 68000 C
+programs. The functions are stored in the library /usr/lib/ksclib.obj. In the
+future there will be interface functions available for use from other
+languages.
+
+Each Ksam function returns an error number. Zero indicates no error. Numbers
+less than 1000 are Cromix error numbers; number greater or equal to 1000 are
+Ksam error numbers (described in Ksam.h).
+
+Most functions listed below have a filename as the first argument. This
+filename identifies the data base Ksam is to work on.
+
+     ksstart(lockfile)
+     char *lockfile;
+
+This is the first function that has to be called from a user program to
+establish communications with the Ksam process. The lockfile given must be the
+same file the /etc/ksam was started with.
+
+     ksbuild(filename,recordsize,access)
+     char *filename;
+     int recordsize;
+     int access;
+
+This function builds an empty data base. This means that the files
+filename.dat and filename.btr are created and initialized to an empty data
+base with NO indices. The data base records will be recordsize bytes each.
+The files will be created with access privileges defined by access. The
+integer access is understood as 12 bits in the usual sense:
+
+     11
+     1098 7654 3210
+     rewa.rewa.rewa
+
+     ksaddkey(filename,keypos,dupsarray)
+     char *filename;
+     short keypos[7,2];
+     char *dupsarray;
+
+A key defined by keypos is added to the data base. A data base can have up to
+seven keys. Each key is defined by up to seven pairs of (short) integers.
+Each pair quotes the starting and ending byte position of a part of the key.
+The bytes are counted from zero. Unused pairs should be set to (-1, -1). If
+the string dupsarray contains the string "dups" (or "DUPS" and the like),
+records with identical keys are allowed.
+
+     ksdelkey(filename,keypos)
+     char *filename;
+     short keypos[7,2];
+
+The index key identified by keypos is removed from the data base. The space
+occupied by the removed index entries goes into the index free list.
+
+     ksrename(filename,newname)
+     char *filename;
+     char *newname;
+
+Rename files forming the data base. Filename is the old name, newname is the
+new name.
+
+     kserase(filename)
+     char *filename;
+
+The data base called filename is destroyed.
+
+     ksopen(filename)
+     char *filename;
+
+The data base identified by filename is open for processing. The data base
+must be open before it can be read or modified.
+
+     ksread(filename,keypos,keyvalue,keylength,record)
+     char *filename;
+     short keypos[7,2];
+     char *keyvalue;
+     int keylength;
+     char *record;
+
+This function will find the record identified by the keyvalue string of
+keylength bytes. The keyvalue will be compared to the keys stored in the index
+file. The index will be identified according to keypos.  Keylength can be
+smaller than the size of key computed from keypos.  The first record that has
+a matching key in the first keylength characters will be found. The records
+are sorted by increasing key. If there are a number of records with identical
+keys, they are sorted by age, the oldest first. The record will be stored in
+record.
+
+If a matching key is not found the record with the smallest key which exceeds
+the given key will be returned. The ksread function will return the KS_NEXT
+error in this case.
+
+     ksnext(filename,record)
+     char *filename;
+     char *record;
+
+This function will read the next record in the index order.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious,
+ksretcurrent, or ksposition call.
+
+     ksprevious(filename,record)
+     char *filename;
+     char *record;
+
+This function will read the previous record in the index order.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious,
+ksretcurrent, or ksposition call.
+
+     ksfirst(filename,keypos,record)
+     char *filename;
+     short keypos[7,2];
+     char *record;
+
+This function will read the first record by the key identified by keypos.
+
+     kslast(filename,keypos,record)
+     char *filename;
+     short keypos[7,2];
+     char *record;
+
+This function will read the last record by the key identified by keypos.
+
+     ksphfirst(filename,record)
+     char *filename;
+     char *record;
+
+This function will read the first record in the physical order. No keys have
+to be defined.
+
+     ksphnext(filename,record)
+     char *filename;
+     char *record;
+
+This function will read the next record in the physical order. No keys have to
+be defined.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious, psfirst,
+phnext, ksretcurrent, or ksposition call.
+
+     ksaddrec(filename,record)
+     char *filename;
+     char *record;
+
+The record given in record will be added to the data base. All index trees
+will be updated.
+
+     ksdelrec(filename)
+     char *filename;
+
+The current record will be deleted from the data base.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious,
+ksretcurrent, or ksposition call.
+
+     ksretcurrent(filename,record)
+     char *filename;
+     char *record;
+
+The current record will be returned.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious,
+ksretcurrent, or ksposition call.
+
+     ksretuniqueid(filename,idptr)
+     char *filename;
+     long *idptr;
+
+This call returns in *idptr, a unique number to be used for building lock
+sequences for the lock/unlock system calls. This number will be incremented
+with each successful addrec call.
+
+     ksposition(filename,keypos,keyvalue,keylength)
+     char *filename;
+     short keypos[7,2];
+     char *keyvalue;
+     int keylength;
+
+This call does all the actions the call ksread would do without actually
+reading the record. Following this call, the current record is defined so
+that, for example, ksdelrec or ksupdate can be called.
+
+     ksupdate(filename,record)
+     char *filename;
+     char *record;
+
+The current record will be deleted and the record identified  by  record  will
+be inserted.  The call is strictly equivalent to the sequence:
+
+     ksdelrec followed by ksaddrec
+
+treated as an indivisible operation.
+
+This call must be preceded by a ksread, ksfirst, ksnext, ksprevious,
+ksretcurrent, or ksposition call.
+
+     ksclose(filename)
+     char *filename;
+
+This call will flush all Ksam buffers belonging to the data base and close the
+files. Whenever Ksam receives a command, it will close all files of dead
+users. However, if other users have the data base open it will not be flushed
+this way.
+
+     ksstop()
+
+This call will break communications with Ksam and issue a ksclose for files
+opened by this user.
+
+     kslock(string,length,type)
+     char *string; int length, type;
+
+Identical to the lock system call except for rearranged arguments.
+
+     ksunlock(string,length,type)
+     char *string; int length, type;
+
+Identical to the lock system call except for rearranged arguments.
+
+Ksam interface information
+
+Ksam communications can be described as follows:
+
+The Ksam process is supposed to be started as a detached process. This process
+creates a message queue and then waits until a message (with a message number
+KSAMMSG, which is not a valid process ID) is received.
+
+When a user program wants some service from the Ksam process, it opens the
+Ksam message queue. The user process then sends the first message to Ksam.
+All messages sent by the user program to Ksam have the same format: the
+message number is KSAMMSG, the contents of the message are two integers: the
+process's own PID, and the Ksam call number. The first Ksam call sent over the
+message system must be ksstart. The user process sends this message and then
+waits for a message with his own PID as the message number.
+
+When Ksam recieves a message it takes the process PID from the message body.
+The first call from each user is supposed to be ksstart, which causes Ksam to
+initialize itself to serve another user (the user with this PID). Ksam then
+creates a shared memory segment for the user, and sends back a message to the
+the user. All messages sent from Ksam have the destination process PID as the
+message number and Ksam error code as the body of the message.
+
+The user process receives this message next, and in the case of 0 errors,
+communications are established. For each service call, the user can attach the
+shared memory segment (created by Ksam), move all data into the shared memory
+segment, and send a command to Ksam.
+
+Ksam receives the command, attaches the shared memory segment itself, pretends
+he is the user himself, and executes the normal Ksam function.  The return
+data is put into the shared memory segment, the shared memory is detached, and
+a message which contains the error code is sent to the user.
+
+The user code receives the response message, moves the results from the shared
+memory to normal memory, and detaches the shared memory segment.
+
+This sequence of events can go on indefinitely. The Ksam process is intended
+to run continuously. If it gets killed, the user interface is informed
+accordingly.

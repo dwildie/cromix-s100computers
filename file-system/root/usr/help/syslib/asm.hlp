@@ -1,0 +1,476 @@
+	  Summary of System Calls from 68000 Assembler
+
+	  The system call instruction (Jsys) will return with  the  Carry  bit
+	  clear  if  the  call  was  successful.  If the call was unsuccessful
+	  for any reason, the Carry bit will be set and the D0  register  will
+	  contain the error number.
+
+_alarm
+	       move.L   <number of seconds>, D3
+	       jsys     #_alarm
+
+_boot
+	       lea      <address of new system>, A0
+	       move.L   <size>, D1
+	       jsys     #_boot
+
+_caccess
+	       move     <channel>, D1
+	       move     <access bits>, D2
+	       jsys     #_caccess
+
+_cchstat
+	       move     <channel>, D1
+	       move     <status type>, D2
+	       move     <new value>, D3
+	       move     <access mask>, D4           (only for access)
+	       lea      <buffer>, A1                (only for times)
+	       jsys     #_cchstat
+
+_chdup
+	       move     <existing channel>, D1
+	       jsys     #_chdup
+	       move.L   D2, <duplicate channel>
+
+_chkdev
+	       move     <type of device>, D2
+	       move     <major device number>, D3
+	       move     <minor device number>, D4
+	       jsys     #_chkdev
+
+_clink
+	       move     <channel>, D1
+	       lea      <new pathname>, A1
+	       jsys     #_clink
+
+_close
+	       move     <channel>, D1
+	       jsys     #_close
+
+_create
+	       lea      <pathname>, A0
+	       move     <access mode>, D2
+	       move     <exclusive mask>, D3
+	       jsys     #_create
+	       move.L   D1, <channel>
+_cstat
+	       move     <channel>, D1
+	       move     <status type>, D2
+	       lea      <buffer>, A1                (if necessary)
+	       jsys     #_cstat <depends on status type>
+
+_delete
+	       lea      <pathname>, A0
+	       jsys     #_delete
+
+_divd
+	       move.L   <dividend>, D1
+	       move.L   <divisor>, D2
+	       jsys     #_divd
+	       move.L   D3,<quotient>
+	       move.L   D4,<remainder>
+
+_error
+	       move     <error number>, D0
+	       move     <channel>, D1
+	       lea      <pathname>, A0              (if needed)
+	       lea      <alternate pathname>, A1    (if needed)
+	       jsys     #_error
+
+_exchg
+	       move     <channel number>, D1
+	       move     <channel number>, D2
+	       jsys     #_exchg
+
+_exec
+	       lea      <argument list>, A1
+	       lea      <pathname>, A0
+	       jsys     #_exec
+
+_exit
+	       move     <termination status>, D3
+	       jsys     #_exit
+
+_faccess
+	       move     <access bits>, D2
+	       lea      <pathname>, A0
+	       jsys     #_faccess
+
+_fchstat
+	       lea      <pathname>, A0
+	       move     <status type>, D2
+	       move     <new value>, D3
+	       move     <access mask>, D4           (only for access)
+	       lea      <buffer>, A1                (only for times)
+	       jsys     #_fchstat
+
+_fexec
+	       lea      <argument list>, A1
+	       lea      <pathname>, A0
+	       move     <signal mask>, D1
+	       move     <signal values>, D2
+	       jsys     #_fexec
+	       move.L   D3, <new PID>
+
+_flink
+	       lea      <old pathname>, A0
+	       lea      <new pathname>, A1
+	       jsys     #_flink
+
+_fshell
+	       lea      <argument list>, A1
+	       move     <signal mask>, D1
+	       move     <signal values>, D2
+	       jsys     #_fshell
+	       move.L   D3, <new PID>
+
+_fstat
+	       lea      <pathname>, A0
+	       move     <status type>, D2
+	       lea      <buffer>, A1                (if necessary)
+	       jsys     #_fstat
+
+_getdate
+	       jsys     #_getdate
+	       move.L   D0, <weekday>
+	       move.L   D1, <year>
+	       move.L   D2, <month>
+	       move.L   D3, <day>
+
+_getdir
+	       lea      <buffer>, A0
+	       jsys     #_getdir
+
+_getgroup
+	       move     <id type>, D2
+	       jsys     #_getgroup
+	       move.L   D3, <group number requested>
+
+_getmode
+	       move     <channel>, D1
+	       move     <mode type>, D2
+	       jsys     #_getmode
+	       move.L   D3, <mode value>
+
+_getpos
+	       move     <channel number>, D1
+	       jsys     #_getpos
+	       move.L   D3, <file position>
+
+_getprior
+	       jsys     #_getprior
+	       move.L   D3, <process priority>
+
+_getproc
+	       jsys     #_getproc
+	       move.L   D3, <PID>
+
+_gettime
+	       jsys     #_gettime
+	       move.L   D1, <hour>
+	       move.L   D2, <minute>
+	       move.L   D3, <second>
+
+_getuser
+	       move     <id type>, D2
+	       jsys     #_getuser
+	       move.L   D3, <user>
+
+_indirect
+	       move     <call number>, D0
+	       ;all other registers as required by the call
+	       jsys     #_indirect
+
+_kill
+	       move     <signal type>, D2
+	       move     <process id>, D3
+	       jsys     #_kill
+
+_lock
+	       move     <lock type>, D2
+	       move     <lock length>, D3
+	       lea      <lock sequence>, A0
+	       jsys     #_lock
+
+_makdev
+	       move     <type of device>, D2
+	       move     <major device #>, D3
+	       move     <minor device #>, D4
+	       lea      <pathname>, A0
+	       jsys     #_makdev
+
+_makdir
+	       lea      <pathname>, A0
+	       jsys     #_makdir
+
+_memory
+	       move.L   <mask>, D1                  (if allocating)
+	       move     <type>, D2
+	       move.L   <size>, D3
+	       lea      <memory pointer>, A0        (if deallocating)
+	       jsys     #_memory
+	       move.L   A0, <memory pointer>        (if allocating)
+
+_mount
+	       move     <type of access>, D2
+	       lea      <dummy pathname>, A0
+	       lea      <block device pathname>, A1
+	       jsys     #_mount
+
+_msgctl
+	       move.L   <msqid>, D1
+	       move.L   <command>, D2
+	       lea      <buffer>, A0
+	       jsys     #_msgctl
+
+_msgget
+	       move.L   <key>, D1
+	       move.L   <msgflg>, D2
+	       jsys     #_msgget
+	       move.L   D3, <msqid>
+
+_msgrcv
+	       move.L   <msqid>, D1
+	       move.L   <msgflg>, D2
+	       move.L   <msgsz>, D3
+	       move.L   <msgtyp>, D4
+	       lea      <message>,A0
+	       jsys     #_msgrcv
+	       move.L   D3, <msgsz>
+
+_msgsnd
+	       move.L   <msqid>, D1
+	       move.L   <msgflg>, D2
+	       move.L   <msgsz>, D3
+	       lea      <message>,A0
+	       jsys     #_msgsnd
+
+_mult
+	       move.L   <multiplicand>, D1
+	       move.L   <multiplicator>, D2
+	       jsys     #_mult
+	       move.L   D3,<product>
+
+_open
+	       lea      <pathname>, A0
+	       move     <access mode>, D2
+	       move     <exclusive mask>, D3
+	       jsys     #_open
+	       move.L   D1, <channel>
+
+_pause
+	       jsys     #_pause
+
+_phys
+	       lea      <addr>, A0
+	       move.L   #<size>, D3
+	       move     #<access>, D2
+	       jsys     #_phys
+
+_pipe
+	       jsys     #_pipe
+	       move.l   D1, <reading side>
+	       move.l   D2, <writing size>
+
+_printf
+	       move     <channel>, D1
+	       lea      <control string>, A0
+	       ;push all arguments, last argument first
+	       jsys     #_printf
+	       ;pop all arguments
+
+_ptrace
+	       move     <function code>, D1
+	       move     <pid>, D2
+	       lea      <address>, A0
+	       lea      <data>, A1
+	       move.L   <count>, D3
+	       jsys     #_ptrace
+
+_rdbyte
+	       move     <channel>, D1
+	       jsys     #_rdbyte
+	       move.L   D0, <value read>
+
+_rdline
+	       move     <channel>, D1
+	       move.L   <maximum bytes>, D3
+	       lea      <buffer>, A0
+	       jsys     #_rdline
+	       move.L   D3, <bytes read>
+
+_rdseq
+	       move     <channel>, D1
+	       move.L   <byte count>, D3
+	       lea      <buffer>, A0
+	       jsys     #_rdseq
+	       move.L   D3, <bytes read>
+
+_semctl
+	       move.L   <semid>, D1
+	       move.L   <command>, D2
+	       move.L   <semnum>,D4
+	       move.L   <arg>, D3
+	       jsys     #_semctl
+	       move.L   D3,<return value)
+
+_semget
+	       move.L   <key>, D1
+	       move.L   <semflg>, D2
+	       move.L   <nsems>, D4
+	       jsys     #_semget
+	       move.L   D3, <semid>
+
+_semop
+	       move.L   <semid>, D1
+	       move.L   <nsops>, D2
+	       move.L   <sembuf>, A0
+	       jsys     #_semop
+
+_setdate
+	       move     <year>, D1
+	       move     <month>, D2
+	       move     <day of the month>, D3
+	       jsys     #_setdate
+
+_setdir
+	       lea      <buffer>, A0
+	       jsys     #_setdir
+
+_setgroup
+	       move     <type of id to change>, D1
+	       move     <new id type>, D2
+	       move     <new id number>, D3
+	       jsys     #_setgroup
+
+_setlev
+	       move.L   <interrupt level>,D1
+	       jsys     #_setlev
+
+_setmode
+	       move     <channel>, D1
+	       move     <mode type>, D2
+	       move.L   <new value>, D3
+	       move     <mask>, D4
+	       jsys     #_setmode
+	       move.L   D3, <old value>
+
+_setpos
+	       move     <channel number>, D1
+	       move     <mode>, D2
+	       move.L   <file pointer>, D3
+	       jsys     #_setpos
+
+_setprior
+	       move     <priority number>, D3
+	       jsys     #_setprior
+
+_settime
+	       move     <hours>, D1
+	       move     <minutes>, D2
+	       move     <seconds>, D3
+	       jsys     #_settime
+
+_setuser
+	       move     <type of id to change>, D1
+	       move     <new id type>, D2
+	       move     <new id number>, D3
+	       jsys     #_setuser
+
+_shell
+	       lea      <argument list>, A1
+	       jsys     #_fexec
+
+_shmat
+	       move.L   <shmid>, D1
+	       move.L   <shmflg>, D2
+	       jsys     #_shmat
+	       move.L   A0, <memptr>
+
+_shmctl
+	       move.L   <shmid>, D1
+	       move.L   <command>, D2
+	       lea      <buffer>, A0
+	       jsys     #_shmctl
+
+_shmdt
+	       move.L   <memptr>, A0
+	       jsys     #_shmdt
+
+_shmget
+	       move.L   <key>, D1
+	       move.L   <shmflg>, D2
+	       move.L   <size>,D4
+	       jsys     #_shmget
+	       move.L   D3, <shmid>
+
+_signal
+	       move     <type of signal>, D2
+	       lea      <execution address>, A0
+	       jsys     #_signal
+	       move.L   A0, <old trap address>
+
+_sleep
+	       move.L   <number of seconds to sleep>,D3
+	       jsys     #_sleep
+	       move.L   D3,<number of seconds left>
+
+_trunc
+	       move     <channel>, D1
+	       jsys     #_trunc
+
+_uchstat
+	       move     <process id>, D1
+	       move     <status type>, D2
+	       move     <new value>, D3
+	       jsys     #_uchstat
+
+_unlock
+	       move     <lock type>, D2
+	       move     <lock length>, D3
+	       lea      <lock sequence>, A0
+	       jsys     #_unlock
+
+_unmount
+	       move     <eject flag>, D2
+	       lea      <block device pathname>, A0
+	       jsys     #_unmount
+
+_update
+	       jsys     #_update
+
+_ustat
+	       move     <process id>, D1
+	       move     <status type>, D2
+	       jsys     #_ustat
+	       move.L   D3,<status value>
+
+_version
+	       jsys     #_version
+	       move.L   D3, <version number>
+
+_wait
+	       move     <conditional flag>, D1
+	       move     <process ID>, D3
+	       jsys     #_wait
+	       move.L   D3, <child PID>
+	       move.L   D2, <termination status>
+	       move.L   D1, <signal number >
+
+_wrbyte
+	       move     <channel>, D1
+	       move.B   <byte>, D0
+	       jsys     #_wrbyte
+
+_wrline
+	       move     <channel>, D1
+	       lea      <buffer>, A0
+	       jsys     #_wrline
+	       move.L   D3, <bytes written>
+
+_wrseq
+	       move     <channel>, D1
+	       move.L   <byte count>, D3
+	       lea      <buffer>, A0
+	       jsys     #_wrseq
+	       move.L   D3, <bytes written>

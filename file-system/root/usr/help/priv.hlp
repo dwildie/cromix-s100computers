@@ -1,0 +1,27 @@
+utility:      PRIV
+purpose:      This program allows any user the status of a privileged user.
+
+user access:  all users
+
+summary:      priv [command]
+
+arguments:    optional command
+
+options:      none
+
+Description
+
+The Priv utility examines the /etc/passwd file for a user named system. If
+this user is not found, an error message is displayed and execution of the
+utility is aborted.
+
+If the user named system is found and there is a password associated with the
+user, the Priv utility prompts for the password. If the user responds with the
+correct password or if no password is associated with the user system, a new
+Shell is formed in which the user has the status of a privileged user.
+
+If Priv was called without an argument, the new Shell is an interactive one.
+If there was a command supplied as an argument to the Priv command, the
+specified command will be executed by the privileged Shell.
+
+Upon exiting from the new Shell, the user's previous status is reinstated.

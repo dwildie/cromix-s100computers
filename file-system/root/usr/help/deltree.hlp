@@ -1,0 +1,32 @@
+utility:      DELTREE
+purpose:      This program deletes a tree, including all files and subtrees.
+
+user access:  all users
+
+summary:      deltree [-a] pathname [file-list]
+
+arguments:    pathname
+
+options:      -a   suppresses user verification
+
+Description
+
+The Deltree utility deletes all files and subtrees in the tree (directory)
+specified. Normally, Deltree prompts the user with the file or directory name,
+followed by a question mark. If the user types y, the file or directory is
+deleted; otherwise it is not. If the -a option is used, Deltree asks once
+whether the user really wants to delete the entire tree, instead of prompting
+for verification of each file. If the user types y, all files and subtrees are
+deleted. If "n" is typed, Deltree returns control to the Shell.
+
+If Deltree is called from within the specified directory, the program will not
+allow the deletion of that directory. All the files must be deleted from a
+directory before the directory itself is deleted.
+
+If the directory pathname is followed by a list of filenames, only the
+corresponding files will be deleted.
+
+Options
+
+After asking for verification, the -a option deletes all files and subtrees
+automatically.

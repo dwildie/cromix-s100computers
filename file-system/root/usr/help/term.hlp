@@ -1,0 +1,23 @@
+Shell
+command:      TERM
+purpose:      This command displays or changes the terminal name.
+
+user access:  all users
+
+summary:      term [terminal_name]
+
+arguments:    optional terminal name
+
+options:      none
+
+Description
+
+Each process is associated with a terminal name, and the name of each terminal
+is initially defined in the /etc/ttys file. To display the name of the current
+terminal, enter the Term command with no arguments; to change the terminal
+name, enter the Term command with the name of the new terminal.
+
+Terminal names are case sensitive, and should be four characters long. The
+terminal name must be defined by a set of terminal attributes in the
+/etc/termcaps file. If your terminal is not defined in the /etc/termcaps file,
+you must update the file (refer to the section on TERMCAPS).

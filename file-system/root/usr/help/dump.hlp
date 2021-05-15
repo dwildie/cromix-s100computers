@@ -1,0 +1,48 @@
+utility:      DUMP
+purpose:      This program displays a file in hexadecimal and ASCII.
+
+user access:  all users
+
+summary:      dump [-b #] [file-list]
+                   [-e #]
+                   [-k #]
+                   [-s #]
+                   [-o #]
+
+arguments:    one or more optional file pathnames
+
+options:      -b   first byte
+              -e   last byte
+              -k   first block
+              -s   width
+              -o   offset address
+
+Description
+
+The Dump program displays the file(s) specified by the pathname(s). When
+called without an argument, Dump waits for input from the standard input.
+
+Dump displays any type of file. The file is displayed in hexadecimal with an
+ASCII equivalent to one side. All numeric arguments to the Dump utility are
+assumed to be decimal numbers unless followed by an h (for hexadecimal).
+
+Options
+
+The -b option allows the user to specify the first byte of a file to be
+dumped.
+
+The -e option allows the user to specify the last byte of a file to be dumped.
+
+The -k option allows the user to specify the first block to be dumped.
+
+The -s option allows the user to specify the swath width of the dump.
+
+The -o option causes a specified offset to be added to all addresses displayed
+by Dump.
+
+Example:
+
+     jim[1] dump -b 1000h -e 5000h filename
+
+This command dumps the file filename starting with the 1000th (hex) byte and
+ending with the 5000th (hex) byte.

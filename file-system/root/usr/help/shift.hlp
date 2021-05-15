@@ -1,0 +1,23 @@
+Shell
+command:      SHIFT
+purpose:      This command shifts the arguments in a command file.
+
+user access:  all users
+
+summary:      shift
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Shift command is used to shift the arguments in a command file. After
+execution of the Shift command, #1 represents the second argument from the
+original command line, #2 represents the third, and so on. After another
+execution of the Shift command, #1 represents the third argument, etc.
+
+The Rewind command nullifies the effects of the Shift command.
+
+For examples of the Shift and Rewind commands, refer to the sample command
+file under the discussion of the Exit command.

@@ -1,0 +1,21 @@
+function:       cxexit
+purpose:        Terminate the current process.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int cxexit(status)
+                int status
+
+Description
+
+Terminate the current process and return process termination status to the
+parent process. The wait function issued by the parent process will return
+this value as its process termination status.
+
+This function implements the _exit system call. The C callable function exit
+as described in the C manual does more than just a simple cxexit.
+
+The cxexit function does not return.

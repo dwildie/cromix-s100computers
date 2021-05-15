@@ -1,0 +1,9 @@
+
+CWD, CD - Change Kermit working directory.
+
+		Usage:
+
+		CWD <directory-pathname>
+
+The CWD command changes Kermit's working directory to the directory specified. 
+If none has been specified, the home directory is assumed.

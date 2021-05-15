@@ -1,0 +1,81 @@
+utility:      SFILE
+purpose:      This program allows binary files to be sent between users over
+              the phone lines with error free results.
+
+user access:  all users
+
+summary:      sfile [-q] [-d device-name]  [-b baud-rate] file-list
+
+arguments:    one or more filenames
+
+options:      -q   quiet (default is verbose)
+              -d   qtty device name (default is STDOUT)
+              -b   baud rate (default is current baud rate)
+
+Description
+
+The Sfile utility allows binary disk files to be transmitted from a user on
+one Cromix system to a user on another Cromix system using the Rfile utility
+to receive files.
+
+Sfile operates at either 300 or 1200 baud. It must use an asynchronous modem
+such as the Cromemco MDM-1200, a Bell 212A, or a Bell 103 type. The modem used
+must be compatible with the modem the Rfile utility is using to receive the
+data. The modem can be connected to any serial port on the Quadart using a
+12-wire cable constructed for this purpose.
+
+The qtty driver is used to connect Sfile with the IOP/Quadart and modem. The
+Cromix-Plus system being used must include the IOP/Quadart drivers (refer to
+Crogen), and a device file for the qtty should be set up in the /dev directory
+using Makdev. The corresponding entry in the /etc/ttys file should have a 0 in
+the first column.
+
+Messages returned by Sfile
+
+Now waiting for call to complete ...
+
+Sfile is waiting for a connection to be made with another modem over the phone
+lines. This call can either be dialed manually using Bell equipment, or the
+MDM-1200 can dial the number and establish the connection automatically.
+
+No answer -- Call aborted
+
+If a connection is not established within 60 seconds, Sfile exits to the
+Cromix Shell.
+
+Transmitting [filename] to [devname]
+
+When a valid connection is established with the Rfile utility at the other
+end, the specified file is transmitted through the specified qtty device.
+
+Rfile not responding -- Sfile aborted
+
+If a connection is established with another modem, Sfile determines if the
+Rfile utility is ready at that end. If Rfile is not running at the other end,
+or if Rfile is running at an incompatible baud rate, Sfile disconnects the
+line and exits to the Cromix Shell.
+
+Connection lost -- ABORT SFILE
+
+The line was disconnected in the middle of a transmission; Sfile exits to the
+Cromix Shell.
+
+ABORT SFILE
+
+A CONTROL-C character was received from the user at the keyboard; Sfile does
+an orderly exit to the Cromix Shell.
+
+Options
+
+The -q option specifies a different set of Sfile console messages. (Used by
+CCall and when Sfile is running on a remote system.)
+
+The -d option specifies which qtty device is to be the transmitter.
+
+The -b option sets the baud rate of the transmitting device.
+
+Notes
+
+Sfile is used in conjunction with Rfile. Refer to the Rfile utility for
+additional information. When called without an argument, Sfile displays a
+summary of the command-line syntax.

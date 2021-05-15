@@ -1,0 +1,78 @@
+Shell
+command:      DELETE or DEL
+purpose:      This command deletes a file.
+
+user access:  all users
+
+summary:      del [-v] pathname(s)
+
+arguments:    one or more pathnames
+
+options:      -v  verbose
+
+Description
+
+The Delete command removes a link to a file. If there is only one link to the
+file, the file is no longer accessible, and the space it occupied is made
+available.
+
+Options
+
+The -v option displays the name of each file as it is deleted.
+
+Notes
+
+To remove all links to a file, making it inaccessible, use the Ls command with
+the -i option to find the inode number of the file in question. Use that inode
+number as an argument to Ncheck, and find the names of all files linked to the
+file.
+
+A directory may be deleted by specifying a directory pathname.
+
+In order to delete a directory, it must not:
+
+1.  Contain any files;
+
+2.  Be the current directory for any user; or
+
+3.  Be the root directory of a device.
+
+Examples:
+
+In the following example, the file named schedule is deleted from the current
+directory.
+
+     jim[1] ls -m
+
+         3,016   1 letter
+           200   1 memo
+         1,408   1 schedule
+
+     jim[2] del schedule
+     jim[3] ls -m
+
+         3,016   1 letter
+           200   1 memo
+
+If there is more than one link to a file and one of the links is deleted, the
+file is no longer accessible through that link. The file remains on disk and
+is accessible through the remaining links.
+
+The following example concerns itself with part of the /dev directory. Suppose
+that the device file prt is linked to the dot-matrix printer device file lpt1.
+In the first listing that follows, the link is shown by the 2 preceding each
+filename. When the file prt is deleted, the file lpt1 remains intact, and the
+number of links is reduced to one.
+
+     system[1] ls -m
+
+     5:5  C    2 lpt1
+     5:5  C    2 prt
+     6:5  C    1 typ1
+
+     system[2] del prt
+     system[3] ls -m
+
+     5:5  C    1 lpt1
+     6:5  C    1 typ1
+

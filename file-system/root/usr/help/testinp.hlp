@@ -1,0 +1,57 @@
+utility:      TESTINP
+purpose:      This program tests for equality between the contents of a file
+              and a particular string.
+
+user access:  all users
+
+summary:      testinp [-dfr] file string(s)]
+
+arguments:    file pathname
+
+              one or more strings
+
+options:      -d   delete
+              -f   compare file after test first characters
+              -r   reverse sense of test
+
+Description
+
+This utility compares the contents of a file to a string or strings and sets
+an error return code if one of the strings does not match the contents of the
+file specified.
+
+The test made by Testinp is case insensitive. Testinp tests for equality
+between the file and the string. To locate text strings embedded in the text
+of a file, use the Match utility.
+
+Options
+
+The -r option reverses the sense of Testinp by setting the error code if a
+match does occur.
+
+The -f option checks only the first character of the file passed as an
+argument against the first character of each of the control strings.
+
+The -d option deletes the file passed as an argument after the test. This
+option is useful in many command files using a temporary file created during
+the command file execution.
+
+Example:
+
+     echo "Do you want to shut down the system?"
+     input > temp
+     testinp -d temp YES OUI SI
+     if -err goto noshutdown
+     kill -2 1
+     %noshutdown
+
+The example above is a typical command file that uses Testinp and Input. The
+first line sends the string within quotation marks to the standard output. The
+second line uses the Input utility to send the user's response to the file
+temp. On the third line, Testinp tests the contents of the file temp for
+occurrences of the strings YES, OUI, or SI. Testinp then deletes temp. If the
+file contains one of the control strings, the system is shut down using the
+Kill command. If the file temp does not contain one of the control strings,
+Testinp sets an error code. The command that follows passes control to the
+label noshutdown. If the user answers no to the question, the system is not
+shut down.

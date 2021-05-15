@@ -1,0 +1,33 @@
+function:       clink
+purpose:        Establish an additional link to an open file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int clink(channel,pathname)
+                int channel; char *pathname;
+
+Description
+
+The clink call establishes a link from the file open on the specified channel
+to the new file pathname. The new file pathname must not exist before the
+clink call is made.
+
+The function returns:
+
+     0              if successful;
+     ERR            if error
+
+Common errors:
+
+     _badname            The suggested pathname is an illegal Cromix pathname.
+     _isdir              A directory cannot be linked.
+     _numlinks           The file has too many links.
+     _diraccess          The user does not have the appropriate access
+                         to create the new pathname.
+     _notopen            The specified channel is not open.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

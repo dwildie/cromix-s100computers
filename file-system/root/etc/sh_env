@@ -1,0 +1,9 @@
+% @(#)sh_env	1.2 (4/7/87)
+% Default Shell Environment
+% It is intended to describe the traditional
+% search paths as accurately as possible.
+% The directory /usr/bin was added.
+%
+
+    path    :/ram:/bin:/cmd:/usr/bin
+    ext     bin:com:cmd

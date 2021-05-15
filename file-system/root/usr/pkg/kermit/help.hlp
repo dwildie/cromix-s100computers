@@ -1,0 +1,46 @@
+
+HELP, H, ? - Help on Kermit facilities.
+
+Usage:
+
+		HELP <command-list>
+	or
+		<command> ?
+
+The help system works just like CROMIX Help.  In brief, you receive a page full
+of help text at a time;
+
+      SPACE moves forward through the pages,   B goes back to the beginning,
+      RETURN moves forward line by line,       U up one page and finally
+                      Q gets you out back to the Kermit prompt.
+				
+Don't worry if the Help continuation prompt appears somewhere funny - its just
+that Cromix doesn't necessarily know what sort of terminal/emulation you are
+using.
+
+To get help on individual topics type 'help' followed by the topic name.
+
+Help on the following topics is available:  (hit the space bar for more...)
+
+HELP       or   H, ?              does:    print this explanatory message
+QUIT            STOP, EXIT, EX             exit Kermit
+CONNECT         C                          connect to a remote host
+SHOW . . . . . .DISPLAY, DIS, STATUS, STAT display a setting
+SET             =                          set an option
+SEND            S                          send a file
+RECEIVE         R                          receive a file
+SHELL. . . . . .SH, ! . . . . . . . . . . .enter subshell or execute a command
+TAKE            T                          execute a Kermit command file
+DEFINE          DEF, D                     define a macro
+TRANSMIT        TRANS                      transmit a file without protocol
+STATISTICS . . .STATS . . . . . . . . . . .display last file transfer statistics
+CWD             CD                         change Kermit's working directory
+SERVER                                     start the server
+GET             G                          get the specified files
+FINISH . . . . .FIN . . . . . . . . . . . .tell the other server to stop
+DISC                                       tell the remote to log off
+INITIAL         INIT                       exchange parameters
+REMOTE          REM                        execute a remote command
+PUSH. . . . . . . . . . . . . . . . . . . .enter a Kermit sublevel
+
+       (Press B to go back to the beginning or Q to get back to Kermit...)

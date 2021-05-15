@@ -1,0 +1,21 @@
+utility:      SHUTDOWN
+purpose:      This program shuts down the system.
+
+user access:  privileged user
+
+summary:      shutdown
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Shutdown program (/cmd/shutdown.cmd) contains commands to shut down the
+operating system by killing all processes, flushing buffers, and logging off
+all users. It first warns users and provides a five-second countdown.
+
+Shutdown also has a facility that works with the Startup command to detect
+inadvertent system terminations.
+
+Run the Shutdown program whenever system operation is to be terminated.

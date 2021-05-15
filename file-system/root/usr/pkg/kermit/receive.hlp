@@ -1,0 +1,10 @@
+
+RECEIVE, R - Receive a file.
+
+		Usage:
+
+		RECEIVE
+
+The RECEIVE command is used to accept files sent by another Kermit.  Typically
+the other Kermit will have been instructed to send the files by communicating
+with it using CONNECT and then escaping back to issue RECEIVE.

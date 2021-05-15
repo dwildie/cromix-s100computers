@@ -1,0 +1,143 @@
+utility:      PASSWD
+purpose:      This program changes the passwd and group files
+
+user access:  all users
+
+summary:      passwd [-dgnp] [user1 user2...]
+
+arguments:    user1 user2...
+
+options:      -d   delete
+              -g   group
+              -n   new user
+              -p   prompt
+
+Description
+
+The Passwd utility has four functions. It may be used to change a user's own
+password or prompt. A privileged user may use it to add and delete from the
+list of users permitted to log on to the system. By using the delete function
+followed by the add function, the privileged user may change the login status
+of any user.
+
+In any one of these four modes of operation, user name(s) are specified either
+on the command line or during the execution of the Passwd program.
+
+To change the password only, enter the command passwd followed by a RETURN.
+The Passwd program prompts for a user name and a new password.
+
+Options
+
+The -d option deletes a specified user or group.
+
+The -g option alters the /etc/group file (instead of the /etc/passwd file).
+
+The -n option adds new user(s) or group(s).
+
+The -p option will cause the program to change the prompt string instead of
+the password.
+
+Establishing a New User
+
+A new user may be added using the Passwd program. In the following example,
+the user logs on as the privileged user system and creates a new user fred
+with the password mountain:
+
+          Login: system
+
+          Logged in system May 18-1986 17:12:15 on console
+          system[1] passwd -n
+
+          Name: fred
+          Password:  xxx
+          User number: 5
+          Group number: 0
+          Directory: /usr/fred
+          Starting Program:
+          Prompt string: [%d]->
+
+          Name:
+          system[2]
+
+The Passwd program prompts for a user name. The response to this prompt is the
+user name typed in response to the Login: prompt. Press RETURN after entering
+the name.
+
+Next, the program prompts for a user password. If no password is desired,
+press RETURN in response to the prompt. If you do enter a password, it is
+encrypted, and the encrypted password displayed on the screen. When a user
+logs on, this password must be entered after the password prompt.
+
+The program prompts for the user and group identification numbers. Each of
+these is an unsigned integer between 0 and 65535. A zero in the user field
+indicates a privileged user. A zero in the group field indicates the user is
+not a member of any group. Any other number has significance only within a
+given system.
+
+The Directory: prompt allows specification of an initial directory, which is
+the user's home directory. If this directory does not exist, the system
+creates one. The user is the owner of this directory. If the home directory
+already exists, the Passwd utility prints this information.
+
+Next, the Passwd program prompts for a Starting program. If RETURN is pressed
+in response to the prompt, the user has full use of the Shell program. If the
+name of a program is entered here, the user is brought up running the program
+specified and is logged off upon exiting from the program.  Any valid Shell
+command line may be entered in response to this prompt.
+
+Finally, the Passwd program prompts for the Prompt string. If RETURN is
+pressed in response to the prompt, the login name followed by the command
+number in brackets will be used as a prompt string. Any other string may be
+entered instead. If the string contains the characters "%d", these characters
+will be replaced by the command number when the prompt is displayed.
+
+Deleting a User
+
+A user is deleted from the list of users (/etc/passwd file) by running the
+Passwd program with the -d option. In the following example, the user fred is
+deleted:
+
+          system[1] passwd -d
+
+          Name: fred
+
+          Name: RETURN
+          system[2]
+
+Note that only a privileged user may delete a user.
+
+Changing a Password and Prompt
+
+When called without any options, the Passwd program allows the privileged user
+to change any user's password and any user to change his or her own password.
+When called with -p option, the Passwd program allows the privileged user to
+change any user's prompt and any user to change his or her own prompt string.
+
+To change a password, call the Passwd program as follows:
+
+          system[1] passwd
+          Name: fred
+          Password: xxx
+
+          Name: RETURN
+          system[2]
+
+Notice that the password encryption is displayed only after the password and a
+RETURN have been entered.
+
+To change a prompt, call the Passwd program as follows:
+
+     system[1] passwd -p
+     Name: fred
+     Prompt string: xxx
+
+     Name: RETURN
+     system[2]
+
+Changing User Characteristics
+
+If the privileged user has occasion to change user characteristics other than
+the password or prompt, the user
+must be deleted and added again with the new
+characteristics.
+

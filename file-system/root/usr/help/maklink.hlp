@@ -1,0 +1,36 @@
+utility:      MAKLINK
+purpose:      This program creates another name for an existing file.
+
+user access:  all users
+
+summary:      maklink  [-fv] file-list dirname
+                       [-fv] source-file destination-file
+
+arguments:    filenames followed by a directory name
+
+              or
+
+              source file followed by destination file
+
+options:      -f       force
+              -v       verbose
+
+Description
+
+Every file you create has one link from its pathname to an inode. Thus, the
+Cromix-Plus system can access that file when you specify its pathname. The
+Maklink program creates additional links. In effect, Maklink creates another
+name (or pathname) for an existing file.
+
+Options
+
+The -f option causes the new link to overwrite another file with the same
+pathname if one exists. If the -f option is not used, and another file exists
+with the same name, an error results and Maklink is aborted.
+
+The -v option displays the names of files as they are being linked.
+
+Notes
+
+No link is possible between two different file systems.  That is, links cannot
+extend between two different devices (disks).

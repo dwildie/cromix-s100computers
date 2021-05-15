@@ -1,0 +1,179 @@
+utility:      CONVERT
+purpose:      Converts ASCII to EBCDIC and other transformations
+
+user access:  all users
+
+summary:      convert [-faslutbprge] [-i isize] [-o osize] [[inputfile]
+                    outputfile]
+
+arguments:    optional input filename
+              optional output filename
+
+options:      -f   input lines are fixed length
+              -a   convert to ASCII (from EBCDIC)
+              -s   strip trailing blanks
+              -l   convert to lower case
+              -u   convert to upper case
+              -t   expand TAB characters
+              -b   compress spaces in TAB characters
+              -p   pad output line with blanks
+              -r   insert CR in front of NL
+              -g   output lines are fixed length
+              -e   convert to EBCDIC (from ASCII)
+              -i # input line size
+              -o # output line size
+
+Description
+
+The Convert utility, reads lines from an input file, transforms those lines as
+specified, and writes the converted lines to an output file. The available
+options determine how the input lines are transformed; the arguments, if any,
+define the input and output file names.
+
+With no arguments, the Convert utility reads lines from standard input and
+writes the converted lines to standard output. If one argument is given, it is
+taken as the input filename (transformed lines are again written to standard
+output); if two arguments are given, they are taken as input and output
+filenames, respectively. In most cases a device file can be substituted for
+the input and/or output files.
+
+As usual, a dash "-" substituted for the input or output filenames represents
+the standard input or standard output, respectively.
+
+The Convert utility has no provisions for such functions as tape positioning.
+Use the Mode utility to perform such functions before calling the Convert
+utility. Since the general Rcopy utility can be piped into the Convert utility
+(or the output of the Convert utility can be piped into Rcopy), the Convert
+utility needs no specialized knowledge of I/O devices. It is best understood
+as a filter that transforms standard input to standard output.
+
+Options
+
+The -f option indicates that all input lines have a fixed length (determined
+by the -i option); without this option, lines are terminated by a "\n"
+character.
+
+The -a option converts EBCDIC input to ASCII output. EBCDIC characters with no
+convenient ASCII counterpart are changed to spaces. Since end-of-line
+characters (\n) are not recognized, the -f option must be used with the -a
+option.
+
+The -s option discards the trailing blanks in all input lines.
+
+The -l option converts upper case characters to lower case characters.
+
+The -u option converts lower case characters to upper case characters.
+
+The -t option replaces each TAB character with enough spaces to reach the next
+TAB position. The TAB positions are 1, 9, 17, and so on.
+
+The -b option compresses multiple spaces into TAB characters, based on TAB
+positions 1, 9, 17, and so on.
+
+The -p option pads output lines with blanks to match the line size set by the
+-o option.
+
+The -r option terminates each output line with \r\n rather than with \n alone.
+The -r option has no effect if the -g option is set.
+
+The -g option indicates that all output lines are of fixed length (determined
+by the -o option), and have no line terminators (intended for use with the -p
+option).
+
+The -e option converts ASCII input to EBCDIC output.
+
+The -i option followed by a number (i_size) defines the size of the input
+lines. If the -f option is set, each input line will be exactly i_size
+characters long; if the -f option is not set, the -i option defines the
+maximum input line size (line terminators \n or \r\n are not counted). Without
+the -i option, input lines default to 80 characters (if the -f option is set)
+or to 512 characters (the -f option is not set). Input lines that are longer
+than the specified i_size are artificially broken into multiple lines, so a
+small -i value cannot be used to truncate long lines. To truncate long output
+lines, use an adequate i_size with the -o option.
+
+The -o option followed by a number (o_size) defines the size of output lines.
+If the -g option is set, each output line will be exactly o_size characters
+long; if the -g option is not set, the -o option defines the maximum output
+line size (line terminators \n or \r\n are not counted). Without the -o
+option, output lines default to 80 characters (if the -g option is set) or to
+512 characters (if the -g option is not set). Output lines that are longer
+than the specified o_size are truncated.
+
+Notes
+
+Lines are processed one at a time, in ten steps:
+
+1.  A line is read into the input buffer. If the -f option is set,
+    then exactly i_size (defined by the -i option) characters
+    are read; if the -f option is not set, reading of the line
+    proceeds character by character until one of the following happens:
+
+    -  the \n character is read
+    -  the \0 character is read
+    -  the input buffer contains i_size characters.
+
+    Any \r characters encountered are discarded. The terminating
+    character is not stored in the buffer.
+
+2.  If the -a option is set, the characters in the input buffer
+    are transformed from EBCDIC to ASCII.
+
+3.  If the -s option is set, the trailing blanks in the input buffer
+    are discarded.
+
+4.  If the -l option is set, all upper case characters in the input
+    buffer are changed to lower case characters.
+
+5.  If the -u option is set, all lower case characters in the input
+    buffer are changed to upper case characters.
+
+6.  The characters in the input buffer are moved to the output buffer. If
+    the -t option is set, all TAB characters are expanded during this
+    process; if the -b option is set, multiple spaces (in the appropriate
+    positions) are replaced by a TAB character. If neither -t not
+    -b are set, the input characters are simply moved to the output
+    buffer. In all cases, characters exceeding the o_size are discarded.
+
+7.  If the -p option is set, the output line is padded with blanks to
+    o_size characters.
+
+8.  If the -e option is set, the characters in the output buffer are
+    converted from ASCII to EBCDIC.
+
+9.  If the -g option is not set, a \n character (or a
+    \r\n pair if the -r option is set) is added after every
+    o_size characters in the output buffer.
+
+10. All characters in the output buffer are written to the output file.
+
+Examples
+
+The first example creates a compressed version of the input file text (extra
+spaces are converted to TABs where possible) in the output file text.new.
+Lines are less than 80 characters each.
+
+     jim[1] convert -b text text.new
+
+The next example creates an ASCII version of the EBCDIC input file cobol.ibm
+(containing card images, 80 characters each, of a cobol program) in the output
+file cobol.asc.
+
+     jim[1] convert -fas cobol.ibm cobol.asc
+
+As the previous example, if the input is on 9-track tape:
+
+     jim[1] mode tp rewind
+     jim[2] convert -fas /dev/tp cobol.asc
+
+As the previous example, if the input is on cartridge tape:
+
+     system[1] rcopy /dev/ftcd | convert -fas - cobol.asc
+
+The last example creates a truncated (72 characters per line) version of the
+FORTRAN input file prog.xxx (120 characters per line terminated by \n) in the
+output file prog.for. The first half of the command truncates the output lines
+at 72 characters; the second half strips all trailing blanks.
+
+     jim[1] convert -o 72 prog.xxx | convert -s > prog.for
+

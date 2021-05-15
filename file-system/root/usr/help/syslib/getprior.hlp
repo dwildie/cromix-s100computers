@@ -1,0 +1,19 @@
+function:       getprior
+purpose:        Get process priority.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getprior()
+
+Description
+
+Get a process priority. The result is in the range -40 .. +40. The value -40
+is the highest priority, +40 the lowest.
+
+The function returns:
+
+     process priority
+

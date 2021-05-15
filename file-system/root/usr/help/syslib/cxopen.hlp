@@ -1,0 +1,60 @@
+function:       cxopen
+purpose:        Open a file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int cxopen(filename,accessmode,accessmask)
+                char *filename; int accessmode, accessmask;
+
+Description
+
+The cxopen call opens the file for the specified access.
+
+Accessmode defines how the file will be opened. The user may specify one of
+the nonexclusive modes
+
+     op_read             read only
+     op_write            write_only
+     op_rdwr             read/write
+     op_append           append only
+
+or one of the exclusive modes
+
+     op_xread            read only
+     op_xwrite           write only
+     op_xrdwr            read/write
+     op_xappend          append only
+
+If a nonexclusive mode is selected, the accessmask is not used at all. If an
+exclusive mode is selected, the bits op_read, op_write, op_rdwr, op_append in
+the accessmask, are set to prevent such access from other users.
+
+Example:
+
+To open the file "some" with exclusive read/write permission, use the call
+
+     cxopen("some", op_xrdwr, 1<<op_write | 1<<op_rdwr | 1<<op_append)
+
+The current process will open the file for read/write. Until the file is
+closed, other processes may open this file only for read.
+
+The cxopen function implements _open system call. The open function as
+described in the C manual has different parameters.
+
+The function returns:
+
+     channel number of the open file    if successful
+     ERR                                if an error occurred
+
+Common errors:
+
+     _filtable             Too many open files.
+     _badname              The pathname is illegal.
+     _diraccess            The user lacks proper access to one of the
+                           directories.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

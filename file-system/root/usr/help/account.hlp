@@ -1,0 +1,77 @@
+utility:      ACCOUNT
+purpose:      This program displays account information.
+
+user access:  privileged user
+
+summary:      account [-lt] [file-name]
+
+arguments:    none
+
+options:      -l     list the current /etc/acc file
+	      -t     truncate the current /etc/acc file
+
+Description
+
+The Account utility sorts and displays the contents of the file /etc/acc. If
+the file /etc/acc exists, whenever a user logs in or logs out, a record
+describing that action is appended to the file /etc/acc. This is an addition
+to standard Cromix-Plus accounting.
+
+The structure of the account records is described in the file
+/usr/include/account.h. The basis of account tracking is the job
+identification number (JOBID). When a gtty process is created a JOBID number
+is assigned to it. This number is then inherited by all processes started by
+this Gtty process. Each account record contains a JOBID. The JOBID numbers are
+counted from zero each time the system is started up. This means that JOBID
+numbers have no meaning across boot records.
+
+The -l option can be used to inspect the /etc/acc file:
+
+     system[1] account -l
+
+Each account record is listed in readable form. The fields listed are:
+
+     Job identification
+     Type of account record (see /usr/include/account.h)
+     Date of transaction
+     Time of transaction
+     User name (void except for login records)
+     Terminal name (void except for login records)
+     Time used (zero except for logout and exit records)
+
+All records with the same JOBID (between two boot records) belong to the same
+user. A login record is generated when the user logs in and can be used to
+define the user name and the terminal name used to log in. A logout record is
+generated when the user logs out. It gives the total number of seconds of CPU
+time that the user used while logged in. Exit records are generated for
+detached processes that terminate after the user logs out.
+
+The Account utility, when executed without options, reads the /etc/acc file,
+finds the login-logout pairs, and prints out the information for each login
+session. The information is printed in the form that allows convenient sorting
+if necessary. The records generated after the last startup are not printed as
+there may be detached processes still running.
+
+If the -t option is used, the /etc/acc file is cleaned up. Only the records
+generated after the last startup are retained. The original /etc/acc file is
+retained under the name /etc/acc.bak.
+
+When the -t option is used it is implied that the system administrator is
+piping or redirecting the output of the Account utility to some other file,
+for example:
+
+     system[1] account -t >> /etc/acc.total
+
+Such a command should be issued while no user is able to log in or log out.
+The Init command provides a convenient mechanism to do this.
+
+The output of the Account command consists of lines such as:
+
+guest       qtty2     1987-09-10 11:28:23    156       1,345
+
+The meaning is:
+
+     The user "guest" logged in on the terminal "qtty2" on September 10
+     at 11:28:23 and logged out 156 minutes later. He used up
+     1,345 seconds of system time.
+

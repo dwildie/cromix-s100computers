@@ -1,0 +1,34 @@
+utility:      Ed
+purpose:      This program is used to edit files.
+
+user access:  all users
+
+summary:      ed [-cn] filename [filename]
+
+arguments:    name of file to be edited
+
+options:      -c   CR-LF pair used as line terminator
+              -n   LF only used as line terminator
+
+Description
+
+The Ed utility program enables the user to edit files.
+
+When called without an option or with the -c option, the Ed program
+(/bin/ed.bin) creates output files with a CR-LF (carriage RETURN-linefeed)
+pair at the end of lines. When called with the -n option, only a LF character
+is used as a line terminator. Such files can then be used with the UNIX
+Operating System.
+
+Cromix-Plus utilities understand lines terminated by either the LF character
+or CR-LF pair. A few utilities, however, were originally written for the CDOS
+Operating System. These programs (notably, those using older versions of Z80
+assembler) might require the CR-LF pair as the line terminator.
+
+The Sc program (/cmd/sc.cmd) can be used to automatically call Ed with the -n
+option.
+
+If you prefer to alter the Ed program so -n instead of -c is the default,
+patch the file ed.bin with a zero at location 0FAH.  This patched version will
+be loaded slightly faster than sc.cmd. You may wish to call the patched
+version sc.bin, in which case, the file sc.cmd may be discarded.

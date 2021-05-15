@@ -1,0 +1,24 @@
+function:       exchg
+purpose:        Exchange contents of two open files.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int exchg(ichannel,ochannel)
+                int ichannel, ochannel;
+
+Description
+
+Exchanges the contents of two open files.
+
+The function returns:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _notopen            One of the channels was not open.
+

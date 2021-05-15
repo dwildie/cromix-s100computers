@@ -1,0 +1,31 @@
+utility:      CLOCK
+purpose:      This program executes a command line and reports the time used to
+              execute that command line.
+
+user access:  all users
+
+summary:      clock [-hec] command-line
+
+arguments:    command line to be executed
+
+options:      -h report time in the form hh:m:ss
+              -e report time on standard error
+              -c report time on controlling tty
+
+Description
+
+The Clock utility executes the given command line and reports the time, in
+seconds, used to execute that command line. The times reported are CPU time
+and real time.
+
+Options
+
+The -h option displays time used in the form "hh:mm:ss" instead of in seconds
+alone (the default).
+
+The -e option causes the time usage to be displayed on the standard error
+device. This is useful if the output is redirected to /dev/null.
+
+The -c option causes the time usage to be displayed on the controlling tty.
+The controlling tty is unaffected by redirection. This is useful if both
+standard output and standard error are redirected to /dev/null.

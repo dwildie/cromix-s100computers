@@ -1,0 +1,26 @@
+utility:      FIXSB
+purpose:      This command file restores the Superblock.
+
+user access:  privileged users
+
+summary:      fixsb device
+
+arguments:    device name to be corrected
+
+options:      none
+
+Description
+
+The Fixsb utility file restores the Superblock, should it be destroyed
+accidentally. This command file has the same function as the Makfs utility
+used with the -r option, but without the possible risks associated with
+running an older version of the Makfs utility.
+
+After restoring the Superblock, the Fixsb command automatically runs Icheck,
+to check inodes in the file.
+
+Notes
+
+Fixsb is only to be used on disks whose file systems were created with the
+default number of inodes. Refer to the Makfs utility for additional
+information.

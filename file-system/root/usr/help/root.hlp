@@ -1,0 +1,22 @@
+utility:      ROOT
+purpose:      This program displays the name of the device containing the root
+              directory.
+
+user access:  all users
+
+summary:      root
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Root program displays the root directory's device pathname.
+
+Example:
+
+     system[1] root
+
+     /dev/std0
+

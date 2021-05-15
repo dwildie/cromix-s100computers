@@ -1,0 +1,70 @@
+utility:      RAMDISK
+purpose:      This program creates, deletes, verifies, and calculates
+              checksums on RAM disks.
+
+user access:  privileged user
+
+summary:      ramdisk [-c #] [-d] [-r] [-s] device-name(s)
+
+arguments:    RAM disk device names
+
+options:      -c #  create RAM disk of given size
+              -d    delete RAM disk (return memory)
+              -r    read RAM disk to show checksum errors
+              -s    salvage RAM disk (recompute checksums)
+
+Description
+
+The Ramdisk utility should be called with one option and one or more RAM-disk
+device names as arguments. Ramdisk performs different actions, depending on
+the specified option.
+
+Options
+
+The -c option must be followed by the size of RAM disk (must be a multiple of
+four) to be created. The size is expressed in K (1024 bytes). The requested
+amount of memory will be allocated by the system and used as RAM disk. The
+contents of RAM disk will be all zeros. The Mode utility used on such a RAM
+disk will show a smaller number of available blocks, as one or more blocks,
+depending on size, will be used for checksums on individual blocks.
+
+The -d option deallocates the RAM disk created by the -c option.  The memory
+occupied by the RAM disk is returned to the system's memory pool.
+
+The -r option reads all of the RAM disk. Any checksum errors are reported on
+the raw console.
+
+The -s option recomputes all checksums. After running Ramdisk with the -s
+option, the RAM disk driver will report no checksum error. Because checksum
+errors should not be ignored, use the -s option with discretion.
+
+Notes
+
+The Mode utility, when applied to a RAM-disk device, shows various
+characteristics, including the size, in blocks, and the verify flag. Although
+Mode can be used to turn off the verify flag, resulting in increased speed,
+this is not recommended. Turning the verify flag off defeats a valuable
+checking mechanism. While the flag is off, write operations do not compute a
+checksum. Thus, when the flag is turned on again, the RAM disk driver may
+indicate numerous errors. (The checksums are no longer up to date.)
+
+When using Makfs to create a file system on a RAM disk, makfs -b 2 forces the
+beginning of the inode area to the block following the Superblock.  This is
+acceptable because there is no need for a boot area on a RAM disk.
+
+Example
+
+The following example is a typical command file that creates a RAM disk, loads
+it with some often-used programs, and mounts it to /ram.
+
+ramdisk -c 128 rd0                   % Create 128K RAM disk
+makfs -b 2 rd0                       % Create file structure without
+                                     % boot area
+mount rd0 /ram                       % Mount RAM disk
+dir /bin                             % Copy useful files from /bin
+copy copy.bin version.bin mode.bin ls.bin /ram
+dir /cmd                             % Copy useful commands from /cmd
+copy bak.cmd /ram
+
+Execution of a similar command file might be specified in the file
+startup.cmd.

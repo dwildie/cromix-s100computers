@@ -1,0 +1,63 @@
+utility:      KSAM
+purpose:      This program executes KSAM (Keyed Sequential Access Method)
+              calls for all users.
+
+user access:  all users
+
+summary:      /etc/ksam lockfile &
+
+arguments:    pathname of the lockfile
+
+options:      none
+
+Description
+
+The Ksam utility must be run in the background. It is commonly be started from
+the /etc/startup.cmd command file as a detached process.
+
+The Ksam utility uses inter-process communications (IPC) facilities. This in
+means that it can only run on Cromix-Plus version 31.06 or higher. The system
+must be Crogened with parameters for messages and shared memory (semaphores
+are not used).
+
+The Ksam utillity is normally started as a detached job, e.g., by the
+/etc/startup.cmd file. As long as it is running, the Ksam interface functions
+can be used from other user programs. The Ksam process can be killed normally,
+e.g. kill <PID>, or by using the Ipcrm utility to remove its message queue. Do
+not kill Ksam using the Kill -3 <PID> command as this will not allow Ksam to
+flush its buffers.
+
+There might be more than one group of processes using the IPC facilities, and
+more than one (independent) instance of Ksam might be running concurrently.
+There must be a mechanism to prevent different users of the IPC facilities, or
+of Ksam's in particular, from getting mixed up. When Ksam is started it must
+be given one argument, for example:
+
+     jim[1] /etc/ksam lockfile &
+
+The referenced file, lockfile in the above example, is an arbitrary file (on
+the root device). Its use is twofold:
+
+- The inode number of this file is used to build the keys for the IPC facilities
+
+- The access privileges of the file are used to build the access privileges
+  to the message system.  For a user program to be able to use Ksam calls
+  he must have the Read/Write access to the message system. This is computed
+  from the Read/Write access to the lockfile.
+
+The IPC access mechanism allows for different accesses of the owner, group, or
+public. Access to the lockfile can be constructed so that some particular
+instance of Ksam can be used only by a particular user, by a particular group
+of users, or by the general public.
+
+Each Ksam user must first call the function ksstart (explained in the ksclib
+helpfile) to establish communications with Ksam. The ksstart function must
+reference the same lockfile to allow the user to get access to the right IPC
+facility.
+
+Usage of IPC facilities.
+
+The Ksam utility itself maintains a message queue. Each command from a user
+sends an eight byte message, each completed command from Ksam sends back a
+four byte message. In addition, each Ksam user will establish a 4K shared
+memory segment Ksam is going to use while executing a Ksam command.

@@ -1,0 +1,88 @@
+utility:      VERSION
+purpose:      This program displays the version number of the Cromix
+              Operating System or a utility program.
+
+user access:  all users
+
+summary:      version [file and/or directory list]
+
+arguments:    optional file and/or directory list
+
+options:      -c   calculate CRC
+              -v   verbose
+
+Description
+
+When called without an argument, the Version utility displays the version of
+the Cromix-Plus Operating System currently executing. A simple check for
+internal consistency is also performed. If the consistency check reveals
+problems, an appropriate message is displayed instead of the version number.
+Reboot the system as soon as possible.
+
+When called with the name of a utility program, Version displays the version
+number of that utility. When called with a directory name, Version displays
+the version number of each of the programs in the directory. The following
+command displays the version numbers of all of the programs in the /bin
+directory:
+
+     jim[1] version /bin
+
+The characters "RB" appearing in an entry indicate that the file is a
+Relocatable Binary file. Programs written for Z80 Cromix (including
+relocatable binary files) are allocated 16 pages (64k) of memory by the
+Cromix-Plus Operating System.
+
+The characters "68" appearing in an entry indicate the file is a 68000 binary
+file. For these programs, the operating system allocates as many 4k pages of
+memory as required.
+
+For example:
+
+     jim[1] version /bin/ls.bin
+
+will display something like:
+
+     68 CRC OK 68020 XXU 149 Ls source 1.8
+
+The meaning of individual fields is:
+
+     68           It is a 68xxx program.
+     CRC OK       The file has the correct CRC as computed when the
+                  file was distributed.
+     68020        The instructions used in the program are 68020
+                  instructions. This means that this program will not execute
+                  on a 68000 or 68010 processor. The programs which utilize
+                  68000 or 68010 instructions will, in general, execute on
+                  68000,  68010, or 68020 processor.
+     XXU 149      The program was distributed with XXU Cromix, Release 149.
+                  The utility is guaranteed to work only with this Release of
+                  XXU Cromix. Executed under any other release or processor
+                  type, it may or may not work as expected.
+     Ls           Name of the utility.
+     source 1.8   Release version of the source used to compile the
+                  utility.
+
+The Version utility (version 0.10 and higher) searches for the following
+string of bytes in a file: 0FDH 0EDH 0FDH 0EDH. The bytes immediately
+following are assumed to contain CRC information, version number, release
+number, and an optional login message.
+
+To illustrate, consider the following portion of a file:
+
+     dc.b   0FDH 0EDH 0FDH 0EDH
+     dc.b   0, 0, 0, 0
+     dc.b   version, revision
+     dc.b   'login message  '
+
+When called with the -c option, Version computes a CRC value for the file. The
+first two bytes immediately following the FDEDFDED pattern contain the version
+number of the Version program; the next two bytes contain the CRC.
+
+When called without the -c option, Version reports good or bad file integrity
+by comparing a newly calculated CRC with the previously calculated CRC value.
+
+Options
+
+The -c option causes the CRC value calculated for the file to be placed in the
+file for future comparison. The -v option causes the pathnames of files to be
+printed.

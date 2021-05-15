@@ -1,0 +1,159 @@
+utility:      PATCH
+purpose:      This program patches a file.
+
+user access:  all users
+
+summary:      patch [filename]
+
+arguments:    optional filename
+
+options:      none
+
+Description
+
+The Patch utility displays and alters specified bytes within a file.  Enter
+the command name plus a filename and press RETURN. When you see a greater-than
+sign (>), enter any of the available commands: "d" for display, "e" for exit,
+"h" for calculate, "q" for query, "s" for substitute, "t" for truncate, or "z"
+for zap. If Patch is called without a filename, only the "h" and "e" commands
+are valid.
+
+Generally, if you give a command without arguments Patch uses the arguments
+from the previous command. Start addresses and swath values can be arbitrary
+expressions (refer to the "h" command).
+
+Display
+
+The "d" command displays part of a file.  The possible forms are:
+
+d start S swath  Display swath bytes from start
+                 address.
+d start          Display the same number of bytes from start
+d S swath        Display swath bytes from where last d command
+                 ended.
+d                Display the same number of bytes from where last d
+                 command ended.
+
+If no start address is given, the d command wraps to the beginning of the file
+when the end of the file is reached.
+
+Exit
+
+The "e" command (no arguments) incorporates the changes from the current Patch
+session and exits the program. To exit from Patch without saving the changes,
+press CNTRL-C.
+
+Calculate
+
+The "h" command serves as a calculator, and has the form:
+
+     h expression
+
+The syntax of expression can be described in BNF form as follows ("::=" means
+"defined as" and "|" means "or"):
+
+     <expression> ::= <term> | +<term> | -<term> |
+           <expression>+<term> | <expression>-<term>
+     <term> ::= <factor> | <term>*<factor> | <term>/<factor>
+     <factor> ::= <number> | (<expression>)
+     <number> ::= <hex string> | <dec string>.
+     <hex string> ::= <hex digit> | <hex string><hex digit>
+     <dec string> ::= <dec digit> | <dec string><dec digit>
+     <hex digit> ::= <dec digit> | a | b | c | d | e | f |
+                           A | B | C | D | E | F
+     <dec digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+The expression result is printed in decimal and hexadecimal form.
+
+Query
+
+The "q" command searches for a pattern of bytes. The possible forms are:
+
+q start S swath pattern  Look for pattern through swath
+                         bytes from start address.
+q start pattern          Look for pattern through the same number of
+                         bytes from start.
+q S swath pattern        Look for pattern through swath bytes
+                         from where last q command ended.
+q start S swath          Look for same pattern through swath bytes
+                         from start.
+q start                  Look for same pattern through the same number of bytes
+                         from start.
+q S swath                Look for same pattern through swath bytes from
+                         where last q command ended.
+q                        Look for same pattern through the same number of bytes
+                         from where last q command ended.
+
+If no start address is given, the q command wraps to the start of the file
+when the end of the file is reached.
+
+The pattern, which is always a non-empty sequence of bytes, can be described
+in BNF form as follows:
+
+     <pattern> ::= <item> | <space><item> | <pattern><space><item>
+     <space> ::= SPACE | TAB | <space>SPACE | <space>TAB
+     <item> ::= <number> | <string>
+     <string> ::= '<simple string>'
+     <simple string> ::= <empty> | <single string><character>
+     <empty ::=
+     <character> ::= <ASCII character other than backslash> |
+                 <escape character>
+     <escape character> ::= \n | \r | \t | \f | \b | \0 | \ddd | \x
+
+The escape characters are:
+
+     \n     0A
+     \r     0D
+     \t     09
+     \f     0C
+     \b     08
+     \0     00
+     \ddd   ddd should be three octal digits
+     \x     if x is a non-escape character, it is taken verbatim.
+
+If the q command finds the pattern, it displays 16 bytes of the file, starting
+with the pattern sought.
+
+Substitute
+
+The "s" command displays a file word by word and allows you to change selected
+bytes. The possible forms are:
+
+     s start  Display word at start address.
+     s        Display word from where the last s command ended.
+
+The s command displays one word, and waits for one of the following responses:
+
+  .         Exit substitute command
+  RETURN    Display next byte
+  -         Display last byte
+  pattern   Replace this byte (and the following bytes, as needed) with the
+            specified pattern. Pattern has the same form as in the q command.
+
+Truncate
+
+The "t" command truncates a file to the specified length, and has the form:
+
+     t size
+
+The file is truncated (or extended) to the "size" number of bytes.
+
+Zap
+
+The "z" command overwrites the specified number of bytes with a given pattern.
+The available forms are:
+
+z start S swath pattern  Fill swath bytes with pattern
+                         beginning at start.
+z start pattern          Fill the same number of bytes with pattern
+                         beginning at start.
+z S swath pattern        Fill swath bytes with pattern
+                         beginning where the last z command
+                         ended.
+z start S swath          Fill swath bytes with zeros beginning at
+                         start.
+z start                  Fill the same number of bytes with zeros beginning at
+                         start.
+z S swath                Fill swath bytes with zeros from where the last
+                         z command ended.
+

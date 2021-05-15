@@ -1,0 +1,22 @@
+utility:      STDLOAD
+purpose:      This program loads a program into an STDC.
+
+user access:  privileged user
+
+summary:      stdload filename device
+
+arguments:    filename of program to be loaded
+
+              std device to be loaded
+
+options:      none
+
+Description
+
+The Stdload utility loads a file into an STDC (hard disk controller). This
+utility is normally used to load the STDC firmware /etc/stdcfirm into an STDC.
+Stdload is found in the /etc/ directory.
+
+NOTE:  The device must be connected and be able to be opened or the
+       firmware will not be downloaded.
+

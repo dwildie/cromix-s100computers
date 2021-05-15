@@ -1,0 +1,173 @@
+utility:      FTAR
+purpose:      Creates and retrieves file archives.
+
+user access:  all users
+
+summary:      ftar options archive [file-list]
+
+arguments:    archive name
+              optional filenames
+
+options:      exactly one of the following per command:
+
+              -c     create files on new archive
+              -t     list files on archive
+              -x     extract files from archive
+              -y     compare files from archive
+
+              other options
+
+              -d     update the time dumped for each processed file
+              -i     get list of files from stdin
+              -u     use Unix compatible Tar format
+              -v     list the names of files processed
+              -w     wait for confirmation before processing
+              -r     turn on Read-after-write on block device
+              -n     turn off Read-after-write on block device
+              -k #   archive size in kilobytes
+              -b #   buffer size in kilobytes
+              -s #   number of volumes to skip
+
+Description
+
+The Ftar utility can create a file archive, retrieve files from an archive, or
+list the contents of an archive. An archive can be written to, or read from,
+any device or file. Before using Ftar to back up files onto a device, the
+device must be initialized.
+
+The first argument is the archive file (or device) name. If the first argument
+is "-", the standard input (or standard output) can be used to "pipe" data to
+and from an archive. The remaining arguments are the names of files and
+directories to be read or written. If a directory name is specified, all the
+files in the directory are transferred (recursively).
+
+Archives created by the Tar utility cannot be restored with Ftar.
+
+Options
+
+One of the following for each Ftar command:
+
+-c   Creates a new archive of the named files, device files, and/or
+     directories. Any existing data in the archive is overwritten.
+
+-t   Lists the named files, device files, and/or directories in the
+     archive. If no names are specified, the entire archive is listed.
+
+-x   Copies the named files, device files, and/or directories in
+     the archive to the current directory (unless the extracted files
+     are governed by absolute pathnames). The owner, modification time,
+     and access privileges are restored. If no file arguments are given,
+     the entire archive is extracted. If there are multiple files of the
+     same name, the last one overwrites all of the previous.
+
+-y   Similar to the -x option, except that the named files,
+     device files, and/or directories are compared with the identically
+     named files in the current directory. Any differences are reported.
+
+Other options
+
+The -d option updates the time dumped for each file written by Ftar; the dump
+time is useful for selective Ftar operations (refer to the last example).
+
+The -i option accepts filenames from the standard input (until a CONTROL-Z is
+encountered) and writes the files to an Ftar archive. The explicitly listed
+files are processed first.
+
+The -u option prevents writing of device files and directories to an archive
+(to conform to the UNIX Tar utility). During restore, directories are
+generated as needed.
+
+The -v option lists each file as it is processed. When used with the -t
+option, a fuller description of the file is given.
+
+The -w option prompts for confirmation before processing each file. Enter "y"
+or "Y" to confirm the action; any other response cancels the action.
+
+The -r option can be used on a block device to turn the Read-after-write mode
+ON for the duration of Ftar. The mode is restored to old value when Ftar
+terminates. If neither the -r or -n option is used, the current mode setting
+is used.
+
+The -n option can be used on a block device to turn the Read-after-write mode
+OFF for the duration of Ftar. The mode is restored to the old value when Ftar
+terminates. If neither the -r or -n option is used, the current mode setting
+is used.
+
+The -k option, followed by a number expressed in 1-kilobyte units, limits the
+archive to the specified size. The -k option works in all cases, but is
+necessary only for nine track tapes (sizes of standard peripherals are known
+to Ftar).
+
+The -b option, followed by a number expressed in 1-kilobyte units, defines the
+size of the Ftar buffer. The -b option is ignored unless the buffer size
+specified is larger than the one calculated by Ftar.
+
+The -s option can be used to restart an Ftar -c run in case Ftar was aborted
+due to a malfunction (e.g. the tenth floppy turned out to be uninitialized).
+With the -s option, Ftar will pretend it is writing information to a multi-
+volume device, but no actual writing will take place. After the specified
+number of volumes has been skipped, normal writing will resume.  Note that the
+results will be incorrect if the source files have changed in between.
+
+Notes
+
+With the -t, -x, or -y options, directories are extracted, listed, or compared
+with all their descendent directories. When extracting a subtree, all
+directories above the one being extracted must exist prior to calling Ftar.
+
+The Ftar utility permits multiple-volume archives if the archive is written to
+(or read from) a block device. On Cflop devices (non-uniform floppy disks),
+archives start at block 1; on Stdc devices (hard disks), archives start at
+block 20. On all other devices, archives start at block 0.  There is no Ftar
+label, so there is no need to first create an empty archive. The only
+requirement is that the device must be initialized.
+
+Except for Cflop and Stdc devices, archives written directly to a device are
+the same as archives piped into the Rcopy utility. For Cflop and Stdc devices,
+Rcopy must be told where to start writing. However, pipes cannot be used with
+multiple-volume archives.
+
+Some filenames in archives created by UNIX may be illegal under Cromix-Plus.
+Cromix-Plus truncates filenames over 24 characters, and may create duplicate
+filenames in the process. To prevent Ftar from overwriting such files, each
+file must be extracted separately (using its full name) and renamed. The Ftar
+utility also converts upper case characters to lower case, and all illegal
+characters (e.g. -, [, ], etc.) to the "$" character.
+
+Examples
+
+To view the progress of directory backups to a new archive of one or more
+small floppy disks:
+
+     ftar -cv /dev/sfdc directory_names
+
+To view the progress of file backup to a new archive on floppy tape:
+
+     ftar -cv /dev/ftcd file1 file2 ...
+
+To extract all files from the archive on a floppy tape:
+
+     ftar -xv /dev/ftcd
+
+To compare files in the archive on a floppy tape with existing files:
+
+     ftar -yv /dev/ftcd
+
+To list the contents of a tape archive in long form:
+
+     ftar -tv /dev/tp1
+
+To write a floppy tape with the file names entered from standard input (or
+from a pipe):
+
+     ftar -cvi /dev/ftcd
+
+To create a new archive on cartridge tape of all the ordinary files in the
+"my" directory that have been modified since being transferred (refer to the
+Scan utility):
+
+     scan my 'type == is_ordin && tmodify >
+     tdumped && print(path)' | ftar -divc /dev/ftcd
+
+The example above will not work (all "my" directory files will be copied)
+unless the -d option was set when the files were first transferred by Ftar.

@@ -1,0 +1,81 @@
+utility:      CDOSCOPY
+purpose:      This utility copies files to and from CDOS disks.
+
+user access:  all users
+
+summary:      cdoscopy [-belvw] devname file-list
+
+arguments:    Cromix device name
+
+              name(s) of the file(s) to be copied
+
+options:      -b     binary file
+              -e     erase file
+              -l     list CDOS directory
+              -v     verbose
+              -w     write CDOS file
+
+Description
+
+The Cdoscopy utility copies files from a Cromemco Disk Operating System (CDOS)
+format disk to a Cromemco Cromix-Plus Operating System format disk, and vice
+versa. For example:
+
+     jim[1] cdoscopy fdb letter
+     jim[2] cdoscopy -w sfda notes
+
+The first of these command lines copies a CDOS file named letter (located on a
+large floppy disk in drive B) into the user's current directory. The second
+command line copies the Cromix file named notes from the user's current
+directory to a small floppy disk in drive A. In the first case, the file is
+converted from a CDOS format to a Cromix format. A Cromix-format-to-CDOS-
+format conversion takes place in the second example.
+
+The Cromix-Plus Operating System cannot read CDOS files. Programs to be
+executed and data to be read under the Cromix-Plus Operating System must be
+transferred from CDOS formatted disks to Cromix formatted disks before
+execution begins.
+
+Where a file pathname is specified, CDOS considers the lowest level filename.
+This is the portion of the pathname to the right of the rightmost slash. For
+instance, the following command line puts the file named memo onto the CDOS
+format disk in drive B.
+
+     jim[1] cdoscopy -w fdb /usr/mary/memo
+
+Options
+
+The -b option copies binary files. When this option is used, the 1Ah (end-of-
+file mark) is not stripped from the end of the file.
+
+The -e option erases the specified file(s) from the CDOS disk.
+
+The -l option displays the contents of the CDOS directory.
+
+The -v option displays files while they are copied to and from CDOS disks.
+
+The -w option causes the file to be written to the CDOS disk.
+
+Notes
+
+When an ambiguous CDOS file reference is used, it must be enclosed in
+quotation marks.
+
+CDOS filenames must also be legal Cromix filenames. If not, use the CDOS
+Operating System to rename the files, then use the Cdoscopy utility.
+
+Examples:
+
+     jim[1] cdoscopy -v fda "*.txt"
+     jim[2] cdoscopy -l fdb
+
+These examples assume that the disks in drive A (fda) and B (fdb) are CDOS
+disks. The first example copies all CDOS files on drive A having the filename
+extension .txt into the current directory. The ambiguous CDOS file reference
+was placed inside quotation marks.
+
+The second example displays the directory of the CDOS disk in drive B (Cromix
+file designation fdb).
+
+Refer to the Cromix-Plus System Administrators Guide for a list of device
+names.

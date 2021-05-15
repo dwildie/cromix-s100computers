@@ -1,0 +1,31 @@
+
+This is Phase one of Cromix-Plus installation.
+Please note the following installation steps.
+
+1.      After you have noted the information on the screen, press any
+	key to display the next page of this information.
+
+2.      If the message:
+
+	"Incorrect version of STDC firmware (1.20 or higher required)"
+
+	was displayed during boot procedure, please enter the command "boot"
+	to reboot Cromix-Plus. Please see SUDS note Cromix-Plus-1 for details.
+
+3.      The disk on which you plan to install Cromix-Plus must be
+	initialized and the file structure must be built on it. (See
+	the manuals for the Inithard, Initflop, Makfs utilities).  If
+	your disk already has a file system on it, run the Check utility
+	to verify the file system integrity. If necessary, run the
+	Check -s utility or take any other necessary steps. Do not
+	proceed until Check reports no errors.
+
+4.      Run the Update1 command. The argument to Update1 command must
+	be the name of your future root device. The Update1 command
+	will rename a few files in your future /etc directory (in case
+	they exist already) to names with the extension ".old".  If a brand
+	new file structure was generated there will be no ".old" files.
+	The Update1 command will then Cptree the current file structure
+	to the new disk and invoke the Boot command to reboot the system.
+	This time you should designate your new disk as the root device.
+

@@ -1,0 +1,102 @@
+	list    off, noxref
+;
+;       Cromemco Inc.
+;       @(#)bmodeequ.z80	1.2 (7/7/87)
+;
+
+; Mode definitions for block devices
+;
+
+; C-register values for .GETMODE and .SETMODE system calls
+;
+BMD_STATUS      defv    0               ; Get/set status byte
+BMD_FLG1        defv    1               ; Get/set flag1 byte
+BMD_FLG2        defv    2               ; Get/set flag2 byte
+BMD_FLG3        defv    3               ; Get/set flag3 byte
+BMD_SIZE        defv    4               ; Get number of bytes on device
+BMD_VERSION     defv    10              ; Version number
+BMD_SOFT        defv    13              ; Accumulated number of retries
+BMD_HARD        defv    14              ; Accumulated number of hard errors
+BMD_RETRY       defv    15              ; Number of retries before hard error
+
+
+; Floppy tape special numbers
+;
+
+BMD_RETEN       defv    64              ; Number of tape repositions before
+					;     a retension
+
+
+; IMI disk special numbers
+;
+
+BMD_IMITYPE     defv    64              ; Get type of IMI drive
+
+; Values returned by BMD_IMITYPE
+;
+
+IM_50070        defv    01H     ; IMI model 50070
+IM_5007W        defv    02H     ; IMI model 5007W
+IM_5018H        defv    03H     ; IMI model 5018H
+IM_7710A        defv    04H     ; IMI model 7710A
+IM_7710B        defv    05H     ; IMI model 7710B
+
+
+; D-register & e-register bits for BMD_STATUS calls
+;
+DS.BUSY         defv    0       ; Device Busy (in use)
+DS.WANT         defv    1       ; Device Wanted (do wakeup)
+DS.READ         defv    2       ; Read-only device
+DS.MODF         defv    3       ; Super-block modified
+DS.MOUNT        defv    4       ; Device mounted
+DS.HOME         defv    5       ; Device has been homed
+DS.BFSTEP       defv    6       ; Buffered step flag
+DS.VERIFY       defv    7       ; Verify after write
+
+; D-register & e-register bits for BMD_FLG1 calls
+;
+DF.SMALL        defv    0       ; 1=small floppy 0=large floppy
+DF.DSIDE        defv    1       ; Double sided
+DF.DDENS        defv    2       ; Double density
+DF.DTRACK       defv    3       ; Double tracked
+DF.CROMIX       defv    4       ; Cromix format disk
+DF.CDOS         defv    5       ; Cdos format disk
+DF.BACKUP       defv    6       ; Backup format disk
+DF.VOICE        defv    7       ; 0=step 1=voice coil
+
+; D-register values for BMD_FLG2 calls
+;
+D2.SMALL        defv    0       ; Small floppy
+D2.LARGE        defv    1       ; Large floppy
+D2.STDC         defv    2       ; STDC hard disk
+D2.FSMD         defv    3       ; Fixed part of SMD hard disk
+D2.RSMD         defv    4       ; Removable part of SMD hard disk
+D2.UNIFORM      defv    5       ; Uniform floppy
+D2.MEMORY       defv    6       ; Processor memory
+D2.RAM          defv    7       ; RAM disk
+D2.FTAPE        defv    8       ; Floppy tape
+D2.IMI          defv    9       ; IMI hard disk
+
+; D-register & e-register bits for BMD_FLG3 calls
+;
+D3.WRTPRO       defv    0       ; Device is write protected
+D3.INTRPT       defv    1       ; Device interrupts
+D3.DUAL         defv    2       ; Dual drive
+
+; Floppy minor device number bits
+;
+FDENSITY        defv    6       ; 0 = double density
+FSIDES          defv    5       ; 0 = double sided
+FDUAL           defv    4       ; 1 = dual drive (PERSCI)
+FDTRACK         defv    3       ; 1 = double tracked
+FSIZE           defv    2       ; 0 = 8", 1 = 5"
+FUNIT           defv    03H     ; Mask for unit number
+
+; SMD minor device number bits
+;
+CONTROLLER      defv    7       ; Controller number
+DRIVE           defv    6       ; Drive number
+FIXED           defv    5       ; Fixed flag
+PARTITION       defv    1FH     ; Partition number mask
+
+	list xref, on

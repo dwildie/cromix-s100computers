@@ -1,0 +1,24 @@
+utility:      FREE
+purpose:      This program displays the amount of unused space remaining
+              on a device.
+
+user access:  all users
+
+summary:      free [devname1 ... devnameN]
+
+arguments:    optional list of device names
+
+options:      none
+
+Description
+
+The Free program displays the amount of unused space remaining on a specified
+device. If no device is specified, the free space is displayed for all mounted
+devices.
+
+Example:
+
+The following is a sample output of the Free utility. It shows the available
+free space in blocks, kilobytes, and bytes.
+
+     /dev/root    7,513 blocks    3,756K    3,846,656 bytes

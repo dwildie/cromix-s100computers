@@ -1,0 +1,30 @@
+function:       popen, pclose
+purpose:        Initiate pipe to/from a process.
+
+user access:    all users
+
+include files:  <stdio.h>
+
+synopsis:       FILE *popen(command,type)
+                char *command, *type;
+
+                int pclose(stream)
+                FILE *stream;
+
+Description
+
+The arguments to popen are pointers to null-terminated strings containing,
+respectively, a Shell command line and an I/O mode, either "r" for reading or
+"w" for writing. Popen creates a pipe between the calling program and the
+command to be executed. The value returned is a stream pointer such that one
+can write to the standard input of the command, if the I/O mode is "w", by
+writing to the file stream; and one can read from the standard output of the
+command, if the I/O mode is "r", by reading from the file stream.
+
+A stream opened by popen should be closed by pclose which waits for the
+associated process to terminate and returns the exit status of the command.
+
+Popen will return NULL pointer if the files or processes cannot be created, or
+if the Shell cannot be accessed.
+
+Pclose returns -1 if the stream is not associated with a "popened" command.

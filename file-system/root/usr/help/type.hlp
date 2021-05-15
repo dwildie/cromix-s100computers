@@ -1,0 +1,25 @@
+Shell
+command:      TYPE or TY
+purpose:      This command displays an ASCII (text) file.
+
+user access:  all users
+
+summary:      ty [file-list]
+
+arguments:    optional file pathnames
+
+options:      none
+
+Description
+
+The Type command displays the file(s) specified by the pathname(s).  Type can
+be used only to display ASCII (text) files. To display other kinds of files,
+use the Dump utility.
+
+Type uses STDIN when called without an argument, and sends output to STDOUT.
+
+Example:
+
+              jim[1] ty /dev/qtty5 > diskfile
+
+This command line accepts data from /dev/qtty5 and sends it to diskfile.

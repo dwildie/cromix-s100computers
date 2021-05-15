@@ -1,0 +1,63 @@
+utility:      BOOT
+purpose:      This utility loads an operating system into memory.
+
+user access:  privileged user
+
+summary:      boot [filename]
+
+arguments:    filename (optional)
+
+options:      none
+
+Description
+
+The Boot utility loads an operating system into memory.
+
+If no argument is given, the file /cromix.sys is loaded, and execution begins.
+In this manner, the Boot utility can be used to warm boot the Cromix-Plus
+Operating System.
+
+Example:
+
+     system[1] boot
+
+     System shutdown in progress
+     System shutdown complete
+
+The raw console then displays the normal boot messages.
+
+If Boot is followed by a filename, the file is assumed to have a .sys
+extension.
+
+Notes
+
+Because this program loads an operating system, it interrupts any active
+processes. Be sure that no one else is executing a program and that there are
+no detached processes running on the system before executing the Boot utility.
+Otherwise, data may be lost.
+
+One quick method to determine if there are users on the system is  to  execute
+the Ps (Process Status) command:
+
+     system[1] ps -a
+
+     PID  State  Command
+       1    S    -
+     112    R    Shell
+     105    R    ce letter
+      18    S    gtty 19200 tty6 3102 12
+      94    S    shell
+      16    S    shell
+      15    S    shell
+      14    S    shell
+      89    S    gtty 9600 tty1 C-40 1
+
+Here the command is executed with the -a (for all) option. The display shows
+one user running the CE Editor program to edit a file named letter.  If the
+Boot program were executed at this point, the user would lose all editing
+changes made during this session.
+
+As long as all lines of the Ps display show a command of shell or gtty, no
+processes are running, and it is safe to load an operating system.
+
+The Boot utility may be executed only by a privileged user.

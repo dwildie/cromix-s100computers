@@ -1,0 +1,161 @@
+utility:      IPCS
+purpose:      This program reports inter-process communications status.
+
+user access:  all users
+
+summary:      ipcs [-qmsbcopta]
+
+
+              -m   shared memory segments
+              -s   semaphores
+              -b   biggest allowable size information
+              -c   creator's login name
+              -o   outstanding usage
+              -p   process number information
+              -t   time information
+              -a   shorthand for -bcopt
+
+Description
+
+Ipcs utility prints certain information about active inter-process
+communication facilities. Without options, information is printed in short
+format for message queues, shared memory, and semaphores that are currently
+active in the system. Otherwise the information that is displayed is controled
+by options.
+
+Options
+
+The -q option causes the information about the active message queues to be
+printed.
+
+The -m option causes the information about the active shared memory segments
+to be printed.
+
+The -s option causes the information about the active semaphores to be
+printed.
+
+If any of the options -q, -m, or -s are specified, information about only
+those indicated will be printed.  If none of these three is specified,
+information about all three will be printed.
+
+The -b option causes the information regarding maximum allowable sizes to be
+printed. (Maximum number of bytes in messages on queue for message queues,
+size of segments for shared memory, and number of semaphores in each set of
+semaphores.)
+
+The -c option causes the creator's login name and group name to be printed.
+
+The -o option causes information on outstanding usage to be printed.  (Number
+of messages on queue and total number of bytes in messages on queue for
+message queues and number of processes attached to shared memory segments.)
+
+The -p option prints process ID information. (Process ID of last process to
+send a message, process ID of last process to receive a message on message
+queues, process ID of creating process and process ID of last process to
+attach or detach on shared memory segments.)
+
+The -t option causes the time information to be printed. (Time of last control
+operation that changed the access permission for all facilities. Time of last
+msgsnd and last msgrcv on message queues, last shmat and last shmdt on shared
+memory, last semop on semaphores.)
+
+The -a option stands as a shorthand notation for all print options (-b, -c,
+-o, -p, -t.)
+
+Notes
+
+The column headings and the meaning of the columns  in  an  Ipcs  listing  are
+given  below;  the  letters  in  parentheses  indicate  options that cause the
+corresponding heading to appear; "all" means that the heading always appears.
+
+T      (all)    Type of facility:
+
+                  q   message queue
+                  m   shared memory segment
+                  s   semaphore
+
+ID     (all)    The identifier for the facility entry.
+
+KEY    (all)    The key used as an argument to the msgget, shmget, or
+                semget system call to create the facility entry. (Note:
+                the key of a shared memory segment is changed to
+                IPC_PRIVATE when the segment has been removed until all
+                processes attached to the segment detach it.)
+
+MODE   (all)    The facility access mode and flags. The mode consists
+                of 11 characters that are interpreted as follows:
+
+                The first two characters are:
+
+                  R   if a process is waiting on a msgrcv;
+                  S   if a process is waiting on a msgsnd;
+                  D   if  the  associated  shared  memory  segment has
+                      been removed. It will disappear when the last
+                      process attached to the segment detaches it;
+                  -   if the corresponding special flag is not set.
+
+                The next 9 characters are interpreted as three sets of three
+                bits each. The first set refers to the owner's permissions; the
+                next one refers to permissions of others in the user's group;
+                and the last to all others. Within each set, the first character
+                indicates permission to read, the second character indicates
+                permission to write or alter the facility entry, and the last
+                character is currently unused.
+
+                The permissions are indicated as follows:
+
+                  r   if read permission is granted
+                  w   if write permission is granted
+                  a   if alter permission is granted
+                  -   if the indicated permission is not granted.
+
+OWNER  (all)    The login name of the owner of the facility entry.
+
+GROUP  (all)    The group name of the group of the owner of the facility entry.
+
+CREATOR         (a,c) The login name of the creator of the facility entry.
+
+CGROUP (a,c)    The group name of the group of the creator of the facility
+                entry.
+
+CBYTES (a,o)    The number of bytes in messages currently outstanding on the
+                associated message queue.
+
+QNUM   (a,o)    The number of messages currently outstanding on the associated
+                message queue.
+
+LSPID  (a,p)    The process ID of the last process to send a message to the
+                associated queue.
+
+LRPID  (a,p)    The process ID of the last process to recieve a message from the
+                associated queue.
+
+STIME  (a,t)    The time the last message was sent to the associated queue.
+
+RTIME  (a,t)    The time the last message was received from the associated
+                queue.
+
+CTIME  (a,t)    The time when the associated entry was created or changed.
+
+NATTCH (a,o)    The number of processes attached to the associated shared memory
+                segment.
+
+SEGSZ  (a,b)    The size of the associated shared memory segment.
+
+CPID   (a,p)    The process ID of the creator of the shared memory entry.
+
+LPID   (a,p)    The process ID of the last process to attach or detach the
+                shared memory segment.
+
+ATIME  (a,t)    The time the last attach was completed to the associated shared
+                memory segment.
+
+DTIME  (a,t)    The time the last detach was completed on the associated shared
+                memory segment.
+
+NSEMS  (a,b)    The number of semaphores in the set associated with the
+                semaphore entry.
+
+OTIME  (a,t)    The time the last semaphore operation was completed on the set
+                associated with the semaphore entry.
+

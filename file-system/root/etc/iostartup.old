@@ -1,0 +1,55 @@
+% Download new Std controller firmware (required) for each controller
+  /etc/stdload /etc/stdcfirm std0
+% /etc/stdload /etc/stdcfirm std64
+% /etc/stdload /etc/stdcfirm std128
+% /etc/stdload /etc/stdcfirm std192
+
+% Remove comment signs, "%", in order to load ESDI processors.
+% Only one device per controller needs to be loaded. This must be
+% the disk. If there is no disk driver it must be tape.
+  /etc/esdload /etc/esdcfirm esd31
+% /etc/esdload /etc/esdcfirm stp1 
+
+% Remove comment signs, "%", in order to load IO processors
+% with QUADART driver
+% /etc/ioload /etc/quadart.iop io1
+% /etc/ioload /etc/quadart.iop io2
+% /etc/ioload /etc/quadart.iop io3
+% /etc/ioload /etc/quadart.iop io4
+
+% Remove comment signs, "%", in order to load IO processors
+% with NEW OCTART driver
+% /etc/ioload -r /etc/oct.iop oc1
+% /etc/ioload -r /etc/oct.iop oc2
+% /etc/ioload -r /etc/oct.iop oc3
+% /etc/ioload -r /etc/oct.iop oc4
+% /etc/ioload -r /etc/oct.iop oc5
+% /etc/ioload -r /etc/oct.iop oc6
+% /etc/ioload -r /etc/oct.iop oc7
+% /etc/ioload -r /etc/oct.iop oc8
+
+% Remove comment signs, "%", in order to load IO processors
+% with OCTART driver
+% /etc/ioload -r /etc/octart.iop io1
+% /etc/ioload -r /etc/octart.iop io2
+% /etc/ioload -r /etc/octart.iop io3
+% /etc/ioload -r /etc/octart.iop io4
+
+% Remove comment signs, "%", in order to load IO processors
+% with the TAPE driver. Use tape16.iop for 64K IOP boards.
+% /etc/ioload /etc/tape8.iop io1
+% /etc/ioload /etc/tape8.iop io2
+% /etc/ioload /etc/tape8.iop io3
+% /etc/ioload /etc/tape8.iop io4
+
+% Remove comment signs, "%", in order to load IO processors
+% with the Z80 driver to run Z80 programs in IOPX, OCTART, or BIART.
+% Remove the -r option if using IOPX (64K IOP).
+% /etc/ioload -r /etc/zio.iop io1
+% /etc/ioload -r /etc/zio.iop io2
+% /etc/ioload -r /etc/zio.iop io3
+% /etc/ioload -r /etc/zio.iop io4
+% /etc/ioload -r /etc/zio.iop oc5
+% /etc/ioload -r /etc/zio.iop oc6
+% /etc/ioload -r /etc/zio.iop oc7
+% /etc/ioload -r /etc/zio.iop oc8

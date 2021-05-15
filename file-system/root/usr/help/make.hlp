@@ -1,0 +1,91 @@
+utility:      MAKE
+purpose:      This utility automates the construction of executable programs from
+              separate modules.
+
+user access:  all users
+
+summary:      make [-vdf] makefile [arg1 arg2 ...]
+
+arguments:    instruction file with possible arguments
+
+options:      -v   verbose
+              -d   debug
+              -f   force
+
+Description
+
+Most complex programs are constructed from a number of separate modules.  Make
+provides the means for automatically executing the necessary steps (i.e.,
+compilations, assemblies, linkages) to construct a finished program. It also
+provides selective execution of just those steps necessitated by the
+modification of any of the constituent files.
+
+Since the actions of Make are predicated on date and time, it is very
+important to keep the system time and date reasonably accurate.
+
+Make takes its instructions from a text file, which must have the suffix .mak.
+The .mak file consists of two kinds of lines:
+
+     conditional statements--those with a colon somewhere in the line.
+     commands--those without a colon.
+
+Make scans each conditional statement line. If any of the files following the
+colon have been modified later than any of the files preceding the colon, the
+commands on the command lines following the conditional statement are
+executed.
+
+The following is an example based on the Cromemco 68000 FORTRAN-77
+environment:
+
+     prog1.obj:  prog1.for progdata.for
+            fortran prog
+            code prog1.i prog1.obj
+     prog2.obj:  prog2.for progdata.for
+            fortran prog2
+            code prog2.i prog2.obj
+     prog.bin:   prog1.obj prog2.obj
+            jlinker -oprog prog1 prog2 -lftn
+
+The preceding instructions tell Make which parts of the program construction
+should be executed if any of the constituent files have been modified.
+
+Multiple files on either side of the conditional colon are permitted.
+
+     prog2.obj:  prog2.for progdata.for
+
+is equivalent to:
+
+     prog2.obj:  prog2.for
+     prog2.obj:  progdata.for
+
+and
+
+     foo.obj:    foo.for /usr/lib/ftnlib.obj
+     bar.obj:    foo.for /usr/lib/ftnlib.obj
+
+is equivalent to:
+
+     foo.obj bar.obj: foo.for /usr/lib/ftnlib.obj
+
+If the files to the right of the colon have not been modified more recently
+than those to the left of the colon, none of the commands are executed, and
+the Make utility scans for the next conditional statement.
+
+The commands before the first condition line are executed unconditionally.
+Also, a line with only a colon forces the following commands to be executed
+unconditionally.
+
+The Make utility allows the use of the DIRectory command to change the current
+directory. Also, arguments to the Make utility can be referenced anywhere in
+the .mak file in a shell-like fashion. The name of the make file may be
+referenced as #0.
+
+Options
+
+The -v option will display the program's progress.
+
+The -d option will display the times that Make used for its conditional
+comparisons.
+
+The -f option will cause all actions to be taken regardless of time
+consideration.

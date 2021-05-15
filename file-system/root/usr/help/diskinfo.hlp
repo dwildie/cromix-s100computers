@@ -1,0 +1,66 @@
+utility:      DISKINFO
+purpose:      This program prints information from the hard disk label, the
+              partition table, and the alternate track table.
+
+user access:  privileged user
+
+summary:      diskinfo devicename [id_line]
+
+arguments:    device name
+              optional identification line
+
+options:      none
+
+Description
+
+The Diskinfo utility prints information from the label (on block 0) of the
+specified Cromemco hard disk, as well as the partition table and the alternate
+track table. The devicename argument should be the device name of the entire
+disk (e.g., std31 on drive 0; or esd63 on drive 1).  The optional id_line
+argument is printed on the first line of the printout for identification
+purposes.
+
+The "Location of alternate tracks" is the starting cylinder number of the
+alternate tracks. The partition table (if any) is printed after the disk
+parameters, followed by the alternate track table. For example, the command:
+
+     system[1] diskinfo std31 "MAXTOR Hard Disk"
+
+prints the following:
+
+MAXTOR Hard Disk
+
+Device /dev/std31 6:31  STDC Hard Disk  Aug-14-1987 10:53:39
+
+Disk parameters
+     Number of heads.................. = 15
+     Number of cylinders.............. = 1224
+     Number of alternate tracks....... = 60
+     Location of alternate tracks..... = 632
+     Number of sectors per track...... = 20
+     Bytes per sector................. = 512
+     Start of write precompensation... = 1225
+     Starting cylinder of disk ....... = 1
+
+Partition #      Starting Cylinder  Number of cylinders  Size (Kbytes)
+    0                     1                  196            29,400
+    1                   197                  196            29,400
+    2                   393                  196            29,400
+    3                   589                   43             6,450
+    4                   632                  196            29,400
+    5                   828                  196            29,400
+    6                  1024                  150            22,500
+    7                  1174                   46             6,900
+   31                     0                 1220           183,000
+
+Alternate track table
+  # bad track alt track      # bad track alt track      # bad track alt track
+      cyl  hd   cyl  hd          cyl  hd   cyl  hd          cyl  hd   cyl  hd
+  0    63  10   632  12      7   244   0   632   2     13   681   8   632  11
+  1    64  10   632  13      8   385  12   633   2     14   772  10   632  14
+  2    70   7   632   8      9   429   5   632   6     15   989  10   633   0
+  3   106  13   633   3     10   488   2   632   5     16  1017   5   632   7
+  4   124   7   632   9     11   668   7   632  10     17  1117   1   632   4
+  5   242   0   632   0     12   678   0   632   3     18  1218  11   633   1
+  6   243   0   632   1
+

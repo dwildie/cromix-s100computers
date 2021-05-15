@@ -1,0 +1,19 @@
+utility:      FLUSH
+purpose:      Writes system I/O buffers to disk
+
+user access:  all users
+
+summary:      flush # &
+
+arguments:    number of seconds
+
+options:      none
+
+Description
+
+The Flush utility is a system-maintenance program that flushes (i.e., writes
+to disk) system buffers by executing the _update system call every specified
+number of seconds.
+
+Starting with release 158 the Flush utility is no longer necessary. The system
+will flush buffers by itself after four seconds of inactivity.

@@ -1,0 +1,38 @@
+utility:      LSTAT
+purpose:      This program reports status of the lock table.
+
+user access:  all users
+
+summary:      lstat
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Lstat utility prints certain information about active locks installed
+currently in the system.
+
+The column headings and the meaning of the columns in an Lstat listing are
+given below.
+
+The process ID of the process that installed the lock.
+
+This column contains the word "Yes" or "No". If the lock is shared, some other
+process may install the same lock, as long as it is also shared.
+
+This column contains the word "Yes" or "No". The lock is "wanted" if there is
+a process waiting for the lock to be unlocked.
+
+This column contains the full lock sequence. The sequence is displayed in
+hexadecimal as it may contain non ASCII characters. Note that the preferred
+form of the lock sequence is:
+
+     Device number            2 bytes
+     Inode number             2 bytes
+     Other                    up to 12 bytes
+
+The device number and the inode number are used to ensure a unique locking
+sequence (device number and inode number identify a unique file in all the
+mounted file systems).

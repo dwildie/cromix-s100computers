@@ -1,0 +1,54 @@
+# CE Environment Definition File
+#
+# Cromemco Inc.
+# Oct 23, 1986
+#
+# Structure of this file is the same as of the TERMCAPS file.
+# The recognized keywords are
+#
+#                                            possible values
+#                                             
+#       "al"   for alignment,                RIGID or ELASTIC
+#       "bl"   for bell,                     ON or OFF
+#       "cu"   for cursor address,           ON or OFF
+#       "di"   for indentation step          positive integer number
+#       "lm"   for left margin               positive integer number
+#       "rm"   for right margin              positive integer number
+#       "pi"   for paragraph indentation     positive integer number
+#       "he"   for header,                   HIGHLIGHTED or NORMAL
+#       "in"   for indentation,              AUTOMATIC or MANUAL
+#       "ju"   for justification             ON or OFF
+#       "ka"   for case conversion           TOGGLE, TO UPPER or TO LOWER
+#       "lt"   for line termination,         LF or CRLF
+#       "mo"   for mode,                     READ_ONLY  or UPDATE
+#       "pt"   for CE usage type             PROGRAM or WORD PROC
+#       "rl"   for restore screen line no    positive integer number
+#       "rs"   for recording input           ON or OFF
+#       "sy"   for sync,                     ON or OFF
+#       "ta"   for tabs,                     COMPRESSED or EXPANDED
+#       "xo"   for flow control              ON or OFF
+#
+#
+#       The following selection is a default - i.e. it will
+#       be enforced if there is no ce_env file.
+#
+CE|CENV|CE Environment Definition:\
+	:al=ELASTIC:\
+	:bl=ON:\
+	:cu=ON:\
+	:di#8:\
+	:lm#1:\
+	:rm#66:\
+	:pi#5:\
+	:he=NORMAL:\
+	:in=AUTOMATIC:\
+	:ju=OFF:\
+	:ka=TOGGLE:\
+	:lt=LF:\
+	:mo=UPDATE:\
+	:pt=PROGRAM:\
+	:rl#10:\
+	:rs=OFF:\
+	:sy=OFF:\
+	:ta=COMPRESSED:\
+	:xo=OFF:

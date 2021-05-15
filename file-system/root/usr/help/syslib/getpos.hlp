@@ -1,0 +1,24 @@
+function:       getpos
+purpose:        Get current file position
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getpos(channel)
+                int channel;
+
+Description
+
+Get current file position.
+
+The function returns:
+
+     file position       if successful
+     ERR                 if error.
+
+Common errors:
+
+     _notopen            The channel is not open.
+

@@ -1,0 +1,70 @@
+utility:      TR
+purpose:      Translate characters.
+
+user access:  all users
+
+summary:      tr [-cds] [string1 [string2]]
+
+arguments:    none
+
+options:      -c    complement the set of characters in string1
+              -d    delete input characters in string1
+              -s    squeeze multiple output characters from string2
+
+Description
+
+The Tr utility copies standard input to standard output.
+
+If the Tr utility is called with no options, any input character found in
+string1 is replaced by the corresponding character in string2, provided the
+string2 is long enough. If string2 is too short, the input character remains
+unchanged.
+
+The -c option complements string1. This means that the string1 used by the
+program is a string formed of all ASCII characters from  01 to 377 that are
+not found in the string1 supplied by the caller.
+
+The -d option causes all input characters in string1 to be deleted.
+
+The -s option squeezes all strings of repeated output characters, that are
+found in string2, to a single character.
+
+The characters in strings string1 and string2 can contain the following
+special combinations:
+
+     \n             the NEWLINE character
+     \r             the RETURN character
+     \t             the TAB character
+     \f             the FF character
+     \b             the BACKSPACE character
+     \ddd           where ddd are three octal digits, means
+                    the character whose octal ASCII representation
+                    is octal ddd
+     \any character means "any character"; this is useful to
+                    put special characters like "\" or "[" into strings.
+
+The following abbreviation conventions may be used in strings string1 and
+string2 (these are examples):
+
+     [a-z]          all characters from 'a' to 'z' inclusive
+     [x*10]         sequence of ten characters 'x'
+     [x*]           as many characters 'x' as needed; this form
+                    can be used only in string2 to pad it to the
+                    same length as string1.
+
+Example
+
+     jim[1] tr -cs "[A-Z][a-z]" "\n*"
+
+writes to standard output a list of all words coming from standard input,
+where a word is taken to be a maximal string of alphabetic characters.
+
+The strings are quoted to protect the special characters from interpretation
+by the Shell.
+
+String1 consists of 52 alphabetic characters. Due to the -c option, the string
+used by the Tr utility will be a string of 255 - 52 = 203 non-alphabetic
+characters. String2 consists of 203 NEWLINE characters.  Therefore all non-
+alphabetic characters are replaced by the NEWLINE character. Because of the -s
+option, all multiple NEWLINE characters are replaced by a single NEWLINE
+character.

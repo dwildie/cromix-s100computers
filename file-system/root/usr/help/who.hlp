@@ -1,0 +1,30 @@
+utility:      WHO
+purpose:      This program displays a list of users who are currently logged in.
+
+user access:  all users
+
+summary:      who [/etc/account] [am i]
+
+arguments:    optional /etc/account
+
+              or
+
+              optional "am i"
+
+options:      -t     display also time used
+
+Description
+
+When the Who utility is called without an argument, the /etc/who file is
+consulted and a report is displayed showing the users currently logged on,
+together with the time each one logged on.
+
+When followed by "am i", the name of the user calling the Who utility is
+displayed.
+
+If the Who utility is called followed by /etc/account, the information
+contained in the account file is displayed.
+
+If the -t option is used together with the /etc/account argument, the time (in
+seconds) used by the terminal when it is logged out, is displayed in addition
+to the normal contents of the /etc/account file.

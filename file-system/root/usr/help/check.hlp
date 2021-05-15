@@ -1,0 +1,32 @@
+utility:      CHECK
+purpose:      This program runs the dcheck and icheck utilities.
+
+user access:  privileged user
+
+summary:      check [-s] [devname]
+
+arguments:    optional device name
+
+options:      -s
+
+Description
+
+The check command runs the programs dcheck and icheck on a file system.  Check
+should be run after rebooting the system or any time the integrity of the file
+system is in doubt. The startup command file program executed after every
+boot-up displays a message which indicates when the check program needs to be
+run. See the startup command file description in this manual for more
+information on check.
+
+Options
+
+The -s option is the salvage option used with dcheck and icheck to repair most
+file system problems. See the description of the dcheck and icheck utilities
+in this manual for more information.  The system is rebooted after running
+check with the -s (for salvage) option.
+
+Notes
+
+In general, it is safer to run check with the -s option only on an unmounted
+device. When run on a mounted device, especially the root device, the file-
+structure problem you are attempting to correct may be immediately recreated.

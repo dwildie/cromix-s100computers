@@ -1,0 +1,24 @@
+utility:      CONFIG
+purpose:      configures memory for any Cromix-Plus .bin program
+
+user access:  all users
+
+summary:      config filename [memory-size[kd]]
+
+arguments:    Cromix-Plus .bin filename
+              memory size, followed by:
+
+              k   memory size in kilobytes (the default)
+              d   memory size in decimal number of bytes
+
+Description
+
+The Config utility allows users to select the memory size that the Cromix-Plus
+Operating System allocates for any .bin program. The filename specified can be
+any Cromix-Plus .bin file (with or without the .bin filename extension).
+Memory size is assumed to be in kilobytes, unless followed by d to denote a
+decimal number of bytes. Although a valid memory size can range from 8K to
+16000K, it will be rounded up to the nearest 4K.
+
+If a filename is given, but no memory size, Config will report the number of
+kilobytes currently allocated to that file.

@@ -1,0 +1,35 @@
+function:       faccess
+purpose:        Test access to a file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int faccess(pathname,mask)
+                char *pathname; int mask;
+
+Description
+
+Faccess tests the specified file for the access as specified by mask:
+
+     mask             what to check
+
+     ac_read          read access
+     ac_exec          execution access
+     ac_writ          write access
+     ac_apnd          append access
+
+More than one value can be "ORed" into mask to check for more than one
+permission at a time. If the caller has all indicated access permissions, the
+function returns zero.  If the caller lacks some of the indicated access
+permissions, the value ERR is returned and errno indicates the error.
+
+Common errors:
+
+     _badname         The pathname is not legal.
+     _filaccess       The user does not have the access he asked for.
+     _notexist        The file to be tested does not exist.
+     _badaddress      The address passed to the system call does not
+                      belong to the user's address space.
+

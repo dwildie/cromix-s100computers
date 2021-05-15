@@ -1,0 +1,34 @@
+utility:      CRON
+purpose:      This program executes command files from the
+              directory /usr/cron/crontabs.
+
+summary:      /etc/cron &
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Cron utility resides in the /etc directory. Normally, it is executed from
+the /etc/startup.cmd file by executing the command
+
+     /etc/cron &
+
+The Cron utility will inspect the directory /usr/cron/crontab.  The files in
+this directory are maintained by the Crontab utility.  If the file
+/usr/cron/log exists, the Cron utility will use it to record every executed
+command. The logging mechanism is disabled by removing the file /usr/cron/log.
+
+Other files of interest are:
+
+/usr/cron/cron.allow     The names of users that are allowed
+                         to use the Crontab utility.
+
+/usr/cron/cron.deny      The names of users that are denied the
+                         use of the Crontab utility.
+
+/usr/cron/cron.pid       The file where the Cron utility
+                         records its own process ID number.
+
+Please see the description of the Crontab utility for additional details.

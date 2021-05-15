@@ -1,0 +1,24 @@
+utility:      IDUMP
+purpose:      This program displays the contents of an inode.
+
+user access:  all users
+
+summary:      idump [-x] [-i inode-list] blockdev [inode-list]
+
+arguments:    block device name
+
+              optional list of one or more inode numbers
+
+options:      -x   dump inode in hexadecimal
+              -i   inode-list  list of inode number
+
+Description
+
+The Idump utility displays the contents of the specified inode(s). Unless the
+-x option is used, inodes are displayed in symbolic form.
+
+Inode numbers can be listed as additional arguments following the device name.
+As an alternative, inode numbers can be given as the -i option parameter. In
+this case the list of inode numbers can be one or more inode numbers separated
+by commas or it can be one or more inode numbers separated by spaces with the
+entire list enclosed in quotation marks.

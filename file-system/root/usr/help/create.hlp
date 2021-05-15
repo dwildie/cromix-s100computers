@@ -1,0 +1,26 @@
+Shell
+command:      CREATE or CRE
+purpose:      This command creates a file.
+
+user access:  all users
+
+summary:      cre file-list
+
+arguments:    one or more pathnames
+
+options:      none
+
+Description
+
+The Create command is used to create one or more files.
+
+The files are zero bytes in length and have default access privileges. They
+are owned by the user who created them and are in the domain of their
+creator's group.
+
+If the specified pathname already exists, an error is reported.
+
+Notes
+
+This command makes a standard data file. Refer to the Makdir command or the
+Makdev utility program if you need to make a directory or device file.

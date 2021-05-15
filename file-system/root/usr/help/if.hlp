@@ -1,0 +1,45 @@
+Shell
+command:      IF
+purpose:      This command is used to conditionally execute another command.
+
+user access:  all users
+
+summary:      if -err command
+              -rewa filename command
+              string-1 = string-2 command
+              string-1 != string-2 command
+
+arguments:    error condition specifier
+
+              or
+
+              access method and a filename
+
+              or
+
+              two strings separated by the equal (=) or not equal (!=)
+              relational operator
+
+              and
+
+              a command line
+
+options:      none
+
+Description
+
+The If command is used to place a condition on the execution of another
+command. It is frequently used in conjunction with the Goto command.
+Referring to the summary above, the If command has three basic forms.
+
+The first form executes a command if the previous command returned  an  error.
+(Refer to the discussion of the Exit command.)
+
+In its second form, the If command causes commands to be executed if a
+particular access method applies to the file specified.
+
+The third and fourth forms of the If command cause command to be executed when
+the specified relational condition is true or false. Neither of these forms of
+the If command requires that the strings be enclosed in quotation marks.
+However, both forms do require a space on either side of the relational
+operator (= or !=).

@@ -1,0 +1,19 @@
+Shell
+command:      WAIT
+purpose:      This command suspends execution and waits for the PID-specified
+              process to terminate.
+
+user access:  all users
+
+summary:      wait [PID]
+
+arguments:    optional PID number
+
+options:      none
+
+Description
+
+The Wait command causes the Cromix Operating System to suspend operation until
+the process specified by the process id number (PID) has terminated. If no
+process is specified, Wait suspends execution of the current process until all
+detached processes belonging to that user have terminated.

@@ -1,0 +1,658 @@
+utility:       CE
+purpose:       This program is used to edit files.
+
+user access:   all users
+
+summary:       ce [-rucnetvifamsopjk1h] [-d logfile] [-x tfile]
+		      [-z efile] [-w #][-l #] [-b #] filename [filename]
+
+arguments:     filename(s) to be edited
+
+options:       -r   read-only mode
+	       -u   update mode
+	       -c   lines terminated by CR-LF pair
+	       -n   lines terminated by LF only
+	       -t   blanks in output replaced by TABs
+	       -e   blanks in output not replaced by TABs
+	       -i   auto indent mode on
+	       -v   auto indent mode off
+	       -a   display cursor address
+	       -f   display name of file being edited
+	       -m   multi-file session
+	       -s   single file session
+	       -x   declare local termcaps file
+	       -z   declare environment file
+	       -o   enable Xon/Xoff protocol
+	       -p   disable Xon/Xoff protocol
+	       -w   line width
+	       -l   start address (line)
+	       -b   start address (byte)
+	       -d   replay editing session
+	       -1   replay editing session one keystroke at a time
+	       -h   do not change tabs
+	       -j   turn keystroke recording ON
+	       -k   turn keystroke recording OFF
+	       -h   do not change tabs
+
+The following is a chart of all environmental options and conditions and their
+interrelationship:
+
+				   command
+Function                            option     key/variable  ce_env
+------------------------           ---------   -----------   -------
+
+Line alignment (rigid,elastic)                   [a] align    al
+Bell enable                                      [b] bell     bl
+Display cursor address             -a,-f         [c] pos      cu
+TAB-key space substitution                       [d] step     di
+Left margin                                      [e] lmarg    lm
+Right margin                                     [f] rmarg    rm
+Paragraph indentation                            [g] para     pi
+Highlight command line                           [h] head     he
+Automatic indentation              -i,-v         [i] inden    in
+Right margin justification                       [j] just     ju
+Case conversion (upper/lower)                    [k] kase     ka
+Line termination                   -c,-n         [l] lterm    lt
+Mode (update/read-only)            -u,-r         [m] mode     mo
+Re-display line count                            [n] rstl     rl
+Program Editor/Word Processor                    [p] type     pt
+Keystroke recording                -j,-k         [r] recd     rs
+Sync (no buffering on update)                    [s] sync     sy
+TAB character handling             -t,-e,-h      [t] tabs     ta
+Xon/Xoff                           -o,-p         [x] xonof    xo
+Multi-file editing                 -m,-s         [ ] file
+Declare environment file           -z
+Declare local termcaps file file   -x
+Line width                         -w
+Start address (line)               -l
+Start address (byte)               -b
+Replay editing session             -d
+Single keystroke replay            -1
+
+COMMANDS
+
+Case Sensitivity
+
+Many CE commands are case sensitive. An uppercase version of a command might
+have a radically different effect than its lowercase counterpart. For example,
+lowercase "c" invokes the COPY command (copy text from one location in the
+file to another). Uppercase "C" causes the case of all characters entered from
+the keyboard to be converted either to upper or lowercase. The alpha lock key
+should not be used with CE. The environmental variable "Kase" should be set to
+insert upper case text. (See the description of the "I" command).
+
+Word Processing/Program Editing
+
+CE can be modified so that the action of two of its commands work more
+conveniently for either editing computer programs or for word processing.
+
+If the environment variable type (as described in the previous section) is set
+to be PROGRAM, the command enabled by pressing the "b" key will be BRACKET.
+This provides assistance to C language programmers by matching the "bracket"
+characters "{","[","(" with their complements. With type set to PROGRAM, the
+"p" or PAGE command will advance the screen display by one page.
+
+If the environment variable type is set to WORD, the command enabled by
+pressing the "b" key will be BEAUTIFY. This provides text formatting
+(justified or unjustified) on a paragraph by paragraph, or marker to marker
+basis. With type set to WORD, the "p" or PARAGRAPH command will advance the
+cursor to the next paragraph, the "P" or PAGE command will advance the screen
+display by one page.
+
+Command Format
+
+Many commands will prompt for some type of user input and also provide options
+which effect the command's behavior. Input is prompted for by the cursor
+moving to the command line and waiting. Options are indicated on the command
+line (after invocation) within brackets ([]) to the right of the command name.
+Commands which are direction sensitive will display ">" or "<" to the left of
+the command name to the indicate direction of their action. Many commands
+accept a "repeat factor" which is also displayed to the left of the command
+name. This value is entered prior to pressing the key which invokes the actual
+command.
+
+     >    3 Substitute: [eqvr] <old>,<new>
+
+This line indicates that:
+
+-   the command will search in the forward direction
+
+-   3 substitutions will be performed (if possible)
+
+-   four options are available (see command description)
+
+-   input is expected in the form "<old>,<new>".
+
+The character "#" represents the value 65335. For example, typing "#" prior to
+invoking the SUBSTITUTE command ("s"), will result in up to 65335
+substitutions.
+
+Command Descriptions
+
+			      @ for "SET MARKER"
+
+The current cursor position can be "labelled" by a single digit number 1-9. In
+addition, four predefined numbers b(egin), e(nd), c(ursor), p(revious) can be
+used by commands like JUMP, COPY, MOVE, ZAP, etc.
+
+			      a or A for "AGAIN"
+
+Repeats the last FIND or SUBSTITUTE command. No action is taken if either
+command has not been used.
+
+			     b or B for "BRACKET"
+			     (PROGRAM mode only)
+
+This command causes the cursor to jump to the next matching bracketing
+character if the cursor is positioned on any of the following characters: "(",
+"[", "{". If there is no matching bracket, the editor beeps and the cursor
+does not move. If the character at the cursor is not a bracketing character,
+no action is taken.
+
+			       b for "Beautify"
+			 (WORD processing mode only)
+
+This command formats text. Paragraphs will be rearranged within the left,
+right and paragraph margins. The margin values are set via the environment
+variables lmarg, rmarg and para. They are set in either the ce_env environment
+file or interactively via the Q command. The formatting can be done with or
+without right margin justification. This is determined by the value of the
+just variable, which is also set in either the ce_env environment file or
+interactively via the Q command. A paragraph is defined as any sequence of
+non-blank lines, or as text separated by one or more blank lines.
+
+The "b" command will format the paragraph in which the cursor is located. If
+the cursor is not located in a paragraph, it will format the first paragraph
+it encounters. This provides for convenient text formatting on a paragraph by
+paragraph basis by simply typing successive "b's". The PARAGRAPH command can
+be used to skip paragraphs which should not be formatted.
+
+This command is case sensitive.
+
+			       B for "Beautify"
+			 (WORD processing mode only)
+
+The "B" command will prompt for two markers to define the portion of text to
+be formatted. The markers define lines (beginning with the first and stopping
+before the second) and not character positions within the lines.
+
+This command is case sensitive.
+
+				 c for "COPY"
+
+This  command  copies the block of text defined by two markers to the current
+cursor position.  All characters between the stated markers will be copied.
+The optional parameter "r" (RECTANGLE)  causes the marker positions to be
+interpreted as being in diagonally opposite corners of a rectangle of text to
+be copied.  The dimensions of the marked rectangle may be verified using the
+"V" (Verify) command.
+
+This command is case sensitive.
+
+			     C for "CONVERT CASE"
+
+Converts the case of all characters within the given range, according  to  the
+current  value  of  the  "kase"  ENVIRONMENT  variable (TO UPPER, TO LOWER or
+TOGGLE).  The range is defined by two file markers. (See "k" and "K" commands)
+
+This command is case sensitive.
+
+			     d or D for "DELETE"
+
+While in "DELETE mode", text can be deleted horizontally one character at a
+time by pressing the space bar or the left/right arrow keys. Pressing "w"
+deletes all blank and non-blank characters from the cursor position to the
+next word. Text can be deleted vertically a line at a time by pressing the
+RETURN key or the up/down arrow keys. The entire line upon which the cursor
+resides will be deleted. Deleted text can be restored by using the arrow key
+in opposite direction of the deletion. Restoration is only available prior to
+typing ESCAPE to terminate the DELETE command.
+
+CE is somewhat restrictive while in DELETE mode. Once the direction has been
+selected (horizontal or vertical) it cannot be changed. Consistent handling of
+"hidden" lines would otherwise be difficult without this restriction.
+
+			      e or E for "EXIT"
+
+There are four optional methods of exiting CE: Update, Quit, Terminate or
+Continue. CE prompts for confirmation if you press "q" to exit from a file
+that has been modified. A similar check is performed if "u" is selected, and
+the file has not been modified. Pressing "t" in EXIT mode quits the current
+file and aborts an entire muti-file editing session. Pressing "c" for
+"continue" will cause the file to be updated to the disk and the editing
+session to resume with the cursor at its position prior to update. NOTE: If
+keystroke recording is being used as a means of backup, use of the "EXIT-
+continue" option is not necessary. If, however, keystroke recording is
+activated and the "EXIT-continue" option is used, CE will update the ".bak"
+file and reset the keystroke log, thus providing replay from the point of the
+EXIT-continue command.
+
+Since CE reads the entire file into memory prior to execution and then closes
+it, severing all connections with it, a security check is performed. CE keeps
+the last modification time of every file being edited. If that stored
+modification time does not match the same data for that file at the moment
+when Update is to be performed, a warning message is issued and execution is
+suspended. Two typical examples of such a situation: two users concurrently
+editing the same file; a single user leaving the editor via the "%" command
+and then inadvertently editing the same file from the new shell.
+
+			      f or F for "FIND"
+
+The FIND command prompts for a pattern of characters (strings) for which it
+should search. The pattern must be delimited by a pair of special (non-
+alphanumeric) characters (commonly '/', '.' or '?'). Pressing "e" prior to
+giving the search pattern of a FIND command causes the search to be case
+sensitive. Pressing "r" (for range) and typing a marker number before the
+pattern, will cause the search to be terminated at the given marker (the
+marker must exist prior to giving the command).  If a matching pattern is not
+found, the cursor will return to its current location.
+
+			      h or H for "HOME"
+
+Moves the cursor to its home position (upper left corner).
+
+				i for "INSERT"
+
+This command is used for the insertion of characters. When the line being
+typed exceeds 79 characters, CE will shift the display of the line to the left
+16 characters. This allows for the insertion of lines as long as 1023
+characters.  Pressing RETURN restores the line to its original "window
+dependent" position.
+
+CE also supports an automatic indentation feature in the INSERT mode. If
+auto-indent is enabled (the default, see section on the CE environment), the
+position of the beginning of the next line (after pressing RETURN), will be
+the same column as the first non-blank character inserted by the previous
+invocation of the INSERT command.
+
+After terminating a line with a RETURN, the left arrow key can be used to
+return the cursor to the columns where previous insertions have occurred on
+multiple lines. This is valid for the duration of the current INSERT command
+only. This can be helpful in aligning indentation levels of programming
+statements.
+
+Characters  may be inserted automatically converted to lower or upper case if
+the environment variable "kase" is set either to be TO  LOWER or TO UPPER
+respectively. No conversion is performed if the "kase" variable is set to
+TOGGLE (the default value).
+
+This feature is very useful in preventing problems with CE commands that are
+case sensitive, since it enables the entry of upper case characters without
+using the ALPHA LOCK key.
+
+This is a case sensitive command.
+
+				I for "INSERT"
+
+An upper case "I" inserts one blank line and returns the cursor to the
+beginning of the line prior to insertion.
+
+This is a case sensitive command.
+
+				 j for "JUMP"
+
+The "j" command must be followed by a destination. The destination can be
+either one of the special markers (Begin, Cursor, End, Previous) or defined
+"numeric" markers between 1 and 9. It is also possible to jump to a specified
+line by typing the letter "l" before the marker. When "l" has been selected,
+it has to be followed by either a destination line number (unsigned) or a
+number preceded by the sign ("+" or "-"). Signed numbers will cause a relative
+jump forward or backward from the current position, while an unsigned number
+indicates a jump to the designated line. The special marker, "Previous" is
+automatically set to be the position of the last "find" by the FIND command.
+
+				 J for "JUMP"
+		      (when CE is called by a compiler)
+
+The "J" command is only available for use when CE is invoked directly by one
+of the specially equiped Cromemco compilers (see the section in the
+introduction of this document entitled "Interaction With Cromemco Compilers"
+for details).
+
+CE is able to keep track of nine separate syntax errors and assigns special
+markers to their positions in the file. These markers can be reached via the
+uppercase version of the JUMP command. It is possible to move to those
+locations directly by specifying their numbers, or by moving to them
+relatively with the "next" or "previous" options to the JUMP command. After
+each JUMP, the editor command line will be replaced with the text of the
+associated compiler error message.
+
+				 k for "CASE"
+
+The "k" command toggles the case of the character at the cursor position. (See
+"C" and "K" commands)
+
+This is a case sensitive command.
+
+				 K for "CASE"
+
+Pressing "K" toggles the case of all alphabetic characters from the cursor
+position to the next non-letter, non-digit character (i.e. toggles the current
+word). (See "C" and "k" commands)
+
+This is a case sensitive command.
+
+			      l or L for "LIST"
+
+This command causes specified lines of text to be spooled and then printed by
+the device /dev/prt (Cromix-Plus) . The "n" option will cause the printed
+lines to be numbered, and each page to be headed by the name of the file. Note
+that lines are numbered in relation to the entire file. The line numbers are
+the same as they would be had the entire file been printed.
+
+			      m or M for "MOVE"
+
+This command moves the block of text defined by two markers to the current
+cursor position. All characters between the stated markers will be moved. The
+optional parameter "r" (RECTANGLE) causes the marker positions to be
+interpreted as being in diagonally opposite corners of a rectangle of text to
+be moved.  The dimensions of the marked rectangle may be verified using the
+"V" (Verify) command.
+
+				 n for "NEXT"
+
+Concatenates the "next line" to the current line adding one space at the
+juncture of the lines.
+
+This is a case sensitive command.
+
+				 N for "NEXT"
+
+Concatenates the "next line" to the current line.
+
+This is a case sensitive command.
+
+			      p or P for "PAGE"
+			     (PROGRAM mode only)
+
+This command advances the screen display by one page (number of lines as
+described in /etc/termcaps, minus one). If preceded by a number, the screen
+will advance that number of pages.
+
+			      p for "PARAGRAPH"
+			 (WORD processing mode only)
+
+The "p" command advances the cursor to the next paragraph.
+
+This is a case sensitive command.
+
+				 P for "PAGE"
+			 (WORD processing mode only)
+
+The "P" command advances the screen display by one page (number of lines as
+described in /etc/termcaps, minus one). If preceded by a number, the screen
+will advance that number of pages.
+
+This is a case sensitive command.
+
+		     q or Q for "SET MODES OF OPERATION"
+
+Please refer to the section titled "The CE Environment".
+
+		       r or R for "READ EXTERNAL FILE"
+
+This command prompts for the pathname of a file to be read from the disk into
+the file which is currently being edited. The additional text will be inserted
+beginning at the current cursor position.
+
+			      s for "SUBSTITUTE"
+
+This command is very similar to the FIND command. The string to be substituted
+is entered between delimiters, followed by the delimited string which is to be
+substituted for it. The "q" option will cause the user to be queried prior to
+each substitution. The "v" option will cause multiple substitutions to occur
+at approximately once per second and the string will be highlighted as the
+substitution occurs for user inspection. The "e" and "r" options function as
+in the FIND command.
+
+This command is case sensitive.
+
+				 S for "SWAP"
+
+The current line will be swapped with the next one.
+
+This command is case sensitive.
+
+				v for "VERIFY"
+
+The current contents of the screen will be cleared and redisplayed.
+
+This command is case sensitive.
+
+				V for "VERIFY"
+
+The "V" command, is used to verify delimited (marked) areas for accuracy prior
+to acting upon them. This command prompts for a definition of mode
+(AREA/RECTANGLE) and markers (2 or 4) which define the block of text to be
+verified. The marked block will be highlighted. The concept of AREA and
+RECTANGLE are discussed under the ZAP command description.
+
+This command is case sensitive.
+
+			      w or W for "WRITE"
+
+This command writes a marked area of text to a specified file. The command
+prompts for two markers to define the block of text. The "a" option causes the
+text to be appended to an existing file. The "r" (raw) option causes the text
+to be written to the file without any line terminators.
+
+			       x for "EXCHANGE"
+
+Typing "x" causes characters entered from the keyboard to be placed in the
+file, "writing over" or substituting any characters encountered.
+
+This command is case sensitive.
+
+			    X for "EXCHANGE WORD"
+
+Typing "X" causes an "exchange word" operation. This involves deleting all
+characters from the cursor to the first blank character and then placing the
+editor in a limited INSERT mode. A space will be preserved at the end of the
+insertion. If the ESCAPE key is typed as the first character of the
+replacement, the word will be restored in its original form.
+
+This command is case sensitive.
+
+			    y for "INDENT A BLOCK"
+
+The "y" command changes the horizontal position of a selected portion of text.
+This command functions logically like a "column insert" mode. This portion of
+text is defined either by two markers or by a repeat factor entered prior to
+invoking the command. Additionally, it is possible to insert or delete
+characters at the starting column (seam) throughout the entire marked block of
+text.
+
+The "y" command accepts two different types of repeat factors.  The first
+repeat factor serves as an alternate method of defining the selected portion
+of text to be moved.  It must be entered prior to invoking the command (typing
+"y"). The repeat factor consists of either a positive or negative (preceded by
+a "-") number.  This factor represents the number of lines relative to the
+current cursor position which should be "yanked".  Negative numbers define
+lines above the line upon which the cursor resides, NOT including that line.
+Positive numbers define lines below the line upon which the cursor resides,
+including that line.  It should be noted that "positive" and "negative" are
+defined relative to the currently defined editing direction which is indicated
+by either ">" or "<" at the left of the command line.
+
+Upon invocation, the column at the "yank" point (seam), defined by the
+cursor's position, is highlighted.
+
+The second repeat factor which this command accepts, is entered after defining
+the text block and just prior to actually moving the text with the arrow keys,
+etc. In this case, the repeat factor defines the number of column positions
+which the block of text should be moved (in either direction).
+
+After using file markers to define the portion of text to be moved, place the
+cursor at the correct column position. It is not important on which line the
+cursor is located. It is however, best to place it on the column "yanked"
+text.  The command is then invoked by typing "y", optionally preceded by the
+previously discussed repeat factor. If the repeat factor was not entered, then
+the block of text to be "yanked" must be described by entering the numbers of
+the file markers which define it. The marked block of text may now be moved
+horizontally either to the left or right using the left or right-arrow keys
+(replacing any existing characters). Any printable character entered from the
+keyboard at this point will be inserted at that column position on all of the
+lines within the defined block of text. If the starting position (seam) is
+located past the last character on a line within the defined block, the
+characters entered from the keyboard will be automatically concatenated to the
+end of that line. If this effect is not desired, the "p" option (padding) can
+be invoked prior to declaring the markers. Used in this manner the entered
+text will be uniformly entered at the same column position throughout the
+defined block. Repeat factors apply to character insertion as well. Please
+note that when entering numbers, that the first number entered will be
+interpreted as a repeat factor and not as the character to be inserted.
+Therefore, to enter one column of the character "4", you would type "1"
+(repeat factor) followed by "4" (character to be inserted).
+
+The following example may serve as some illustration:
+
+On a new file, enter "20" followed by "I" followed by (ESC) to enter the
+INSERT mode and create 20 empty lines. Type "y" to invoke the YANK command and
+then define your block to be the entire file (Begin and End ["b","e"]). Enter
+the characters "CROMEMCO" followed by typing the ESC key.  The result will be
+20 lines, beginning at column #1, which contain the characters "CROMEMCO".
+Place the cursor on the initial "C" in CROMEMCO and type "y", again followed
+by "be". By typing the right-arrow key, the entire column of CROMEMCO's will
+be moved. If the arrow commands are preceded by a repeat factor, the column
+will be moved that number of columns.
+
+This command is case sensitive.
+
+			Y for "CHANGE WINDOW POSITION"
+
+Pressing "Y" allows you to change the position of the editing window
+(horizontal scroll). The left and right arrow keys can be used to shift the
+window to the left or right. The "/" option will shift the window to the left
+enough to move the right most characters onto the screen. The "?" option will
+return the window to the position where column 0 is at the left edge of the
+screen. A repeat factor is also accepted.
+
+If the terminal does not have the features required for horizontal scrolling
+(either "insert a column", or "insert/delete" a character in a "page" mode)
+the arrow keys will not be accepted. The only way of changing a window without
+these features is by supplying a new (numeric) value, for the location of the
+first column to. The screen will then be redisplayed.
+
+This command is case sensitive.
+
+			       z or Z for "ZAP"
+
+ZAP deletes ("zaps") a marked area of text. ZAP has five optional parameters
+[alrst]:
+
+     a - "zaps" a selected AREA
+     l - "zaps" to the end of the line (left or right,
+	 depending on the direction)
+     r - "zaps" the selected RECTANGLE
+     s - "zaps" to the end of the current sentence (direction dependent)
+     t - will remove any extraneous blank characters located past the
+	 end of any line within the specified range
+
+The "r" and "a" options are described in more detail below. If none of the
+options are selected, the ZAP command will "zap" all characters between the
+two selected markers.
+
+RECTANGLE "zap" interprets the two markers which must follow the selection of
+"r", as two diagonally opposite corners of a rectangle (see COPY command).
+Since this is a destructive command, to prevent possible mistakes, the
+selected block of text is displayed in inverse video (even if it is not
+present on the currently displayed screen) and confirmation is required for
+the action to be performed.
+
+AREA "zap" is a generalization of the RECTANGLE ZAP in the sense that it
+expects four markers as definition of the area to be "zapped". The first two
+markers define the range in the vertical direction (lines), and the second two
+markers define the range in the horizontal direction (columns). In this case
+the marker "end" defines either the last line or last column. For example, to
+trim away all characters after column 72 in the range of lines defined by
+markers 1 and 2, place the cursor on any line at column 73 and enter "za12ce".
+As with the RECTANGLE version of the ZAP command, a verification of the action
+will be required.
+
+The following characters have special meaning in EDIT mode:
+
+"%","!"   Fork a shell and exit to the operating system shell command
+	  line. The editing session may be re-entered by typing "exit",
+	  CNTL-Z (Cromix) or CNTL-D (UNIX).
+
+"-"       Sets the direction temporarily backward (for a single command).
+
+"+"       Sets the direction temporarily forward (for a single command).
+
+","       Sets the direction backward.
+
+"."       Sets the direction forward.
+
+">"       In Edit mode, pressing ">" moves the cursor forward to
+	  the next word (the next string of non-blank characters). This
+	  character is NOT available as a "change of direction" command.
+
+"<"       In Edit mode, pressing "<" moves the cursor backward
+	  to the previous word (the last string of non-blank characters).
+	  This character is NOT available as a "change of direction"
+	  command.
+
+"/"       In Edit mode, pressing "/" moves the cursor to the end
+	  of the line. If the right end of the line is off the screen, and
+	  the "align" variable is set to be RIGID, the cursor stops at the
+	  screen edge. With the "align" variable set to be ELASTIC, the
+	  line will be forced out of alignment with the current window
+	  position and the end of the line will become accessible.
+
+"\"       Copies current line to the next line. Repeat factors
+	  accepted.
+
+"?"       In Edit mode, pressing "?" moves the cursor to the
+	  start of the line. If the left end of the line is off the screen,
+	  the cursor stops at the screen edge. With the "align" variable
+	  set to be ELASTIC, the line will be forced out of alignment with
+	  the current window position and the beginning of the line will
+	  become accessible.
+
+"`"       To clear existing markers, press "`" followed by
+	  either a marker number (to clear that marker) or an "*" (to
+	  clear all markers).
+
+Control Characters
+
+While in INSERT or EXCHANGE mode, the editor will normally not allow the
+insertion of control characters. Preceding it with a special character that
+announces the entry of a control character, will cause it to be accepted. That
+special character has the default value of CNTRL-V. It may also be defined
+using the kc termcaps capability.
+
+Depending on the type of terminal, control characters will either be
+represented graphically (eg. Cromemco 3102, C-10 or C-5 terminals), or as a
+question mark ("?"). Terminals which support a "monitor mode" will display
+control characters using available special symbols, while the rest will
+display a "?". The actual value of any character represented by "?" will be
+displayed as a two digit Hex number at the upper right corner of the screen
+when the cursor is positioned upon that character and if the "display cursor
+address" mode is selected (see environment section). The mo and mf terminal
+capabilities define the escape sequences to enter and leave the monitor mode.
+Terminals that would display the mf sequence (while being in the monitor
+mode), should use the Boolean capability mt. In that case, the mf sequence
+should also contain the sequence to back the cursor up for the length of the
+"leave monitor mode sequence", followed by deleting the same number of
+characters. The actual implementation on the WYSE 85 terminal is a good
+example:
+
+	  mo=\E[3h       # Go into monitor mode
+	  mf=\E[3l       # Exit monitor mode
+
+Once in monitor mode, the Wyse terminal will display (and interpret) all
+subsequent escape sequences (including control characters), therefore the mf
+sequence itself (the four characters "ESC" "[" "3" "l") will be sent to the
+screen - corrupting its contents. To resolve that problem, mf should actually
+be defined as:
+
+	  mf=\E[3l\E[4D\E[4P
+
+This means that after exiting monitor mode (and sending the characters "\E"
+"[" "3" "l" to the screen), the cursor should go back four character positions
+("\E" "[" "4" "D") and erase four characters ("\E" "[" "4" "P"). Note that
+this discussion applies only if the mf sequence is displayed while in the
+monitor mode.
+
+
+

@@ -1,0 +1,24 @@
+utility:      UNMOUNT
+purpose:      This program disconnects a mounted file system from the current
+              file system.
+
+user access:  privileged user
+
+summary:      unmount [-x] devname [devname ...]
+
+arguments:    device names
+
+options:      -x   do not eject disk
+
+Description
+
+The Unmount utility program disables access to a file system. A file system
+that has been mounted must be unmounted by use of the Unmount utility before
+the mounted disk is removed from the system or the system is powered-down. If
+this is not done, the integrity of the data on the mounted system cannot be
+assured.
+
+Options
+
+The -x option causes a floppy disk not to be ejected when it is unmounted
+(PERSCI drives only).

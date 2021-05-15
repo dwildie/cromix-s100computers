@@ -1,0 +1,95 @@
+MC68000 Object Code Linker  16-Apr-87
+
+File: leapfrog.bin
+
+00000AE8    000AE8                 %%IOFIB
+00000A76    000A76                 %CNTARGS
+00000CF2    000CF2                 %GETGADD
+00000C5C    000C5C                 %INITFIB
+00000B36    000B36                 %INITGLB
+00000610    000610                 %P860421
+00000A50    000A50                 %TOUCH
+00000FB2    000FB2                 %_CHKSTK
+000006A0    0006A0                 %_END
+000009E8    0009E8                 %_HALTF
+00000D0A    000D0A                 %_MEMAV
+00000A0E    000A0E                 %_NO_ACP
+00000940    000940                 %_PANIC
+0000097E    00097E                 %_PRLOC
+00000A10    000A10                 %savereg
+000000F8    0000F8                 _exit
+00000100    000100                 _filbuf
+00000206    000206                 _flsbuf
+000006CC    0006CC                 close
+000006E8    0006E8                 creat
+000005A6    0005A6                 exit
+000003B4    0003B4                 fclose
+00000328    000328                 fflush
+000004EA    0004EA                 fopen
+00000E1A    000E1A                 free
+0000042A    00042A                 freopen
+0000080C    00080C                 lseek
+00000000    000000                 main
+00000D26    000D26                 malloc
+00000844    000844                 open
+00000898    000898                 read
+00000540    000540                 syserr
+000008C8    0008C8                 write
+
+Memory map for segment '        '
+
+00000000    000000                 main
+000000D0    0000D0               + $START  
+000000F8    0000F8                 _exit
+00000100    000100                 _filbuf
+00000206    000206                 _flsbuf
+00000328    000328                 fflush
+000003B4    0003B4                 fclose
+0000042A    00042A                 freopen
+000004EA    0004EA                 fopen
+00000540    000540                 syserr
+000005A6    0005A6                 exit
+00000610    000610                 %P860421
+000006A0    0006A0                 %_END
+000006CC    0006CC                 close
+000006E8    0006E8                 creat
+0000080C    00080C                 lseek
+00000844    000844                 open
+00000898    000898                 read
+000008C8    0008C8                 write
+00000940    000940                 %_PANIC
+0000097E    00097E                 %_PRLOC
+000009E8    0009E8                 %_HALTF
+00000A0E    000A0E                 %_NO_ACP
+00000A10    000A10                 %savereg
+00000A50    000A50                 %TOUCH
+00000A76    000A76                 %CNTARGS
+00000AE8    000AE8                 %%IOFIB
+00000B36    000B36                 %INITGLB
+00000C5C    000C5C                 %INITFIB
+00000CF2    000CF2                 %GETGADD
+00000D0A    000D0A                 %_MEMAV
+00000D26    000D26                 malloc
+00000E1A    000E1A                 free
+00000FB2    000FB2                 %_CHKSTK
+
+
+Data Areas:
+
+/%GLOBALS/          (00002160) 000007A4
+/%SYSCMEM/          (00002160) 00000000
+/%SYSMEM/           (00002160) 00000000
+//regs//            (00002B28) 00000044
+=leapfrog           (0000215C) 00000004
+=libcx              (00002118) 00000044
+?cro20c             (00002908) 0000001C
+?libcx              (00002B24) 00000004
+_iob                (00002000) 00000118
+errno               (00002904) 00000004
+stdinbuf            (00002924) 00000200
+
+No:  Segment:    Size:     Address:
+ 0. '        '  0000103A      00000000
+
+Start Loc = 000000D0 in segment         
+Code Size = 0000103A, Global Size = 00000000, Stack-Heap Size = 00008000

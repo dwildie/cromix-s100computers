@@ -1,0 +1,15 @@
+utility:      CDOSFIX
+purpose:      This program strips the ^Z's from the end of CDOS files.
+
+user access:  all users
+
+summary:      cdosfix filename [filename ...]
+
+arguments:    one or more filenames
+
+options:      none
+
+Description
+
+The Cdosfix utility strips the ^Z's from the end of files created using the
+CDOS Operating System.

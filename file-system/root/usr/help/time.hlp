@@ -1,0 +1,55 @@
+utility:      TIME
+purpose:      This program displays or alters the time and date.
+
+user access:  all users for display
+              privileged user for changes
+
+summary:      time [-se2]
+
+arguments:    none
+
+options:      -s   set system values
+              -2   set 3102 clock
+              -e   European style display (dd/mm/yy)
+
+Description
+
+The Time program displays or changes the time and date. If the -s option is
+not specified, the current date and time are displayed. If the -s option is
+used, the user is prompted for the date and then the time.  Although the date
+is displayed with the "/" separator, and time is displayed using the ":"
+separator, any convenient separator character (such as a space or a period)
+can be used when entering the date and time. The Time utility displays a new
+prompt until a valid date or time is entered.
+
+Options
+
+The -s option causes the user to be prompted for a new date and time.  Only a
+privileged user can specify the -s option.
+
+The -e option causes the time to be displayed in the European style, with the
+day and month reversed.
+
+The -2 option allows the user to set the clock in the user's terminal. The
+terminal must be a Cromemco 3102, C-5, or C-10 terminal.
+
+Notes
+
+The Time utility allows shortcuts when the date and time are entered.
+
+To enter date:
+
+No value given    Keep old values.
+One value         Used for day. Month and year unchanged.
+Two values        Used for month and day (day and month in the European
+                  style). Year unchanged.
+Three values      Month, day, and year (day, month, and year in the
+                  European style).
+
+To enter time:
+
+No value given      Keep old values.
+One value           Used for minutes. Keep old hours, set seconds to zero.
+Two values          Used for hours and minutes, set seconds to zero.
+Three values        Hours, minutes, seconds.
+

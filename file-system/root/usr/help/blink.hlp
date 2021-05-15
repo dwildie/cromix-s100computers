@@ -1,0 +1,101 @@
+utility:      BLINK
+purpose:      This program links relocatable Z80 files.
+
+user access:  all users
+
+summary:      blink [-dinpqrxz] [-b outname]
+                 filename [-s libname] . . .
+
+arguments:    one or more filenames
+
+              optional -s followed by a library name
+
+options:      -b   output filename
+              -d   data section address
+              -i   IOP starting address
+              -n   no map
+              -p   program address
+              -q   do not display map
+              -r   relocatable binary
+              -s   search library
+              -x   bit-mapped
+              -z   size (use with -r)
+
+Description
+
+The Blink utility is a two-pass virtual linker of Z80 programs. One or more
+input files can be specified. An executable binary file is generated. Blink
+can be used to generate relocatable binary files that can share a bank of
+memory with other programs.
+
+Options
+
+The -b option may be used to specify the output filename. If used, the -b
+option must be followed by a space and the name of the binary file to be
+created. If this option is not used, the output file adopts the name of the
+first relocatable file specified on the command line. The output file has the
+filename extension .bin. This option may be used to force the output file to
+have a filename extension of .com. These are programs compatible with the CDOS
+Operating System only if they were written using CDOS system calls.  The
+format for linking these files is:
+
+     jim[1] blink -b filename.com modulenames
+
+The -d option is followed by a space and the hex value of the data section
+starting address.
+
+The -i option is followed by a space and the hex value of the starting address
+for an IOP program. It allows relocation of the program above the memory area
+occupied by the IOP Monitor. The IOP Monitor occupies memory between addresses
+0000 and 0800 hex in ROM, and between 7F00 and 7FFF hex in RAM. This option
+creates an automatic header for the program to be run in the IOP using the
+Iopload utility program.
+
+The -n option prevents creation of a link map.  Otherwise, the link map is
+created and written to a file with the filename extension .map.
+
+The -p option must be followed by a space and the hex value of the program
+starting address. If no starting address is specified, the program starts at
+100 hex. A relocatable binary program is placed wherever there is space in a
+memory bank.
+
+The -q option inhibits display of the link map on the terminal. Otherwise, the
+link map is displayed on the terminal.
+
+The -r option causes generation of the output file in relocatable binary
+format. Programs in this format can be executed with another process in a
+single bank of memory. The -r option is used with the -z option discussed
+below.
+
+The -s option precedes the filename of the library to be searched. The option
+applies only to the file immediately following it, and must be specified for
+each file to which it applies. Blink searches the .rel file for necessary
+functions. If no library is specified using the -s option, and there is no
+library in the current directory, the program looks into /usr/lib, which is
+the default system library directory.
+
+The -x option makes the output file a bit-mapped self-relocating file. This
+option generates a self-relocating file which, when loaded into a user bank,
+loads in highest available memory and sets high memory to the byte just below
+itself. This option is used in linking the Cromemco Debug program.
+
+The -z option allocates a specific size for the program segment. This switch
+is used only with the -r option, and only when free space (more than Blink
+normally allocates) is desired in the program area.
+
+Notes
+
+Blink manages memory so as to link programs up to the total amount of memory
+available. The memory area used by the linker during execution does not impose
+a restriction on the size of the program being linked. Thus, Cromix-Plus
+programs up to 64K, minus 1K of memory occupied by the Cromix-Plus Operating
+System in each user bank, can be linked by Blink.
+
+Relocatable binary programs are treated as normal Z80 programs under the
+Cromix-Plus system.
+
+CDOS programs running under the Cromix-Plus Operating System are limited to
+approximately 4K less memory than the 63K available to Cromix-Plus programs.
+This is because Sim, the CDOS simulator, must also be loaded.
+
+COBOL programs using segmentation cannot be linked with Blink.

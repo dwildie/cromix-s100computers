@@ -1,0 +1,198 @@
+utility:      ICHECK
+purpose:      This program verifies the integrity of a file system.
+
+user access:  all users
+
+summary:      icheck [-sm] [-b blk# ...] [devname ...]
+
+arguments:    optional list of device names
+
+options:      -s    salvage
+              -b    blocks
+              -m    missing blocks
+
+Description
+
+The Icheck utility verifies the integrity of the file system's inode
+structure. After a power failure or after the computer has been reset, run
+Icheck on all devices that were mounted at the time of failure.
+
+If no device names are specified, Icheck checks the integrity of all mounted
+devices. The list of mounted devices is obtained from the file /etc/mtab.
+
+If no options are specified, Icheck produces a report on the file system, but
+does not alter it. A sample report and explanation follow.
+
+If the -s option is used while another task or user is using the disk, the
+directory on the disk may be irreparably damaged.
+
+     jim[1] icheck
+
+     Device:  /dev/fda
+
+     Blocks missing:                      0
+     Bad free blocks:                     0
+     Duplicate blocks in free list:       0
+     Blocks in files and in free list:    0
+     Bad blocks:                          0
+     Duplicate blocks:                    0
+
+     Device files:                       16
+     Ordinary files:                    117
+     Directories:                        14
+     Blocks used in files:            1,462
+     Free blocks:                       845
+     Free inodes:                       358
+
+Blocks missing
+
+All disks (also referred to as block devices) are divided into allocation
+units called blocks. A block is 512 bytes. Every block should appear either in
+a file or in the free list. Blocks appearing in files include those
+permanently assigned as either system or inode blocks. The free list is a list
+of all blocks available for use.
+
+A block is missing if it appears neither in a file nor in the free list.
+Missing blocks do not compromise the integrity of the file system, and the
+problem does not need to be corrected immediately. If a block is missing, it
+is simply not available for use.
+
+The problem may be corrected by executing Icheck with the -s option.
+
+Bad free blocks
+
+This message pertains to blocks located in the free list. The term bad
+indicates that the block number is out of range. A block number can be out of
+range if it is:
+
+1.  Past the end of the disk;
+
+2.  In the system area of the disk; or
+
+3.  In the inode area of the disk.
+
+Bad free blocks do compromise the integrity of the file system, and the
+problem should be corrected immediately by executing Icheck with the -s
+option. No files are affected.
+
+Duplicate Blocks in Free List
+
+This message means the same block number appears twice in the free list.
+
+Duplicate blocks in the free list do compromise the integrity of the file
+system, and the problem should be corrected immediately by executing Icheck
+with the -s option. No files are affected.
+
+Blocks in Files and in Free List
+
+This message means some blocks appear both in files and the free list. Blocks
+in files and in free list do compromise the integrity of the file system, and
+the problem should be corrected immediately by executing Icheck with the -s
+option.
+
+Bad Blocks
+
+This is similar to Bad free blocks except that the bad blocks appear in files.
+
+Bad blocks do compromise the integrity of the file system, and the problem
+should be corrected immediately.
+
+Icheck reports the inode number of the bad blocks. The Ncheck utility is then
+used to determine the names of the files containing bad blocks.  These files
+must be deleted. The file may be copied to another file before it is deleted;
+the new file should be carefully checked because it will probably not be
+correct.
+
+Duplicate Blocks
+
+This is similar to Duplicate Blocks In Free List except that the duplicate
+blocks appear in files.
+
+Duplicate blocks do compromise the integrity of the file system and the
+problem should be corrected immediately.
+
+Icheck reports the inode number of the duplicate blocks. The Ncheck utility is
+then used to determine the names of the files containing duplicate blocks. At
+least one of these files must be deleted. The Icheck utility should then be
+run with the -s option.
+
+The file may be copied to another file before it  is  deleted  and  should  be
+carefully checked because it will probably not be correct.
+
+                         MESSAGES RETURNED BY ICHECK
+
+Cannot read super block
+The super block cannot be read.
+
+Insufficient memory
+The disk contains too many inodes for Icheck to check. Free additional memory
+or create a new disk with fewer inodes and use Cptree to transfer the contents
+of the disk to the new disk.
+
+Inode xxxxx, cannot read inode
+A disk I/O error occurred while trying to read the specified inode.
+
+Inode xxxxxx, bad usage count
+This inode has an incorrect usage count. The usage count is used by the Usage
+utility program to calculate the amount of disk space used. This error can be
+corrected by running Icheck with the -s option.
+
+Inode xxxxxx, cannot write to inode
+This error message occurs when the Icheck utility is attempting to correct an
+inode and an error occurs.
+
+Block xxxxxx, inode xxxxxx, block used in file
+This is not an error message. This message is displayed when the -b option is
+used, indicating the number of the inode in which the specified block is used.
+
+Block xxxxxx, inode xxxxxx, bad block number
+Refer to the previous discussion of Bad blocks.
+
+Block xxxxxx, inode xxxxxx, duplicate block in the system
+Refer to the previous discussion of Duplicate blocks.
+
+Block xxxxxx, inode xxxxxx, duplicate block in free list
+Refer to the previous discussion of Duplicate blocks.
+
+Block xxxxxx, inode xxxxxx, block in file system and free list
+Refer to the previous discussion of Duplicate blocks.
+
+Block xxxxxx, missing block
+This message is printed when the -b option is used to find the status of a
+certain block and the block is missing. Refer to the previous discussion of
+Blocks missing.
+
+Block xxxxxx, block in free list
+This message is printed when the -b option is used to find the status of a
+certain block and the block is in the free list.
+
+Block xxxxxx, bad free block
+Refer to the previous discussion of Bad free blocks.
+
+Block xxxxxx, cannot write free list block
+When running Icheck with the -s option, the free list is recreated.  This
+error message is printed when there is an error in writing the free list.
+
+Block xxxxxx, cannot read block
+This message is printed when a block cannot be read.
+
+Options
+
+The -s option salvages and recreates the free list.
+
+The -b option displays information about blocks. The option must be followed
+by a list of block numbers. The numbers must be separated by commas, or they
+must be separated by spaces and the entire list enclosed in quotation marks.
+
+The -m option prints the numbers of missing blocks.
+
+Notes
+
+When using the -s option, Icheck must be used in conjunction with the Dcheck
+utility. Icheck is run after Dcheck. Both utilities should be run using the -s
+option. After both programs are run, the system must be rebooted. It is not
+necessary to reboot if the -s option is not used or the device was not
+mounted. Refer to the Boot utility for additional information.
+
+Do not execute the Icheck utility when other processes are being executed.
+This includes detached processes as well as other user processes.

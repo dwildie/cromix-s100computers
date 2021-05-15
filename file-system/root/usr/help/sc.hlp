@@ -1,0 +1,25 @@
+utility:      SC
+purpose:      This program allows the user to edit files.
+
+user access:  all users
+
+summary:      sc filename [filename]
+
+arguments:    name(s) of file to be edited
+
+Description
+
+When called without an option or with the -c option, the Screen program
+(/bin/screen.bin) creates output files with a CR-LF (carriage RETURN-linefeed)
+pair at the end of lines. When called with the -n option, only a LF character
+is used as a line terminator. Such files can then be used with the UNIX
+Operating System.
+
+The Sc program (/cmd/sc.cmd) calls the Screen editor with the -n option.
+
+Note
+
+If you prefer to alter the Screen program so -n instead of -c is the default,
+patch the file screen.bin with a zero at location 0FAH.  This patched version
+will be loaded slightly faster than sc.cmd. You may wish to call the patched
+version sc.bin, in which case, the file sc.cmd may be discarded.

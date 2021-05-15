@@ -1,0 +1,97 @@
+SYSLIB FUNCTIONS        Cromix Programers Manual            SYSLIB FUNCTIONS
+
+alarm       -  sends alarm signal to calling process after # seconds
+boot        -  boots new operating system
+caccess     -  tests channel access
+cchstat     -  changes the status of an open file
+ccromix     -  executes general system call
+chdup       -  duplicates a channel
+chkdev      -  verifies presence of a device driver in the operating system
+clink       -  establishes an additional link to an open file
+close       -  closes an open file
+create      -  creates and opens a file
+cstat       -  returns the status of an open file
+cxexit      -  same as exit
+cxopen      -  cromix open with all arguments
+delete      -  deletes a directory entry
+dz80to68    -  convert Z80 double to 68000 double
+endpwent    -  close password file
+error       -  displays an error message
+exchg       -  exchanges filenames of two open files
+exec        -  executes a program
+faccess     -  tests file access
+fchstat     -  changes the status of a file
+fexec       -  forks and executes a program
+flink       -  establishes a link to a file
+fshell      -  forks a Shell process
+fstat       -  returns the status of a file
+fz80to68    -  convert Z80 float to 68000 float
+getdate     -  returns the date
+getdir      -  returns the current directory pathname
+getgroup    -  returns the group id
+getmode     -  returns the characteristics of a character device
+getpos      -  returns a file pointer
+getprior    -  returns the priority of the calling process
+getproc     -  returns the PID of the calling process
+getpwent    -  read a password file entry
+getpwnam    -  search password file for user name
+getpwuid    -  search password file for user ID
+gettime     -  returns the time
+getuser     -  returns the user id of the current process
+indirect    -  executes general system call
+kill        -  sends a signal to a process
+lock        -  assists in implementing inter-process communications
+longjmp     -  jump to environment set by setjmp
+lz80to68    -  convert Z80 long to 68000 long
+makdev      -  creates a new name for a device
+makdir      -  creates a new directory
+memory      -  allocates or deallocates memory
+mount       -  enables access to a file system
+msgctl      -  message queue control operation
+msgget      -  get message queue identifier
+msgrcv      -  receive a message from message queue
+msgsnd      -  send a message to message queue
+pause       -  suspends execution and waits for a signal
+phys        -  gain access to address space
+pipe        -  creates a pipe
+ptrace      -  debugger tool
+rdbyte      -  reads a byte
+rdline      -  reads a line
+rdseq       -  reads the specified number of bytes
+semctl      -  semaphore group control operation
+semget      -  get semaphore group identifier
+semop       -  semaphore group operation
+setdate     -  changes the date
+setdir      -  changes the current directory
+setgroup    -  changes the group id
+setjmp      -  set environment fo longjmp
+setmode     -  changes the characteristics of a character device
+setpos      -  changes the position of the file pointer
+setprior    -  returns the priority of the calling process
+setpwent    -  rewind password file
+settime     -  changes the time
+setuser     -  changes the user id
+shell       -  initiates a Shell process
+shmat       -  attach shared memory segment
+shmctl      -  shared memory control operation
+shmdt       -  detach shared memory segment
+shmget      -  get shared memory identifier
+signal      -  sets up a process to receive a signal
+sleep       -  puts a process to sleep
+tgbool      -  extract Boolean terminal capability
+tgnum       -  extract numeric terminal capability
+tprint      -  print escape sequence into a string (like sprintf)
+tgread      -  read termcaps information
+tgstr       -  extract string terminal capability
+trunc       -  truncates an open file
+uchstat     -  change process table information
+unlock      -  is used to unlock a locking sequence
+unmount     -  disables access to a file system
+update      -  updates all open files
+ustat       -  get process table information
+uz80to68    -  convert Z80 unsigned to 68000 unsigned
+version     -  returns the operating system version number
+wait        -  waits for the termination of a child process
+wrbyte      -  writes a byte
+wrline      -  writes a line
+wrseq       -  writes sequential bytes

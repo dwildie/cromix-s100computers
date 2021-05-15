@@ -1,0 +1,112 @@
+function:       cchstat
+purpose:        Change status information of an open file.
+
+user access:    see below
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int cchstat(channel,statustype,statusvalue)
+                int channel, statustype, statusvalue;
+
+                or
+
+                int cchstat(channel,statustype,statusvalue,statusmask)
+                int channel, statustype, statusvalue, statusmask;
+
+                or
+
+                int cchstat(channel,statustype,statustime)
+                int channel, statustype; struct st_time *statustime;
+
+Description
+
+Cchstat changes various components in the inode which is identified by the
+channel number. The first two arguments are always the same. The remaining
+arguments depend on statustype:
+
+     cchstat(channel,st_owner,statusvalue)
+
+          Only a privileged user can change the owner ID of the file
+          to statusvalue.
+
+     cchstat(channel,st_group,statusvalue)
+
+          Only a privileged user can change the group ID of the file
+          to statusvalue.
+
+     cchstat(channel,st_aowner,statusvalue,statusmask)
+
+          Only a privileged user or owner of the file can change the
+          access permissions of the owner. Statusmask specifies which
+          bits are to be changed, statusvalue specifies new bit values.
+          Both statusvalue and statusmask should be formed as
+          described below.
+
+     cchstat(channel,st_agroup,statusvalue,statusmask)
+
+          Only a privileged user or owner of the file can change the
+          access permissions of the group. Statusmask specifies which
+          bits are to be changed, statusvalue specifies new bit values.
+          Both statusvalue and statusmask should be formed as
+          described below.
+
+     cchstat(channel,st_aother,statusvalue,statusmask)
+
+          Only a privileged user or owner of the file can change the
+          access permissions of the public. Statusmask specifies which
+          bits are to be changed, statusvalue specifies new bit values.
+          Both statusvalue and statusmask should be formed as
+          described below.
+
+     cchstat(channel,st_stext,statusvalue)
+
+          Only a privileged user or owner of the file can change the
+          shared text flag. The low order bit of statusvalue is used
+          to define the shared text flag.
+
+     cchstat(channel,st_tcreate,statustime)
+
+          Only a privileged user can change the time the file was created.
+
+     cchstat(channel,st_tmodify,statustime)
+
+          Only a privileged user can change the time the file was modified.
+
+     cchstat(channel,st_taccess,statustime)
+
+          Only a privileged user can change the time the file was accessed.
+
+     cchstat(channel,st_tdumped,statustime)
+
+          Only a privileged user can change the time the file was dumped.
+
+To change the access permissions statusmask and statusvalue should be formed
+from:
+
+     ac_read          read permission
+     ac_exec          execute permission
+     ac_writ          write permission
+     ac_apnd          append permission
+
+For example,
+
+     statusmask       ac_read|ac_writ
+     statusvalue      ac_read
+
+will change read and write access permission to allow read and disallow write.
+
+The function returns
+
+     0              if successful
+     ERR            if an error occurred
+
+Common errors:
+
+     _fileaccess      The caller does not have the access he asked for.
+     _priv            The user is not a privileged user or he does
+                      not own the file.
+     _notopen         The specified channel is not open.
+     _badaddress      The address passed to the system call does not
+                      belong to user's address space.
+

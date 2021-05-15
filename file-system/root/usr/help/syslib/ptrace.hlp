@@ -1,0 +1,90 @@
+function:       ptrace
+purpose:        Trace execution of another process.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+                <ptrace.h>
+
+synopsis:       int ptrace(command,pid,addr,data,cnt)
+                int command, pid, cnt; unsigned char *addr, *data;
+
+Description
+
+Ptrace system call is intended to be used in debuggers like Ddt. The system
+call has a number of subfunctions selected by the first argument (command):
+
+P_START      The parent process (debugger) issues this call to notify
+             the system that the next fexec (fshell) system call will fork
+             a debugged process. The debugged process does not start execution
+             by itself. It is waiting in a suspended state until the parent
+             process issues a P_RUN, or a P_TRACE, or a P_TERM ptrace
+             function. (The debugged process behaves as if it just hit a
+             breakpoint).
+
+             The pid, addr, data, cnt arguments are not used.
+
+P_RDSEQ      When the debugged process is in the suspended state, this
+             call will read cnt bytes from the (absolute) address data,
+             belonging to process pid, into caller's memory at addr. The
+             specified process must be started with the P_START function
+             preceding the fexec call.
+
+P_WRSEQ      When the debugged process is in the suspended state, this
+             call will write cnt bytes from the caller's memory address to the
+             (absolute) address data, belonging to the process pid. The
+             specified process must be started with the P_START function
+             preceding the fexec call.
+
+P_RDSTA      When the debugged process is in the suspended state, this
+             call will read all of the process pid registers (see ptrace.h)
+             into the parent address addr. The specified process must be
+             started with the P_START function preceding the fexec call.
+
+             The data and cnt arguments are not used.
+
+P_WRSTA      When the debugged process is in the suspended state, this call
+             will write all of the process pid registers (see ptrace.h)
+             from the parent address addr. The specified process must be
+             started with the P_START function preceeding the fexec call.
+
+             The data and cnt arguments are not used.
+
+P_RUN        When the debugged process is in the suspended state, this call
+             will restart the process pid. The parent process will normally
+             install breakpoints before issuing this call. Breakpoint can be
+             installed by patching the child code with the TRAP 5 instruction.
+             If the child process executes the TRAP 5 instruction it will go
+             into a suspended state. The system will notify the parent process
+             by sending him the sigtrace signal. The specified process must
+             be started with the P_START function preceding the fexec call.
+
+             The addr, data, and cnt arguments are not used.
+
+P_TRACE      When the debugged process is in the suspended state, this call
+             restarts the process pid for the duration of one instruction.
+             After one instruction has been executed the system will notify the
+             parent process by sending it the sigtrace signal. The specified
+             process must be started with the P_START function preceding the
+             fexec call.
+
+             The addr, data, and cnt arguments are not used.
+
+P_TERM       When the debugged process is in the suspended state, this call
+             terminates the process pid. The specified process must be started
+             with the P_START function preceding the fexec call.
+
+             The addr, data, and cnt arguments are not used.
+
+The function returns
+
+     0           if no error;
+     ERR         if error.
+
+Common errors:
+
+     _badvalue      Bad command argument.
+     _badaddress    Bad address value.
+     _noproc        There is no such process.
+

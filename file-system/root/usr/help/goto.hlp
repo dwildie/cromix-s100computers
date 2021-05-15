@@ -1,0 +1,42 @@
+Shell
+command:      GOTO or GO
+purpose:      This command causes transfer of control within a command file.
+
+user access:  all users
+
+summary:      go label
+
+arguments:    line label
+
+options:      none
+
+Description
+
+The Goto command transfers control within a command file. Control is
+transferred to the line specified by label. This command is used to execute
+the same commands within a command file repeatedly. When used in conjunction
+with the If and Shift commands, the Goto command becomes part of a conditional
+loop with varying parameters.
+
+A percent sign (%) anywhere on a line means the rest of the line is a comment.
+A comment at the beginning of a line--with no space after the percent sign--is
+a label.
+
+The Goto command given with a nonexistent line label causes termination of
+command file execution.
+
+Example:
+
+     %sample_label
+     x
+     y
+     z % this is a comment
+     goto sample_label
+
+This sample command file causes repeated execution of the commands x, y, and
+z. The first line of the command file is a line label, as indicated by the
+leading percent sign.
+
+The percent sign indicates a comment on the fourth line of the file. The fifth
+(last) line of the file transfers control to the specified label
+(sample_label).

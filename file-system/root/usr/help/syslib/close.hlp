@@ -1,0 +1,26 @@
+function:       close
+purpose:        Close an open file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int close(channel)
+                int channel;
+
+Description
+
+The close call flushes all buffers associated with the specified channel
+number and disassociates the channel number from the file to which it was
+assigned. This function is part of clib.obj.
+
+The function returns:
+
+     0              if successful
+     ERR            if error
+
+Common errors:
+
+     _notopen            The channel to be closed was not open to start with.
+

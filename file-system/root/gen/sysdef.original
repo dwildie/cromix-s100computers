@@ -1,0 +1,479 @@
+%       XPU Cromix System Generation file
+%
+%       Sep 28, 1987
+
+% Device driver names should be entered on appropriate row. A current
+% list of devices supported and their driver names can be found at
+% the end of this file. Each driver can have a number of integer
+% arguments. Those arguments, if any, should follow the driver name.
+% The arguments must be separated by white space. The number of arguments
+% and their meaning depend on the particular driver. See description
+% at the end for the arguments a driver might require.
+
+% System memory size:
+
+	maxmem  2               % Amount of supported memory expressed
+				% in 256K units.
+
+% Character devices:
+
+	CDEV    01      utty 0                  % Suggested utty or tty
+	CDEV    02                              % Suggested otty or qtty
+	CDEV    03      sysdev                  % System driver (required)
+	CDEV    04      timer                   % Timer driver (required)
+	CDEV    05                              % Suggested ulpt or lpt
+	CDEV    06                              % Suggested typ
+	CDEV    07                              % Suggested uslpt or slpt
+	CDEV    08      sctp 0 1                % Suggested sctp
+	CDEV    09                              % Suggested oslpt or qslpt
+	CDEV    10                              % Suggested ffp
+	CDEV    11                              % Suggested tape
+	CDEV    12                              % Suggested cnet
+	CDEV    13                              % Not used
+	CDEV    14                              % Not used
+	CDEV    15                              % Not used
+	CDEV    16                              % Not used
+
+
+% Block devices:
+
+	BDEV    01      cflop                   % Cromemco floppy driver
+	BDEV    02                              % Suggested uflop
+	BDEV    03      allmem                  % Amem driver (required)
+	BDEV    04                              % Suggested tflop 0
+	BDEV    05                              % Suggested ramdsk
+	BDEV    06      stdc 1                  % STDC driver
+	BDEV    07      smd 0                   % Removable part of SMD 0
+	BDEV    08      hd                      % IMI hard disk
+	BDEV    09                              % Suggested zio
+	BDEV    10      xpu 8                   % Z80 on XPU/DPU
+	BDEV    11      esdi 1                  % ESDI driver
+	BDEV    12                              % Not used
+
+
+% Primitive terminal device:
+
+	RAW     raw_fdc                 % FDC primitive terminal driver
+
+
+% Root device:
+
+	ROOT    none            % ROOT none     (Means: Ask the operator)
+				% ROOT boot     (Means: Same as boot disk)
+				% ROOT 6 0      (Means: Use device 6:0)
+
+
+% Customized logon message:
+
+	LOGMSG  Boot System                     % Any message can be here
+
+
+
+% Default access:
+
+	ACCESS  rewa.re.re      % Files created will have this access
+				% unless it is changed here
+
+
+
+
+
+%                       SYSTEM PARAMETERS
+%
+% NOTE: Be sure you are aware of the ramifications of altering
+%       these values prior to changing them.  See Cromix-Plus User's
+%       Reference Manual 023-5013 for details.
+
+	bufcnt  30      % Number of memory resident data blocks
+
+	inocnt  30      % Number of memory resident inodes
+
+	filcnt  80      % Number of files which can be opened simultaneously
+
+	chcnt   32      % Number of files per process
+
+	usrcnt  24      % Number of process tables
+
+	ptbcnt  48      % Number of page tables
+
+	mntcnt  8       % Number of devices that can be mounted at any time
+
+	lckcnt  16      % Number of locks that can be installed
+
+	freecnt 1024    % Number of bytes in the system memory pool
+
+	argvcnt 4096    % Number of bytes for program arguments
+
+	charcnt 64      % Number of character buffers
+
+	msgcnt  0       % Number of bytes in message pool
+
+	msgmax  0       % Maximum message size
+
+	msgnmb  0       % Maximum number of bytes on one queue
+
+	msgmni  0       % Number of message queues
+
+	msgtql  0       % Number of messages in the system
+
+	shmmax  0       % Maximum shared memory segment size
+
+	shmmni  0       % Number of shared memory identifiers
+
+	shmseg  0       % Number of segments per process
+
+	shmall  0       % Max total shared memory size
+
+	semcnt  0       % Number of bytes in semaphore pool
+
+	semmni  0       % Number of semaphore identifiers
+
+	semmsl  0       % Max number of semaphores per identifier
+
+	semopm  0       % Max number of operations par call
+
+	semmnu  0       % Number of undo structures in system
+
+	semume  0       % Number of undo entries per process
+
+	shtmni  4       % Number of shared texts in system
+
+	maxlev  0       % Maximum interrupt level for user programs
+
+	END
+
+
+
+Character device drivers
+========================
+
+utty    Supports terminals on FDC and on TUARTs. The driver
+	name must be followed by a list of minor device numbers
+	supported.
+
+		Minor devno     Base address
+
+		     0          0x00  (FDC)
+		    2,5         0x20, 0x50
+		    6,7         0x60, 0x70
+		    8,9         0x80, 0x90
+		   10,11        0xa0, 0xb0
+
+	This driver is intended to replace the tty driver. The
+	old driver is still included in case the new driver
+	does not behave as expected.
+
+tty     Supports terminals on FDC and on TUARTs. The driver
+	name must be followed by a list of minor device numbers
+	supported.
+
+		Minor devno     Base address
+
+		     0          0x00  (FDC)
+		    2,5         0x20, 0x50
+		    6,7         0x60, 0x70
+		    8,9         0x80, 0x90
+		   10,11        0xa0, 0xb0
+
+otty    Supports Octart terminals. Ensure that the Octarts will have the
+	code downloaded (See iostartup.cmd). Arguments are Octart numbers
+	(1 through 8) which have the oct.iop code downloaded.
+
+		   Octart #     Base address
+
+		      1         0xce
+		      2         0xd0
+		      3         0xd2
+		      4         0xd4
+		      5         0xd6
+		      6         0xd8
+		      7         0xda
+		      8         0xdc
+
+	This driver is intended as a replacement for qtty driver.
+	At present it can run only on Octarts. IOP boards must still
+	use the qtty driver. Note different base port assignement.
+
+qtty    Supports both octart and IOP terminals. Ensure that
+	the IOPs and/or octarts will have the code downloaded
+	(See iostartup.cmd). Arguments are IOP/OCTART numbers
+	(1, 2, 3, or 4) which have the quadart.iop or octart.iop
+	code downloaded.
+
+		Octart/IOP #    Base address
+
+		      1         0xce
+		      2         0xbe
+		      3         0xae
+		      4         0x9e
+
+sysdev  This driver must be present. It provides null device.
+	No arguments.
+
+timer   This driver must be present. It supports the timer and
+	the real time clock. No arguments.
+
+ulpt    This driver supports parallel printers on PRI or TUART
+	boards. Arguments are minor device numbers supported.
+        
+		Minor devno     Base address    Interrupt number
+
+		     2          0x20            0x24
+		     5          0x50            0x34
+		     6          0x60            0x64
+		     7          0x70            0x74
+		     8          0x80            0x84
+		     9          0x90            0x94
+		    10          0xa0            0xa4
+		    11          0xb0            0xb4
+
+	This driver is intended to replace the lpt driver. The old
+	driver is still provided in case the new driver does not
+	behave as expected.
+
+lpt     This driver supports parallel printers. Arguments are
+	minor device numbers supported.
+        
+		Minor devno     Base address    Interrupt number
+
+		     2          0x20            0x24
+		     5          0x50            0x34
+		     6          0x60            0x64
+		     7          0x70            0x74
+		     8          0x80            0x84
+		     9          0x90            0x94
+		    10          0xa0            0xa4
+		    11          0xb0            0xb4
+
+typ     This driver support up to two fully formed character
+	printers (spinwriter). Arguments are the supported
+	minor device numbers.
+
+		Minor devno     Base address    Interrupt number
+
+		     2          0x20            0x2c
+		     5          0x50            0x5c
+
+uslpt   Supports serial printers on FDC and on TUARTs. The driver
+	name must be followed by a list of minor device numbers
+	supported.
+
+		Minor devno     Base address
+
+		     0          0x00  (FDC)
+		    2,5         0x20, 0x50
+		    6,7         0x60, 0x70
+		    8,9         0x80, 0x90
+		   10,11        0xa0, 0xb0
+
+	Applicable minor device numbers may be modified with
+	possible communication protocol offsets. Use above
+	numbers for XON/XOFF protocol, add 64 for CLQ type
+	printers, add 128 for ETX/ACK protocol.
+
+	This driver is intended to replace the slpt driver.
+	The old driver is still included in case the new driver
+	does not behave as expected.
+
+slpt    Supports serial printers on FDC and on TUARTs. The driver
+	name must be followed by a list of minor device numbers
+	supported.
+
+		Minor devno     Base address
+
+		     0          Not applicable (FDC)
+		    2,5         0x20, 0x50
+		    6,7         0x60, 0x70
+		    8,9         0x80, 0x90
+		   10,11        0xa0, 0xb0
+
+	Applicable minor device numbers may be modified with
+	possible communication protocol offsets. Use above
+	numbers for XON/XOFF protocol, add 64 for CLQ type
+	printers, add 128 for ETX/ACK protocol.
+
+oslpt   Supports OCTART serial printers. Ensure that the OCTARTs
+	will have the code downloaded (See iostartup.cmd). Arguments
+	are IOP/OCTART numbers (1 .. 8) which have the oct.iop
+	code downloaded.
+
+		Octart/IOP #    Base address
+
+		      1         0xce
+		      2         0xd0
+		      3         0xd2
+		      4         0xd4
+		      5         0xd6
+		      6         0xd8
+		      7         0xda
+		      8         0xdc
+
+	This driver is intended to replace the qslpt driver. The
+	old driver is still included in case the new driver does
+	not behave as expected.
+
+qslpt   Supports both octart and IOP serial printers. Ensure that
+	the IOPs and/or octarts will have the code downloaded
+	(See iostartup.cmd). Arguments are IOP/OCTART numbers
+	(1, 2, 3, or 4) which have the quadart.iop or octart.iop
+	code downloaded.
+
+		Octart/IOP #    Base address
+
+		      1         0xce
+		      2         0xbe
+		      3         0xae
+		      4         0x9e
+
+ffp     Supports FFP processor driver. No arguments.
+
+tape    Supports up to four nine track tape units. The IOPs must
+	be loaded with the tape8.iop or with the tape16.iop driver.
+	The tape16.iop driver can be used only with a 64K IOP board
+	and it allows block sizes up to 16K. Arguments are IO numbers
+	(1, 2, 3, or 4). Minor device numbers corresponding to these
+	IO numbers are 0, 1, 2, or 3.
+
+		Octart/IOP #    Base address
+
+		      1         0xce
+		      2         0xbe
+		      3         0xae
+		      4         0x9e
+
+sctp    Supports up to 28 SCSI tape drives. Arguments are minor
+	device numbers of the devices that are supported:
+        
+		Minor device    Base address
+		    
+		   0 ..  6      0xe2
+		   8 .. 14      0xe6
+		  16 .. 22      0xe4
+		  24 .. 30      0xe8
+
+
+cnet    Supports CNET hardware. No arguments.
+
+
+
+Block device drivers
+====================
+
+cflop   Supports Tandon or PERSCI drives. No arguments.
+	The minor device number is defined as
+	    unit + small + dual
+	where
+	    unit   =  0, 1, 2, or 3 for A, B, C, D
+	    small  =  4 if 5", zero if 8"
+	    dual   = 16 if drives in pairs (PERSCI), zero if not
+
+uflop   Supports Tandon or PERSCI driver in uniform format. No arguments.
+	In uniform format all tracks are in the same format, all sectors
+	are the same size, sector size might be 128, 256, or 512 bytes.
+	Minor device number describes the physical characteristics of
+	the device. Compute the minor device number as
+	    unit + small + dtrack + dual + sside + sdens
+	where
+	    unit   =  0, 1, 2, or 3 for A, B, C, D
+	    small  =  4 if 5", zero if 8"
+	    dtrack =  8 if double tracked (not supported), zero otherwise
+	    dual   = 16 if drives in pairs (PERSCI), zero if not
+	    sside  = 32 if single sided, zero if double sided
+	    sdens  = 64 if single density, zero if double density
+
+allmem  Supports access to all of system memory (amem). No arguments.
+
+tflop   Supports up to two floppy tapes. Minor device numbers are
+	    drive + full + ecc + slow
+	where
+	    drive =  0   AB
+		  =  4   CD
+	    full  =  0   245 segments per stream
+		  =  8   255 segments per stream (we cannot initialize it)
+	    ecc   =  0   Old style tape (Initialized with Oldtape)
+		  = 16   Ecc style tape (Initialized with Inittape)
+	    slow  =  0   Fast drive
+		  = 32   Slow drive
+
+	The driver requires one argument with the meaning
+
+	    0 = initialized NOT TO DO read-after-write
+	    1 = initialized TO DO read-after-write
+
+
+ramdsk  Supports 4 Ram disks. Use Ramdisk utility to allocate room.
+	No arguments.
+
+stdc    Supports up to eight STDC hard disks using up to four controllers.
+	The arguments are controller numbers that are supported. Acceptable
+	values are 1, 2, 3, and 4.
+
+		Controller #    Base address
+
+		      1         0xf8
+		      2         0xe0
+		      3         0xe4        Same as ESDI #3
+		      4         0xe8        Same as ESDI #4
+        
+	If more than one STDC or ESDI controller is being used the DMA
+	priority cable must be hooked up and all STDC boards must have
+	a new IC37 part number 5020086-2. Also, Rev C STDC boards can
+	only be used as the last board in the DMA priority chain.
+
+smd     Supports up to four SMD hard disks (two drives on each of two
+	controllers).  Arguments specify beginning head numbers of drives
+	to be included.  Arguments are created as follows:
+	    controller + drive + fixed + head
+	where
+	    controller  = 0     controller at base port 0x38
+			  128   controller at base port 0xe8
+	    drive       = 0     for controller drive 0
+			  64    for controller drive 1
+	    fixed       = 0     for removable part of drive
+			  32    for fixed part of drive
+	    head        = 0-31  beginning head number
+
+hd      Supports up to 4 hard disks on WDI-II board. No arguments.
+
+xpu     Supports Z80 programs running on XPU/DPU. The only argument
+	is the maximum number of simultaneous Z80 processes supported.
+	Device files for this driver must be in /dev/z80 directory.
+
+zio     Supports Z80 programs running in BIART, OCTART, or IOPX, one per
+	board. Ensure that the boards will have the code downloaded
+	(See iostartup.cmd). Arguments are IO processor numbers
+	(1 through 8) which have the zio.iop code downloaded.
+
+
+		IO processor  Base address
+		      1         0xce
+		      2         0xbe
+		      3         0xae
+		      4         0x9e
+		      5         0xd6
+		      6         0xd8
+		      7         0xda
+		      8         0xdc
+
+esdi    Supports up to eight ESDI hard disks using up to four controllers.
+	The arguments are controller numbers that are supported. Acceptable
+	values are 1, 2, 3, and 4.
+
+		Controller #    Base address
+
+		      1         0xe2
+		      2         0xe6
+		      3         0xe4        Same as STDC #3
+		      4         0xe8        Same as STDC #4
+        
+	If more than one ESDI or STDC controller is being used the DMA
+	priority cable must be hooked up and all STDC boards must have
+	a new IC37 part number 5020086-2. Also, Rev C STDC boards can
+	only be used as the last board in the DMA priority chain.
+
+
+Primitive terminal drivers
+==========================
+
+raw_fdc Supports primitive character I/O on the terminal
+	connected to 16FDC or 64FDC board. No arguments.

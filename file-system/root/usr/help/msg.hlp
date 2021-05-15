@@ -1,0 +1,74 @@
+utility:      Msg
+purpose:      This program sends messages between users.
+
+user access:  all users
+
+summary:      Msg [-any2] [user-name or devname]
+
+arguments:    text terminated by CONTROL-Z
+
+options:      -a   all
+              -n   disable
+              -y   enable
+              -2   Cromemco 3102 terminal
+
+Description
+
+The Msg utility sends messages between users or from a user to a device.
+Sending a message to a device is useful when a device is online but no user is
+in attendance.
+
+If Msg is typed and immediately followed by a RETURN, then a message is
+displayed to inform the user of the status of incoming messages. Incoming
+messages may be disabled or enabled by using the -n and -y options.
+Terminating a message with CONTROL-Z automatically sends the message End of
+message to the receiving user.
+
+The Msg command followed by a user or device name allows a message to be
+entered. The message is transmitted to the destination user after each RETURN
+is pressed. A CONTROL-Z terminates the message and returns the originating
+user to the Shell.
+
+Options
+
+The -a option broadcasts a message to all users currently logged on to the
+system. This can be used by the privileged user to warn other users of
+interruptions to system usage such as rebooting. This message is sent to all
+users whether or not they have message receiving enabled. The message is
+preceded by the warning Broadcast message. Only privileged users are permitted
+to use this option. A message sent with the -a option is not transmitted until
+the entire message is given. Hence, when the -a option is specified, it may be
+followed on the command line by the name of a file that contains a broadcast
+message.
+
+The -n option causes incoming messages to be disabled.
+
+The -y option allows incoming messages to be received.
+
+The -2 option sends messages to the status line of a Cromemco 3102 terminal.
+
+Notes
+
+To clear the status line of a Cromemco 3102 terminal after receiving a message
+transmitted using the -2 option, type CONTROL-shift followed by CONTROL-1.
+
+If two-way communication is desired, a protocol should be established to
+prevent the confusion that arises when two messages are transmitted
+simultaneously. A suggested protocol follows: One user transmits at a time. A
+single o (short for over) is transmitted on a line by itself to indicate the
+end of the message. Upon seeing the o, the other user responds, terminating
+the message with an o. When the entire communication is finished, one user
+transmits oo (short for over and out) followed by a CONTROL-Z. The other user
+should type a CONTROL-Z also.
+
+Two-way communication can be established by the Msg utility. When a user
+receives a message:
+
+     Message from xxxx
+
+the receiving user should type:
+
+     Msg xxxx
+
+This allows users to send each other messages. In the example above, xxxx
+represents a user name.

@@ -1,0 +1,55 @@
+Shell
+command:      REPEAT or REP
+purpose:      This command repeats a command.
+
+user access:  all users
+
+summary:      rep count command
+
+arguments:    a count of the number of repetitions
+
+              command
+
+options:      none
+
+Description
+
+The Repeat command is used to repeat a command a specified number of times.
+
+Example:
+
+     jim[1] repeat 5 echo "this line is displayed five times"
+     this line is displayed five times
+     this line is displayed five times
+     this line is displayed five times
+     this line is displayed five times
+     this line is displayed five times
+     jim[2]
+
+Notes
+
+The Repeat command may be terminated by a semicolon and in this case any
+command(s) following a semicolon are executed only once. This means that the
+following command displays the current directory three times and then displays
+the time once:
+
+     jim[1] repeat 3 dir; time
+
+     /usr/jim
+     /usr/jim
+     /usr/jim
+          Wednesday, July 16, 1986        12:23:42
+
+Multiple commands may be enclosed in parenthesis to cause the sequence of
+commands to be repeated. The following command would display both the current
+directory and time 3 times:
+
+     jim[1] repeat 3 (dir; time)
+
+     /usr/jim
+          Wednesday, July 16, 1986        12:23:42
+     /usr/jim
+          Wednesday, July 16, 1986        12:23:42
+     /usr/jim
+          Wednesday, July 16, 1986        12:23:43
+

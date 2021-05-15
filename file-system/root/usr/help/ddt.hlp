@@ -1,0 +1,286 @@
+utility:      DDT
+purpose:      This program can be used to trace user programs.
+
+user access:  all users
+
+summary:      ddt [options] command arguments
+
+arguments:    full pathname of the program to be traced
+
+              arguments to the program to be traced
+
+options:      -i path    path name of STDIN for debugged program
+              -o path    path name of STDOUT for debugged program
+              -e path    path name of STDERR for debugged program
+              -t term    terminal name (4 characters, Term variable)
+
+Description
+
+The Ddt utility should be called in the following manner:
+
+     jim[1] ddt /bin/ls.bin -lrt
+
+The Ddt utility will fork the /bin/ls.bin program, the display will appear
+something like:
+
+     First  = 052000
+     Next   = 057000
+
+indicating that the program was loaded at address 052000H and extends up to
+the address 057000H.
+
+This initial information is followed by the Ddt prompt:
+
+     ->
+
+Whenever this prompt appears, a Ddt command can be entered. A command consists
+of a one or two character command abbreviation, followed by arguments. The
+number of arguments depends on the command used. Arguments are expessions
+which are described later. Multiple arguments must be separated by spaces or
+commas. Spaces are not required unless a command might be misinterpreted.
+Upper and lower case letters are indistinguishable.
+
+In the description that follows optional arguments are shown in brackets.
+
+Breakpoint
+
+     b [address, ...]
+
+If the command is given with no arguments, the Ddt utility will list the
+declared breakpoints. If one or more arguments are given they are taken as
+addresses of breakpoints to be added to the list. At no time can the Ddt
+utility handle more than eight breakpoints.
+
+Breakpoint Remove
+
+     bx [address, ...]
+
+If the command is given with no arguments, the Ddt utility will remove all
+declared breakpoints. If one or more arguments are given, they are taken as
+addresses of breakpoints to be removed from the list.
+
+Call Trace
+
+     c
+
+This command will trace one instruction unless the instruction happens to be a
+BSR or JSR instruction. In these cases a temporary breakpoint will be
+installed after the instruction and the Ddt utility will come back to life
+where the subroutine returns.
+
+Display Memory
+
+     dm [address [lines]]
+
+Display memory command can have zero, one, or two arguments. With no arguments
+the dm command will list 4 lines of memory starting where the last dm command
+left off. If one argument is given, it is taken as the beginning address and 4
+lines starting at that address will be printed. If the second argument is also
+given, it is taken as the number of lines to be printed. Each line shows 16
+bytes. Displaying memory can be aborted any time by pressing any key.
+
+Display Registers
+
+     d
+
+The command will first display the D and A registers. The next line will start
+with the Ddt status, followed by the processor status register, program
+counter, and the disassembled instruction at the program counter.
+
+Exit
+
+     ex
+
+The traced program and the Ddt utility will be terminated.
+
+Go
+
+     g [address]
+
+The traced program continues execution with the current register state,
+including the program counter (PC).  If an address is specified with the
+command, a temporary break will be installed at the specified address.  The
+debugger will not be activated again unless an installed breakpoint is
+reached.
+
+Hex calculator
+
+     h expression
+
+The Ddt utility will display the value of expression both in hexadecimal and
+in decimal notation.
+
+Ignore
+
+     i
+
+If the traced program is aborted by a signal, the Ddt will show it
+immediately. At that point the user can use the i command to cause the signal
+to be ignored. The go command will then proceed as if there were no signal. If
+the i command is not issued the traced process will be killed by the signal.
+
+List instructions
+
+     l [address [lines]]
+
+The list command can have zero, one, or two arguments. With no arguments, the
+l command will list 16 instructions starting where the last list command left
+off. If one argument is given, it is taken as the starting address and 16
+instructions starting at that address will be printed. If the second argument
+is also given, it is taken as the number of instructions to be listed.
+Listing can be aborted any time by pressing any key.
+
+Substitute Registers
+
+     s [regvar]
+
+In this case the optional argument is limited to a register name or the name
+of a Ddt variable. If such an argument is given, only the specified register
+will be changed. If no argument is given, Ddt will keep prompting for the
+replacement of the next register, circularly, until a period is entered. The
+allowed registers are all processor registers and the Ddt variables v0, v1,
+..., v7, and vb. Variables can be set to arbitrary values and then used in
+expressions.
+
+Substitute Bytes
+
+     sb [address]
+
+The command will start substituting bytes in memory starting at the specified
+address (or where the previous substitute command left off if no address is
+given).  The command is an iterative one.  It displays the next byte and waits
+for the user response, which might be:
+
+     nothing; whereupon the Ddt will leave the byte
+     unchanged and proceed to the next byte
+
+     an expression whose low order byte replaces the current
+     one; proceed to the next byte
+
+     a (singly or doubly) quoted string which will replace a
+     number of consecutive bytes
+
+     an illegal expression which will cause the same byte to be
+     displayed again
+
+     a minus that will cause the debugger to backspace to
+     the previous byte
+
+     a period which terminates the substitution
+
+Substitute Longs
+
+     sl [address]
+
+The command will start substituting longs in memory starting at the specified
+address (or where the previous substitute command left off if no address is
+given). The command is an iterative one. It then displays the next long and
+waits for the user's response, which might be:
+
+     nothing; whereupon the debugger will leave the long
+     unchanged and proceed to the next long
+
+     an expression whose value replaces the current
+     one; proceed to the next long
+
+     an illegal expression which will cause the same long to be
+     displayed again
+
+     a minus that will cause the debugger to backspace to
+     the previous long word
+
+     period which terminates the substitution
+
+Substitute Words
+
+     sw [address]
+
+The command will start substituting words in memory starting at the specified
+address (or where the previous substitute command left off if no address is
+given).  The command is an iterative one.  It displays the next word and waits
+for the user response, which might be:
+
+     nothing; whereupon the debugger will leave the word
+     unchanged and proceed to the next word
+
+     an expression whose low order word replaces the current
+     one; proceed to the next word
+
+     an illegal expression will cause the same word to be
+     displayed again
+
+     a minus that will cause the debugger to backspace to
+     the previous word
+
+     a period which terminates the substitution
+
+Trace
+
+     t
+
+A single instruction will be executed and then command will be returned to the
+debugger.
+
+Shell
+
+     % [command]
+
+If a Shell command is given following the "%" sign, the Shell command will be
+executed. If no command is given, an interactive Shell is created. When the
+interactive Shell terminates (Exit command or CNTRL-Z) the Ddt utility will
+resume.
+
+The syntax of the expressions that can be used is described in BNF form:
+
+       <expression> ::= <term> | <expression> + <term> |
+                       <expression> - <term>
+       <term> ::= <factor> | <term> * <factor> | <term> / <factor> |
+                       <term> & <factor>
+       <factor> ::= <unit> | @ <factor>
+       <unit> ::= <number> | <regvar> | ( <expression> )
+       <number> ::= <hex number> | <dec number>.
+       <hex number> ::= <hex digit> | <hex number> <hex digit>
+       <dec number> ::= <dec digit> | <dec number> <dec digit>
+       <hex digit> ::= <dec digit> | a | b | c | d | e | f
+       <dec digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+       <regvar> ::= <d register> | <a register> | <control register> |
+                       <variable>
+       <d register> ::= rd0 | rd1 | rd2 | rd3 | rd4 | rd5 | rd6 | rd7
+       <a register> ::= ra0 | ra1 | ra2 | ra3 | ra4 | ra5 | ra6 | ra7
+       <control register> ::= sr | pc
+       <variable> ::= v0 | v1 | v2 | v3 | v4 | v5 | v6 | v7 | vb
+
+Semantics.
+
+The @ operator is the dereferencing operator:
+
+value of
+
+     @x
+
+is the value read from memory location x.  Note that it is the highest
+priority operator, so parentheses might be required occasionally.
+
+All numbers are haxadecimal by default unless followed immediately by a
+period.  In the later case the number is decoded decimaly.
+
+Variables rd0, ..., pc refer to processor registers. Variables v0, ..., v7 are
+general purpose variables. vb is another general purpose variable initialized
+to the program base address. All variables can be changed by the sr command.
+Note that the h command can be used to examine them.
+
+The options of the Ddt utility can be used to debug a program that is running
+from another terminal. A typical example might be
+
+     ddt -i /dev/qtty2 -o /dev/qtty2 -t 3102 ce.bin file
+
+In this case the Ce program is debugged while it is running from the 3102
+terminal hooked to qtty2. The Ddt utility itself is running from the original
+terminal. All Ddt dialogue goes through the original terminal, all Ce dialogue
+(except messages to STDERR which were not redirected) run through the
+/dev/qtty2 terminal.
+
+To use this feature, the qtty2 terminal must be disabled from the ttys file
+otherwise the Shell and the debugged program will fight for input characters.
+
+

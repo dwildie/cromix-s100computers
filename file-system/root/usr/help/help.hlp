@@ -1,0 +1,54 @@
+utility:      H or HELP
+purpose:      This program displays pages from the user manual on Shell commands
+              and utility programs.
+
+user access:  all users
+
+summary:      help [-p] [-d directory] [topic ...]
+
+arguments:    optional command or utility names
+
+options:      -d   name of directory with help files
+              -p   enable print command
+
+Description
+
+The Help utility program provides on-line descriptions of the Shell commands
+and utility programs (for information regarding other aspects of the system
+refer to the appropriate Cromix-Plus manual).
+
+If you enter help and press RETURN, the Help utility lists the available
+topics and prompts you to select one. Entering help and a topic name will list
+the manual entry on that topic. Help displays the manual entry one page at a
+time. The percentage of the file yet to be viewed is displayed at the bottom
+of the screen.
+
+The following functions will aid you in viewing the manual entry:
+
+     SPACE BAR           Display the next page.
+     u                   Display the previous page.
+     RETURN KEY          Display the next line.
+     DOWN ARROW          Display the next line.
+     UP ARROW            Display the previous line.
+     b                   Display the first page.
+     h                   Display the list of available functions.
+     p                   Print the topic (if called with -p option).
+     r                   Return to list of available topics if the
+                         Help utility was called with no arguments.
+     f                   Find a string.
+     e                   Find a string (exact match - case sensitive).
+     a                   Again - Find the same string again.
+     q                   Exit the program.
+
+Trying to move outside the file (e.g., pressing SPACE BAR when the last page
+is displayed) has no effect.
+
+Modifying the On-line Manual
+
+The text files for the on-line manual are in the /usr/help directory (unless
+the -d option selects an alternate directory). Each topic is described in a
+file of the same name (plus the .hlp filename extension).  To add more topic
+files to the /usr/help directory, the filenames must have the .hlp extension,
+otherwise the Help cannot access them.
+
+

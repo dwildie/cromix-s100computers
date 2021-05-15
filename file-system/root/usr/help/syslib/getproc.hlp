@@ -1,0 +1,18 @@
+function:       getproc
+purpose:        Get process ID number.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getproc()
+
+Description
+
+Getproc is a function which enables a process to obtain its process ID number.
+
+The function returns:
+
+     current process ID
+

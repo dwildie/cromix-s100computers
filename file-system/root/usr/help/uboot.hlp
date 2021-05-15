@@ -1,0 +1,38 @@
+file:         UBOOT.SYS
+purpose:      Standalone boot program for the UNIX Operating System
+
+user access:  privileged user
+
+summary:      boot uboot
+
+arguments:    uboot
+
+options:      none
+
+Description
+
+The file uboot.sys is a standalone boot program for the UNIX Operating System.
+Uboot reads the UNIX kernel from the default device (std(2,0)unix). If you
+press the ESC key immediately after giving the "boot uboot" command, you will
+be prompted for the device name, the major and minor device numbers, and the
+filename. Currently supported devices are:
+
+     std  STDC disk
+     sfd  small floppy
+     fd   large floppy
+
+Uboot.sys may be patched to use another default device. For example to change
+the default device to std(33,0) use the following sequence of commands: (User
+input is in boldface).
+
+system[1] patch uboot.sys
+>q Osfffff 'std('
+0000XXXX: 73 74 64 28  20 32 2c 30 - 29 75 6e 69 78  00 73 74 std( 2,0)unix.st
+> s XXXX
+0000XXXX:  20 '33'
+0000XXXX:  2c .
+> e
+system[2]
+
+The value entered in the substitute command (s XXXX) is the value displayed by
+the query command plus 4.

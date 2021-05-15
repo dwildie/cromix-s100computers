@@ -1,0 +1,54 @@
+utility:      CMPASC
+purpose:      This program compares two ASCII (text) files.
+
+user access:  all users
+
+summary:      cmpasc [-b #] [-m #] [-lrt] file1 file2
+
+arguments:    2 filenames
+
+options:      -b #   memory size, in bytes
+              -l     print line numbers
+              -m #   match this many lines
+              -r     ignore RETURN preceding LINEFEED
+              -t     expand TAB characters
+
+Description
+
+The Cmpasc utility compares two ASCII (text) files and displays differences.
+
+Cmpasc displays lines from the first file (file1) with corresponding lines
+from the second file (file2).
+
+If there are too many unmatched lines in a file (more than can be stored in
+the allotted memory), the -b option can be used to increase allotted memory.
+
+Options
+
+The -b option defines the amount of memory set aside for storing unmatched
+lines. (The default value is 32,768 bytes per file.)
+
+The -l option adds line numbers to the display.
+
+The -m option, followed by a number, defines how many successive lines from
+one file must match the corresponding lines in the second file to be
+considered a match. (The default value is 3.)
+
+The -r option ignores a RETURN character preceding a LINEFEED. Thus, a line
+ended by the LINEFEED character alone is equal to a line ended by a RETURN-
+LINEFEED pair.
+
+The -t option expands TAB characters before comparing lines.
+
+Example:
+
+     jim[1] cmpasc -l fileone filetwo
+     -----> fileone
+     26 This file is sample file one.
+     -----> filetwo
+     26 This file is sample file two.
+
+Notes
+
+The Cmpasc utility compares characters with the parity bit reset. As a result,
+the bytes 0x8D and 0x0D are considered equal.

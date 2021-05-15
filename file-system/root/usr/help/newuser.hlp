@@ -1,0 +1,15 @@
+utility:      NEWUSER
+purpose:      This program displays information for new users.
+
+user access:  all users
+
+summary:      newuser
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Newuser utility displays the file newuser.msg, which contains important
+information about the present version of the Cromix-Plus Operating System.

@@ -1,0 +1,55 @@
+;       @(#)tmodeequ.z80	1.3 (5/11/87)
+;
+;       This file contains declarations of all values which are
+;       used in the getmode and setmode Cromix system calls, for 
+;       TP tape devices.
+;
+
+
+TPABORT         defv    196             ; Re-initialize tape driver
+TPFMARK         defv    198             ; Write file mark
+TPSECURE        defv    199             ; Security erase
+TPREWIND        defv    200             ; Rewind
+TPUNLOAD        defv    201             ; Rewind and unload
+TPMODE          defv    202             ; Mode bits
+TPFILNO         defv    203             ; File number
+TPBLKNO         defv    204             ; Block number
+TPOBLKLN        defv    205             ; Block length for next block written
+TPIBLKLN        defv    206             ; Block length of first block read
+TPOBLKS         defv    207             ; Number of blocks written
+TPSTAT          defv    208             ; Get error
+
+
+
+;       TPMODE bits
+
+EOFCLOSE        defv    7               ; Write EOF to tape when device closes
+
+
+
+;       TPSTAT status bits
+;       These bits are returned in e-register
+;       Old names are without leading TP
+
+TPDRVBUSY       defv    7               ; Drive busy
+TPWRRDY         defv    6               ; FIFO ready for input (used for write)
+TPRDRDY         defv    5               ; FIFO output ready (used for read)
+TPLOADPT        defv    4               ; Load point
+TPFBUSY         defv    3               ; Formatter busy
+TPONLINE        defv    2               ; On line
+TPIDENT         defv    1               ; Ident
+TPRDY           defv    0               ; Ready
+
+
+
+;       TPSTAT status bits
+;       These bits are returned in e-register
+;       Old names are without leading TP
+ 
+TPHISPEED       defv    7               ; High speed status
+TPHARDERR       defv    5               ; Hard error
+TPFLMARK        defv    4               ; File mark
+TPCORERR        defv    3               ; Correctable error
+TPWRPROT        defv    2               ; File write-protected
+TPEOT           defv    1               ; End of tape
+TPRWINDING      defv    0               ; Rewinding

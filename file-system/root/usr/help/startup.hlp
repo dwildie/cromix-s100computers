@@ -1,0 +1,21 @@
+utility:      STARTUP
+purpose:      This file contains commands that are executed whenever the system is
+              started up.
+
+user access:  all users
+
+summary:      startup
+
+arguments:    none
+
+options:      none
+
+Description
+
+As shipped, the Startup program (/etc/startup.cmd) executes the Time program
+to set the system clock and date. Additional commands may be added to
+/etc/startup.cmd at the System Administrator's discretion.
+
+After the system is booted, Startup notices whether the system was last
+shutdown properly. If it was not, Startup informs the user the check program
+should be run to verify file system integrity.

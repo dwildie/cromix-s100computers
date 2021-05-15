@@ -1,0 +1,200 @@
+utility:      SCAN
+purpose:      This program scans a directory tree
+
+user access:  all users
+
+summary:      scan pathname ['expression']
+
+arguments:    directory pathname
+              optional expression in single quotes
+
+options:      none
+
+Description
+
+The Scan utility is a modernized version of the Find utility. It scans all the
+files in the specified directory structure for expression.  The expression may
+be given from the command line or from STDIN (the standard input). If the
+expression is given from the command line, it should be enclosed in single
+quotation marks. If the expression is given from STDIN, quotation marks are
+not required. Scan reads the expression until CONTROL-Z (end-of-file) is typed
+from the terminal.
+
+The expression is similar to an expression in the C programming language.
+
+Types
+
+Each value is either an integer value or a string value.
+
+Constants
+
+Integer constants can be decimal, hexadecimal, or octal, as in C. String
+constants are (doubly) quoted strings. In addition, there are a few predefined
+constants:
+
+     is_ordin    type int     value 0
+     is_direct   type int     value 1
+     is_char     type int     value 2
+     is_block    type int     value 3
+     is_pipe     type int     value 4
+     ac_read     type int     value 0x01
+     ac_exec     type int     value 0x02
+     ac_writ     type int     value 0x04
+     ac_apnd     type int     value 0x08
+     days        type int     value 60*60*24
+
+Variables
+
+The following variables are defined at the beginning of the program. There is
+no assignment, so they cannot be changed by the user.
+
+getuser     type int  current user number
+getgroup    type int  current group number
+now         type int  current time (number of seconds from
+                      00:00:00 on March 1, 1960)
+
+The following variables are defined after each file is scanned. They provide
+information from the inode. Again, there is no assignment, so they cannot be
+changed by the user.
+
+path    string   Full pathname
+dir     string   Directory pathname
+name    string   File name without directory and
+                 extension
+ext     string   Extension
+                 Example:  If
+                     path = "/usr/user1/test.c"
+                 then
+                     dir  = "/usr/user1/"
+                     name = "test"
+                     ext  = ".c"
+
+owner   int      File owner
+group   int      File group
+
+type    int      File type
+aowner  int      Owner access
+agroup  int      Group access
+aother  int      Other access
+nlinks  int      Number of links
+size    int      File size
+inode   int      Inode number
+parent  int      Parent inode
+dcount  int      Directory count
+usage   int      Usage (blocks)
+
+tcreate int      Time created (see now)
+tmodify int      Time modified (see now)
+taccess int      Time accessed (see now)
+tdumped int      Time dumped (see now)
+
+Functions
+
+There are a number of predefined functions. These functions yield a value of
+predefined type, and the arguments are of predefined type.
+
+int shell(s)              Execute command s.  Return exit
+string s;                 value from the command.
+
+int ok                    Get a single character from /dev/tty.
+                          If it is "Y" or "y", return 1, else zero.
+
+int strequ(s,t)           Compare string s to string t. Return 1
+string s, t;              if they match, else zero.  (The string t
+                          can contain ambiguous shell characters,
+                          such as "*" or "?".
+
+int print(s)              Print string s to a line by itself.
+string s;                 Always return 1.
+
+int printn(s)             Print string s without newline
+string s;                 character.  Always return 1.
+
+string username(user)     Return string corresponding to given
+int user;                 user number, empty string if not found.
+
+string groupname(group)   Return string corresponding to given
+int group;                group number, empty string if not found.
+
+int usernum(name)         Return user number corresponding to
+string name;              given name, -1 if not found.
+
+int groupnum(name)        Return group number corresponding to
+string name;              given name, -1 if not found.
+
+Operators
+
+Operators are listed in order of decreasing priority. In general, operators
+can be used only on a pair of integers unless explicitly allowed on a pair of
+strings. Their meaning is the same as in C.
+
+Operator    Associativity     Notes
+
+( )         left to right
+! ~ -       right to left     Integers only.
+* / %       left to right     Integers only.
++ -         left to right     Integers only.
+<< >>       left to right     Also on strings. Shifting a string means
+                              shifting out.
+< <= > >=   left to right     Also on strings. On strings, a
+                              lexicographic comparison.
+== !=       left to right     Also on strings. On strings, a
+                              comparison for strict equality or inequality.
+&           left to right     Integers only.
+^           left to right     Integers only.
+|           left to right     Also on strings. The resulting string is
+                              the concatenation of the left and right
+                              argument, (in this order).
+&&          left to right     Integers only.
+||          left to right     Integers only.
+? :         left to right     Integers and strings.
+,           left to right     Integers and strings.
+
+Examples
+
+For brevity, each sample expression is written as though entered from STDIN,
+without quotes.
+
+Print all filenames that include ted:
+
+     name == "ted" && print(path)
+
+Print all filenames that include ted or mary:
+
+     (name == "ted" || name == "mary") && print(path)
+
+List -e all directories:
+
+     type == is_direct && shell("ls -e "|path)
+
+List -l all files with extension .c:
+
+     ext == ".c" && shell("ls -l "|path)
+
+Create forced links of all jsysequ.asm files that are not already linked to
+the correct file. If files do not compare, just print the differences:
+
+     (name|ext) == "jsysequ.asm" && inode != 234 &&
+     shell("cmpasc -rt /equ/jsysequ.asm "|path) == 0 &&
+     shell("maklink -vf /equ/jsysequ.asm "|path)
+
+Delete, after verification, all files that have not  been  accessed  for  more
+than a year:
+
+     type == is_ordin && taccess < now - 365*days &&
+     printn("Delete "|path|"?  ") && ok && shell("del "|path)
+
+Delete all files that belong to the user temp:
+
+     owner == usernum("temp") && shell("delete -v "|path)
+
+or
+
+     username(owner) == "temp" && shell("dele -v "|path)
+
+Compare all files in directory foo to files in the directory bar:
+
+     type == is_ordin && shell("compare -t foo/"|name|ext|" bar/"|name|ext)
+
+To create a command file where directories are given as arguments, replace foo
+with #1 and bar with #2.

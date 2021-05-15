@@ -1,0 +1,18 @@
+Shell
+command:      PATH or PA
+purpose:      This command finds the full pathname of an executable file.
+
+user access:  all users
+
+summary:      path file-list
+
+arguments:    filename
+
+options:      none
+
+Description
+
+The Path utility identifies the command which would be executed if entered at
+the Shell prompt.
+
+Path allows you to ensure you are running the correct version of a program.

@@ -1,0 +1,15 @@
+Shell
+command:      MAKDIR or MAKD
+purpose:      This command creates a directory file.
+
+user access:  all users
+
+summary:      makdir dir1 [ ...  dirN]
+
+arguments:    directory pathname(s)
+
+options:      none
+
+Description
+
+The Makdir command creates directory files.

@@ -1,0 +1,92 @@
+utility:      SIM
+purpose:      This utility allows CDOS programs to run under the Cromix-Plus
+              Operating System.
+
+user access:  all users
+
+summary:      (sim) progname arg0,arg1,...,argn
+
+arguments:    program name
+
+              and
+
+              arguments to the program to be run
+
+options:      none
+
+Description
+
+The Sim program allows CDOS programs to run under the Cromix-Plus Operating
+System. The CDOS simulator is automatically loaded when a file with the
+extension .com is executed.
+
+Notes
+
+The Cdoscopy utility program is the only way to read files from or write files
+to CDOS format disks from the Cromix-Plus Operating System.
+
+Drive/File Access From CDOS Programs
+
+For CDOS programs to gain access to files on various drives, the CDOS
+Simulator converts disk specifiers to directory names. For example:
+
+     B:Filename  becomes   /B/Filename
+
+If no disk specifier or the disk specifier A is used (as in A:Filename), the
+file is assumed to be in the current directory.
+
+To take full advantage of this scheme, Cromemco recommends a file structure be
+constructed as follows:
+
+1.  Create files B, C, D, etc. in the root directory. Each file corresponds
+    to one of the disk drives in the system.
+
+2.  Mount each disk on the appropriate drive using the Mount utility:
+
+     system[1] mount fdb /b
+
+    Note that these must be Cromix format disks.
+
+3.  The files on those disks may be read and written from CDOS programs.
+    The CDOS simulator, running under the Cromix-Plus Operating System,
+    automatically converts the CDOS drive specifiers to the appropriate
+    directory names.
+
+4.  Each disk mounted must be unmounted before it is physically removed
+    from the system. To do this, use the Unmount utility:
+
+     system[1] unmount fdb
+
+Disks created in this manner are in the Cromix Operating System format and not
+CDOS compatible.
+
+The permanent mapping of CDOS directories to Cromix directories is defined by
+a table in sim.bin. This table contains a 16-byte entry for each CDOS
+directory. The entry is the pathname of the Cromix directory to which the CDOS
+directory maps. Using Dump, you can display the contents of the table.  The
+entry for CDOS directory A starts at location 509H, the entry for CDOS
+directory B, at location 519H, and so on.
+
+To change the mapping of CDOS directories, the Patch utility can be used to
+change the contents of the table. When changing an entry:
+
+1.  Each pathname must end with a slash mark ("/").
+
+2.  Each string must be terminated with a null character.
+
+3.  The pathname, including the final "/" cannot be longer than 15
+    characters.
+
+"A" refers to the current directory, and should not be changed.
+
+Users may easily define the mapping of CDOS directories to Cromix directories
+when calling Sim explicitly.
+
+Example:
+
+     jim[1] sim -c /usr/lib program.com arguments
+
+refers all references to the CDOS C directory to the Cromix directory
+/usr/lib. Thus, one or more CDOS directories may be remapped to specific
+Cromix directories by giving the letter of the CDOS directory as a flag with
+the pathname of the Cromix directory as the next argument.

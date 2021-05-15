@@ -1,0 +1,18 @@
+Shell
+command:      REWIND or REW
+purpose:      This command restores the arguments used to call a command file.
+
+user access:  all users
+
+summary:      rew
+
+arguments:    none
+
+options:      none
+
+Description
+
+The Rewind command restores the arguments used to call a command file. It
+nullifies the effect of any Shift commands given within the command file.
+After execution of the Rewind command, #1 represents the first argument of the
+original command file, #2 the second, and so on.

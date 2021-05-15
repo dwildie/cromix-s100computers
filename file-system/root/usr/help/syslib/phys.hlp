@@ -1,0 +1,50 @@
+function:       phys
+purpose:        Change user access to system memory
+
+user access:    privileged user
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int phys(addr,size,access)
+                char *addr; int size, access;
+
+Description
+
+This function changes user access privileges to system memory. Addr is the
+starting address where the access is to be changed. It must be a multiple of
+page size (4096). Size is the size of address range that will have the access
+changed. Size must be again a multiple of page size (4096).  Access is the the
+combination of access privileges:
+
+     0x02    read access
+     0x04    write access
+     0x08    execute access
+
+The function must be used with great caution. If used it will allow the user
+arbitrary access anywhere in memory. The function is primarily intended to
+allow specialized user programs the access to such areas as the I/O space and
+graphics memory.
+
+The function returns int:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _badvalue        Unreasonable value passed as an argument.
+     _priv            You must be a privileged user to use this call.
+
+Example
+
+To use the Baseline package with 1/2 Megabyte of graphic memory at address
+0x800000 you have to use the code.
+
+     if (phys(0x800000,0x080000,6) ||
+         phys(0xfff000,0x001000,6))
+             error(STDERR), exit(ERR);
+
+     The first line gives you read and write access to graphic memory,
+     the second line gives you read and write access to the I/O space.
+

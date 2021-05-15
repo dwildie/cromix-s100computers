@@ -1,0 +1,106 @@
+
+SET, =  - Set Kermit options/modes.
+
+
+		Usage:
+
+		SET <option1> <setting1> [<option2> <setting2> etc. ]
+
+
+Use the SET command to set Kermit options.  The following have been
+implemented so far:
+
+
+option          settings                           comments
+------          --------                           --------
+
+BAUD or B       110 through 19200, AUTO (A)        Set remote baud rate
+		and NOCH (N)
+
+DEBUG, D        States or S                        Increment debug count
+or DEBUGGING    -States, Nostates, -S or Nostat    Decrement debug count
+		Packets or P                       Packet log
+		-Packets, Nopackets, -P or Nopack  Terminate packet log
+		Off, None or No                    Switch all debugging off
+		Log, Logfile or Log-File           Set log file or reset to
+						   terminal if OFF
+
+DELAY           Value in seconds                   Delay before start of
+						   transmission if remote
+
+DUPLEX         full/half                           Other line's duplex
+or DUP
+
+EIGHT-BIT, 8,   any legal 8-bit prefix char or     Eight-bit prefix
+EIGHT,          NONE
+or 8-BIT
+
+ESCAPE or E     any character                      Connect escape character
+
+FILE            IMAGE, BINARY, TEXT                File parameters
+
+HAND or         XON, XOFF, CR, LF, ESC, NONE       Handshake
+HANDSHAKE
+
+INC or          ON, OFF                            Incomplete file save
+INCOMPLETE                                         - save if ON
+
+INPUT-QUOTE or  any valid character                Input quote
+HANDSHAKE       (also :
+		  XON   - ^Q
+		  XOFF  - ^S
+		  CR    - RETURN, RET
+		  LF    - LINEFEED, LINE
+		  NONE  - NO, N, OFF  )
+		
+INQ
+
+LINE or L       full device pathname               Connecting line name
+
+PARITY, P,      EVEN, ODD, MARK, SPACE, NONE       Parity setting
+PAR             (also :
+		  EVEN  - E
+		  ODD   - O
+		  MARK  - M
+		  NONE  - NO, N, -, OFF )
+
+PROMPT or PR    Any string                         Kermit prompt
+
+RECEIVE, R      Receive parameters                 See below
+or REC
+
+REMOTE or REM   ON/OFF or YES/NO                   Remote/local status
+
+REPEAT or REP   any valid repeat prefix or NONE    Repeat prefix
+
+RETRY or RET    any valid number                   Retry count
+
+SEND or S       Send parameters                    See below
+
+WILD or         ALL or ONE and the character       Wildcard characters
+WILDCARD        (also :
+		  ALL   - A
+		  ONE   - O  )
+		
+defined option  none                               See the DEFINE help
+						   message
+
+Receive/Send parameters.
+
+Parameter       Settings                Meaning                 Default
+---------       --------                -------                 -------
+EOL             any ASCII character     End-of-packet character Carriage return
+
+PL              10 to 94                Maximum packet length   94
+
+TO              any                     Timeout                 0
+
+PAD             any                     Padding                 0
+
+PADC            any ASCII character     Padding character       NULL
+
+QUOTE           any ASCII character     Quotation character     #
+
+SOP             any ASCII character     Start-of-packet         SOH (^A)
+
+

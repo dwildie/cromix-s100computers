@@ -1,0 +1,20 @@
+utility:      USAGE
+purpose:      This program displays directory size information.
+
+user access:  all users
+
+summary:      usage [file-list]
+
+arguments:    directory or file pathname(s)
+
+options:      none
+
+Description
+
+The Usage utility displays the physical disk space (in blocks) and the logical
+file space (in bytes) occupied by a directory and all of its descendants. If
+only a single file is specified, the size of that file is reported. If no
+pathname is given, the current directory is assumed.
+
+Knowing the number of blocks occupied by a directory is useful before using
+the Cptree utility.

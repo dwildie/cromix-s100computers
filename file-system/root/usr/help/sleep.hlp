@@ -1,0 +1,21 @@
+Shell
+command:      SLEEP
+purpose:      This command suspends program execution.
+
+user access:  all users
+
+summary:      sleep time
+
+arguments:    time in seconds
+
+options:      none
+
+Description
+
+The Sleep command suspends execution of a process for the number of seconds
+specified. Sleep can be used to execute a command after a certain amount of
+time. For example:
+
+     jim[1] sleep 60 ; command
+
+This example executes command after 60 seconds.

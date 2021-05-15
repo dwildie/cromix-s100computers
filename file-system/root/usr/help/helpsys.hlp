@@ -1,0 +1,73 @@
+utility:      HELPSYS
+purpose:      This program displays information on functions in the
+              /usr/lib/syslib.obj library
+
+user access:  all users
+
+summary:      helpsys [topic ...]
+
+arguments:    optional system call function names
+
+options:      none
+
+Description
+
+The Helpsys utility program provides on-line descriptions of the functions
+available in the library /usr/lib/syslib.obj.
+
+If you enter helpsys and press RETURN, the Helpsys utility lists the available
+topics and prompts you to select one. Entering helpsys and a function name
+will list the entry on that topic. Help displays the entry one page at a time.
+The percentage of the file yet to be viewed is displayed at the bottom of the
+screen.
+
+The following functions will aid you in viewing the entry:
+
+SPACE BAR    Display the next page.
+u            Display the previous page.
+RETURN KEY   Display the next line.
+DOWN ARROW   Display the next line.
+UP ARROW     Display the previous line.
+b            Display the first page.
+h            Display the list of available functions.
+p            Print the topic.
+r            Return to list of available topics if the Helpsys utility was
+             called with no arguments.
+q            Exit the program.
+
+Trying to move outside the file (e.g., pressing SPACE BAR when the last page
+is displayed) has no effect.
+
+General usage of system call functions
+
+Cromix-Plus system calls may be executed directly from a C program using the
+interface functions described in this document. These functions load the
+argument values into the appropriate registers, then execute the system call.
+Generally, the functions have the same names, less the starting underscores,
+as the system calls which they execute. For example, the function which calls
+the _getdir system call is named getdir.
+
+Channel numbers and file descriptors
+
+Many Cromix-Plus calls require or return a channel number. This channel number
+is identical to the file descriptor of the C language.
+
+Cromix operating system errors
+
+When a system call reports an error, the interface function returns, as a
+rule, -1 to the calling C function after saving the value of the Cromix-Plus
+error code in the external variable errno. The value of the variable errno is
+accessible for inspection by the C program if the declaration
+
+     extern int errno;
+
+is made. In addition, the function error (channel) is available, which prints
+the system-defined error message to the specified channel.
+
+Include files
+
+The directory /usr/include contains files that a user program can include to
+define various types, structures, and constants.
+
+The information about individual functions is available by the use of the
+helpsys utility.

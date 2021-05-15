@@ -1,0 +1,38 @@
+function:       caccess
+purpose:        Test access of a channel.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int caccess(channel,mask)
+                int channel, mask;
+
+Description
+
+Caccess tests the specified open channel for access as specified by mask:
+
+     mask             what to check
+
+     ac_read          read access
+     ac_exec          execution access
+     ac_writ          write access
+     ac_apnd          append access
+
+More than one value can be "ORed" into mask to check for more than one
+permission at a time. If the caller has all indicated access permissions, the
+function returns zero. If the caller lacks some of the indicated access
+permissions, the value ERR is returned and errno indicates the error.
+
+As implemented in the Cromix Operating System, the function does not test the
+access granted during the open procedure. It tests the access the user could
+have obtained. In other words, the function works like faccess except that the
+file is identified by the channel number instead of pathname.
+
+Common errors:
+
+     _fileaccess           The caller does not have the access he asked
+                           for.
+     _notopen              The specified channel is not open.
+

@@ -1,0 +1,37 @@
+function:       rdline
+purpose:        Send a line
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int rdline(channel,buffer,maxbytes)
+                int channel, maxbytes; char *buffer;
+
+Description
+
+Read bytes until either:
+
+     '\n' is read
+     '\0' is read
+     maxbytes are read
+     a signal is received
+
+Returns:
+
+     number of bytes read  if successful
+     ERR                   if error
+
+Common errors:
+
+     _notopen            The channel to read from is not open.
+     _filaccess          The user does not have read access to the
+                         file to read from.
+     _ioerror            Any kind of driver error, diagnosed on the
+                         raw terminal.
+     _endfile            The file is positioned at the end of the file.
+     _ssignal            A signal was received while waiting for a byte.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

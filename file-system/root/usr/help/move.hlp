@@ -1,0 +1,51 @@
+utility:      MOVE
+purpose:      This program moves file(s) from one directory into another.
+
+user access:  all users
+
+summary:      move  [-ftv] file-list dirname
+                    [-ftv] srcfile destfile
+
+arguments:    two single file pathnames
+
+              or
+
+              one or more file pathnames
+
+              and
+
+              a directory pathname
+
+options:      -f    force
+              -t    time
+              -v    verbose
+
+Description
+
+The Move program moves one or more files from one directory to another
+directory. This program removes the source file(s). The Move program does not
+change the access privileges of the moved files. If files are transported from
+directory A to directory B, the owner of directory B may not have full access
+privileges for the files. The program Chowner must be run to change the owner
+of these files.
+
+Options
+
+The -f option causes the moved file to overwrite another file with the same
+pathname if one exists. If this option is not used and another file exists
+with the destination pathname, an error is generated and the Move program
+aborted.
+
+The -t option causes a file to be moved only if:
+
+1.  The file does not exist in the destination directory; or
+
+2.  The source file was modified more recently than the destination
+    file. This comparison is performed on a file-by-file basis.
+
+The -v option displays the names of the files being moved.
+
+Notes
+
+With the exception of "time dumped", which is automatically zeroed, files are
+moved with ownership and times preserved.

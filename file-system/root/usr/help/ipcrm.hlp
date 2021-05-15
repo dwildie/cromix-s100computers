@@ -1,0 +1,37 @@
+utility:       IPCRM
+purpose:       This program removes a message queue, semaphore set, or shared
+               memory identifier.
+
+user access:   owner of the facility
+
+summary:       ipcrm -{ik}{qms} identifier(s)
+
+arguments:     IPC facility identifiers or keys
+
+options:       -i  IPC facilities are identified by identifiers
+               -k  IPC facilities are identified by keys
+               -q  remove message queues
+               -m  remove shared memory segments
+               -s  remove semaphore sets
+
+Description
+
+The Ipcrm utility will remove one or more specified message, shared memory, or
+semaphore identifiers. Exactly one of the options -i and -k must be used to
+specify that IPC facilities are to be identified either by identifier or by
+key. Exactly one of the options -q, -m, and -s must be used to specify removal
+of a message queue, shared memory segment, or semaphore.
+
+The IPC identifiers and keys may be found using the Ipcs utility.
+
+Options
+
+The -i option specifies the arguments are IPC identifiers.
+
+The -k option specifies the arguments are IPC keys.
+
+The -q option requires removal of the message queue identifers.
+
+The -m option requires removal of the shared memory identifers.
+
+The -s option requires removal of the semaphore identifers.

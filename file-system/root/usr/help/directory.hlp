@@ -1,0 +1,20 @@
+Shell
+command:      DIRECTORY or D
+purpose:      This command displays the name of or changes the
+              current directory.
+
+user access:  all users
+
+summary:      d [dir name]
+
+arguments:    optional directory pathname
+
+options:      none
+
+Description
+
+When given without an argument, the Directory command displays the pathname of
+the current directory.
+
+Given with a directory pathname, the Directory command makes the specified
+directory the current directory.

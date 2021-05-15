@@ -1,0 +1,27 @@
+function:       makdev
+purpose:        Create a device file
+
+user access:    privileged user
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int makdev(pathname,dtype,majorno,minorno)
+                char *pathname;
+                int dtype, majorno, minorno;
+
+Description
+
+This call creates a device file. The value returned is:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _badname            Pathname points to illegal path name.
+     _exists             The file identified by the pathname already
+                         exists.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

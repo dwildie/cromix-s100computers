@@ -1,0 +1,24 @@
+function:       getdir
+purpose:        Return current directory pathname.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int getdir(buffer)
+                char buffer[128];
+
+Description
+
+The pathname to the current directory is stored in buffer. The pathname will
+be terminated by a zero byte.
+
+If the resulting pathname exceeds 128 characters it will be suitably
+abbreviated.
+
+The function returns:
+
+     0           if successful;
+     ERR         if error.
+

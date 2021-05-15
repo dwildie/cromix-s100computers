@@ -1,0 +1,156 @@
+-1 File: ccterrs
+-1 Date: 01-Jun-83
+-1
+-1       "C" Compiler Error Numbers: Compile Time
+-1
+
+-1 A.1 Compile Time # Control Card Errors
+
+10 End of file encountered before required #endif
+11 Identifier required on # control card
+12 #include file name too long
+13 Improperly quoted file name in #include (must be "fn" or <fn>)
+14 Only 5 levels of include file nesting allowed
+15 Can't open #include file
+16 Maximum depth of conditional compilation nesting exceeded
+17 #else without corresponding if control line
+18 #endif without corresponding if control line
+19 Error in # control line
+
+-1 A.2 Compile Time Macro Errors
+
+20 Badly formed formal argument list in macro definition
+21 Unterminating macro recursion
+22 Actual arguments required for parameterized macro
+23 End of file encountered processing actual arguments to macro
+24 Unterminated string constant in actual argument to macro
+25 Improperly formed character constant in actual argument to macro
+
+-1 A.3 Compile Time Lexical Errors
+
+30 Premature end of file
+31 End of file encountered while processing comment
+32 Illegal character in input
+33 Improperly formed character constant
+34 Non terminated comment in constant expression
+35 Integer or character constant expected in constant expression
+36 String constant not properly terminated
+37 Integer constant too large
+38 Too many digits in number
+39 Digit expected in E part of number
+
+-1 A.4 Compile Time Syntactic Errors
+
+50 '{' expected
+51 '}' expected
+52 '(' expected
+53 ')' expected
+54 ';' expected
+55 ']' expected
+56 Identifier expected
+57 ':' expected
+58 'while' expected
+59 String constant expected
+
+60 Error in expression
+61 Error in declarator
+62 Error in global declaration
+63 Error in parameter list
+64 Error in statement
+
+-1 A.5 Compile Time Semantic Errors
+
+100 Undeclared identifier
+101 Identifier is already defined
+102 Undefined label
+103 Label name required
+104 Label is already defined
+105 Function is already defined
+106 Declaration inconsistant with prior declaraction/definition
+107 Cannot initialize external declaration
+
+110 Identifier must be STRUCT name
+111 Identifier must be UNION name
+112 Field width too big (max = 16 bits)
+113 Sub-arrays must have size specified
+114 Arrays in STRUCTs must have size specified
+115 Undefined STRUCT or UNION may only be pointed to
+116 Undefined STRUCT or UNION not allowed
+117 Array must have > 0 elements
+118 Too many AUTO variables (max = 32000 bytes)
+119 Identifier must be an ENUM name
+
+120 Identifier cannot appear in abstract declarator
+121 Parameter name required
+122 Parameter already given a type
+123 Parameter storage class must be REGISTER or AUTO
+124 Function member declarations cannot list parameters
+125 Can only initialize variables
+126 Constant expression required
+127 Division by zero
+128 Cannot initialize AUTO or REGISTER aggregates
+129 Cannot initialize UNIONS or FUNCTIONS
+
+130 Struct or ARRAY initialization requires value list in braces
+131 Too many elements specified in an initialization list
+132 Cannot initialize bitfields of STRUCTs
+133 L-value required
+134 Numeric value required
+135 Numeric or pointer value required
+136 Integer value required
+137 Illegal type conversion
+138 Mismatched types
+139 Integer constant expression required
+
+140 Pointer addition must be with an integer
+141 Cannot subtract a pointer from a non-pointer
+142 Pointer subtraction must be with same type pointer
+143 Illegal parameter in function call
+144 Primary is not a function
+145 Primary is not an array or pointer
+146 STRUCT or UNION required
+147 REGISTER variables have no address
+148 Identifier is not a member name
+149 Pointer value required
+
+150 Nonunique member name requires STRUCT/UNION or STRUCT/UNION pointer
+151 Aggragate assignment must be for same sized values
+152 Repeated aggragate assignment is not allowed
+153 CONTINUE statement must be within FOR, WHILE or DO statement
+154 BREAK statement must be within FOR WHILE DO or SWITCH statement
+155 DEFAULT label must occur within a SWITCH statement
+156 CASE label must occur within a SWITCH statement
+157 Duplicate CASE label value
+158 Multiple DEFAULT labels in the same SWITCH statement
+159 Only pointer variables can be initialized to address values
+
+160 Bit-field not allowed
+161 Maximum STRUCT or UNION size is 32766 bytes
+
+-1 A.6 Specific Limitations of the Compiler
+
+300 Statement too long (LBUFF full)
+
+-1 A.7 Input Output Errors
+
+400 Not enough room for code file
+401 Error in rereading code file
+406 Fatal error rereading file after completed include
+407 Unable to write i-code file
+408 Error in writing code file
+409 Error in reading i-code file
+410 Unable to open scratch file
+411 Unable to write scratch file
+412 Unable to reread scratch file
+
+-1 A.8 Warnings
+
+500 Empty array declaration
+501 & before array or function ignored
+502 STRUCT/UNION or STRUCT/UNION pointer required
+503 Unknown compiler option
+
+1000+ Compiler diagnostic errors, should never be issued.
+
+32767
+

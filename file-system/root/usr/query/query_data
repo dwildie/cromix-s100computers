@@ -1,0 +1,155 @@
+UTILITY PROGRAMS and SHELL COMMANDS             Cromix Instruction Manual
+
+ access      -  changes access privileges of a file
+ account     -  process account file
+ bak         -  deletes files with .bak extensions
+ blink       -  links Z80 programs
+ boot        -  loads an operating system into memory and begins execution
+ ccall       -  calls another Cromix system via a modem
+ cdoscopy    -  copies file to and from CDOS disks
+ cdosfix     -  strips CONTROL-Z's from the end of CDOS files
+ ce          -  Cromix editor
+ check       -  runs the Dcheck and Icheck utilities
+ chowner     -  changes the owner or group owner of a file
+ clist       -  displays a file with page headings and line numbers
+ clock       -  executes command line, reports execution time
+ cmpasc      -  compares two ASCII files
+ compare     -  compares two ASCII files
+ config      -  configures memory for a .bin program
+ convert     -  converts ASCII to EBCDEC and other transformations
+ convobj     -  converts .obj files to .o68 format
+ copy        -  copies a file
+ cptree      -  makes a copy of a directory and its descendants
+ crc         -  compute CRC of a file
+ create      -  creates a file
+ crogen      -  generates an operating system
+ cron        -  cron daemon
+ crontab     -  maintainance of cron table
+ daemon      -  prints files in the usr/spool directory
+ day         -  executes a command on the specified day
+ dcheck      -  verifies the integrity of a file system
+ ddt         -  debugger for 68000 programs
+ ddump       -  converts and copies a file from one device to another
+ delete      -  deletes a file
+ deltree     -  deletes a directory and all descendant files
+ directory   -  changes directories or displays pathname of current directory
+ diskinfo    -  prints information about a hard disk
+ dump        -  displays a file in hexadecimal and ASCII
+ ecc         -  manipulates the error-correcting memory controllers
+ echo        -  echoes arguments to the terminal
+ ed          -  same as screen
+ esdload     -  loads a file into an ESDI
+ exit        -  exits from a Shell
+ find        -  locates files
+ fixsb       -  restores Superblock
+ flush       -  flushes system buffers
+ free        -  displays the amount of unused space on a device
+ ftar        -  creates and retrieves file archives
+ goto        -  transfer control within a command file
+ group       -  allows users to change their groups
+ gtty        -  start login terminal
+ help        -  displays the on-line manual
+ helpcall    -  describes Cromix-Plus system calls
+ helpsys     -  describes C-callable functions to do system calls
+ history     -  displays exacuted commands
+ icheck      -  checks the integrity of a file system
+ idump       -  displays the contents of an inode
+ if          -  conditionally executes another command
+ initflop    -  initializes a floppy diskette
+ inithard    -  initializes a hard disk
+ inittape    -  initializes a floppy tape
+ input       -  reads a line from STDIN and writes it to STDOUT
+ ioload      -  loads a file into an IOP
+ ipcrm       -  removes IPC identifiers
+ ipcs        -  reports IPC status
+ kill        -  sends a kill signal to a process
+ ksam        -  KSAM daemon
+ l           -  lists directory or file information
+ link68      -  links 68000 programs; used with Crogen utility
+ logerr      -  accumulates errors detected and reported by the Ecc utility
+ login       -  verify user password
+ ls          -  lists directory or file information
+ lstat       -  report status of lock table
+ mail        -  sends or displays mail
+ makdev      -  creates a device file
+ makdir      -  creates a directory file
+ make        -  constructs executable programs from separate modules
+ makfs       -  sets up the structure for a file system on disk
+ maklink     -  creates another name for an existing file
+ match       -  finds all occurrences of a string within a file
+ mode        -  displays or alters the device modes
+ more        -  displays pages from pipes or files
+ mount       -  enables access to a file system
+ move        -  moves a file from one directory to another
+ msg         -  sends messages between users
+ ncheck      -  displays file information
+ newuser     -  displays information for new users
+ octload     -  loads a file into Octart
+ p_one       -  proces one
+ passwd      -  changes a user password, adds, or deletes a user
+ patch       -  patches a file
+ patchbug    -  correct a bug in old SVS file
+ path        -  displays the pathname of executable files
+ priority    -  changes the priority of a process
+ priv        -  changes user status to that of a privileged user
+ prompt      -  changes the Shell prompt until the user next logs in
+ pstat       -  displays the status of a process
+ query       -  summarizes Shell commands and utility programs
+ ramdisk     -  creates, deletes, verifies, and checksums RAM disks
+ randline    -  print a random line
+ rcopy       -  copies a file or block device
+ readall     -  reads a device to check for errors
+ rename      -  changes the name of a directory or a file
+ repeat      -  repeats a command
+ rewind      -  restores arguments within command files to original positions
+ rfile       -  allows receiving binary files over phone lines (with Ccall)
+ root        -  displays the name of the device containing the root directory
+ sc          -  calls the Screen editor with the -n option
+ scan        -  scans a directory tree
+ screen      -  calls the Screen editor
+ setpri      -  sets priority of a process
+ sfile       -  allows sending binary filesover phone lines (with Ccall)
+ shell       -  creates a shell process
+ shift       -  shifts arguments in a command file
+ shutdown    -  shuts down the operating system
+ sim         -  allows CDOS programs to run under the Cromix Operating System
+ sleep       -  puts a process to sleep for a specified number of seconds
+ sort        -  sorts or merges files
+ split       -  split a file into smaller chunks
+ spool       -  queues files and sends them to a printer
+ startup     -  contains commands executed every time system is started
+ stdload     -  loads a program into an STDC
+ strcmp      -  compares typed in string to arguments
+ sync        -  provides a one-time flush of system buffers
+ sysdef      -  generates a configuration file for the Crogen utility
+ tail        -  show tail of a file
+ tar         -  creates and retrieves file archives
+ tee         -  pipes output to a file as well as to STDOUT
+ term        -  displays or changes the terminal type
+ termcaps    -  describes terminal capabilities
+ testinp     -  tests equality between file contents and one or more strings
+ time        -  displays or alters the time and date
+ touch       -  changes modification times of files to the current time
+ tr          -  transform characters
+ type        -  displays an ASCII file
+ uboot       -  standalone boot programs for the UNIX Operating System
+ unmount     -  disconnects mounted file system from current file system
+ usage       -  displays directory-size information
+ vdt         -  controls special terminal functions
+ version     -  displays version number of operating system or utility program
+ wait        -  waits until all detached processes have finished
+ wboot       -  writes the boot program to the boot area of a disk
+ wc          -  count characters, words, and lines
+ who         -  lists the users presently logged in
+ z80         -  interface to run Z80 programs
+ >           -  redirects the standard output to a file
+ >>          -  appends the standard output
+ <           -  redirects the standard input from a file
+ >*          -  redirects standard output and standard error to a file
+ ><          -  sequentially pipes the standard output only
+ ><*         -  sequentially pipes the standard output and standard error
+ >>*         -  appends the standard output and standard error to a file
+ |           -  pipes the standard output only
+ |*          -  pipes both the standard output and standard error
+ ..          -  refers to home directory
+

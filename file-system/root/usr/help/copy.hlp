@@ -1,0 +1,89 @@
+utility:      COPY
+purpose:      This utility copies a file.
+
+user access:  all users
+
+summary:      copy  [-dftv] source-file destination-file
+                    [-dftv] file-list dirname
+
+arguments:    two single file pathnames
+
+              or
+
+              one or more file pathnames
+
+              and
+
+              a directory pathname
+
+options:      -d    directory and device files ok
+              -f    force
+              -t    time
+              -v    verbose
+
+Description
+
+The Copy utility copies one or more files. It does not alter the source
+file(s).
+
+In its simplest format, copy duplicates file abc as file xyz, with both files
+residing in the current directory:
+
+     jim[1] copy abc xyz
+
+To copy to or from a directory  other  than  the  current  directory  is  more
+complex:
+
+     jim[1] copy abc /usr/fred/xyz
+
+Here the pathname of the destination file is specified. The file abc exists in
+the current directory. It is being copied to the directory /usr/fred, and its
+name is to be xyz in that directory.
+
+In the command:
+
+     jim[1] copy abc /usr/fred
+
+the pathname of the destination directory is specified. The file abc exists in
+the current directory and is being copied to the directory /usr/fred without
+having its name changed.
+
+The  following  form  of  the  command  can  be used to create copies of all C
+language programs in the directory /usr/archives:
+
+     jim[1] copy *.c /usr/archives
+
+This copy command copies all files in the current directory with filenames
+ending in .c to the directory archives. The files maintain their original
+names.
+
+Options
+
+The -d option allows directory and device files to be copied. If this option
+is not used, directory and device files are not copied. For example, a command
+such as:
+
+     jim[1] copy -d /dev/tty2 data
+
+can be used to transfer all characters typed at terminal 2 into the file named
+data until a terminating character is received. The terminating character for
+console devices is CONTROL-Z.
+
+The -f option makes the copied file overwrite an existing file with the same
+pathname. If this option is not specified and another file exists with the
+destination pathname, an error is reported.
+
+The -t option causes a file to be copied only if:
+
+1.  The file does not exist in the destination directory; or
+
+2.  The source file has been modified more recently than the destination
+    file. This comparison is performed on a file-by-file basis.
+
+The -v option displays the name of each file as it is copied.
+
+Notes
+
+With the exception of "time dumped," which is automatically zeroed, files are
+copied with ownership and times preserved. If the system clock is reasonably
+accurate, the -t option can be very useful.

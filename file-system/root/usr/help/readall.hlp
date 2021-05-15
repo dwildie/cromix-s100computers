@@ -1,0 +1,66 @@
+utility:      READALL
+purpose:      This program reads a device to check for errors.
+
+user access:  privileged user
+
+summary:      readall [-at] [-c #[,#]] [-h #[,#]] [-l #] devicename
+
+arguments:    device name
+
+options:      -a   do not read declared bad tracks
+              -t   do not write progress report
+              -c   cylinder numbers to read
+              -h   surfaces (heads) to read
+              -l   number of passes
+
+Description
+
+Readall checks for bad tracks on an STDC hard disk, ESDC hard disk, or any
+other block device that supports the "primitive read" setmode. The device name
+must be in the /dev directory, and the device must already be initialized. For
+an STDC or ESDC drive, use the device name for the entire disk (std31, esd31
+for drive 0; std63, esd63 for drive 1).
+
+Error messages (reports of bad tracks) are sent to the standard error device;
+status messages are sent to the standard output device. Numbers for the -c and
+-h options are assumed to be decimal unless followed immediately by an "h" for
+hexadecimal.
+
+Options
+
+The -a option skips reading of tracks declared bad in the alternate track
+table (valid only for hard disk drives).
+
+The -t option suppresses progress messages and displays only error messages
+(useful when redirecting output). This option should be used for floppy tape
+devices to allow reading in streaming mode.
+
+The -c option, followed by a number, selects a single cylinder to be read; if
+-c is followed by two numbers separated by a comma, a range of cylinders is
+read (from the first number through the second). Without this option, all
+cylinders are read.
+
+The -h option, followed by a number, selects a single surface (head) to be
+read; if -h is followed by two numbers separated by a comma, a range of
+surfaces is read (from the first number through the second). Without this
+option, all surfaces are read.
+
+The -l option selects the number of passes (each track is read once on each
+pass). Without this option, only one pass is made.
+
+Examples:
+
+To make one pass through cylinders 5 thru 16 (10h) on device /dev/std31,
+enter:
+
+     system[1] readall -c 5,10h std31
+
+To make 5 passes through the entire device /dev/std31 (except for tracks
+declared bad in the alternate track table), enter:
+
+     system[1] readall -a -l 5 std31
+
+To send error messages to both a file and the terminal, use a command such as:
+
+     system[1] (readall -a -l 5 std31 > /dev/tty) |* tee error_file
+

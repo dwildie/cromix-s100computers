@@ -1,0 +1,27 @@
+1:n     :sttya  :Z100
+0:9600  :sttyb  :Z100
+0:a     :tty1   :Z100   :system
+0:a     :tty2   :Z100
+0:a     :tty3   :dumb
+0:a     :tty4   :dumb
+0:a     :tty5   :dumb
+0:a     :tty6   :dumb
+0:a     :tty7   :dumb
+0:a     :tty8   :dumb
+0:a     :tty9   :dumb
+0:a     :qtty1  :dumb
+0:a     :qtty2  :dumb
+0:a     :qtty3  :dumb
+0:a     :qtty4  :dumb
+0:a     :qtty5  :dumb
+0:a     :qtty6  :dumb
+0:a     :qtty7  :dumb
+0:a     :qtty8  :dumb
+0:a     :mtty1  :dumb
+0:a     :mtty2  :dumb
+0:a     :mtty3  :dumb
+0:a     :mtty4  :dumb
+0:a     :mtty5  :dumb
+0:a     :mtty6  :dumb
+0:a     :mtty7  :dumb
+0:a     :mtty8  :dumb

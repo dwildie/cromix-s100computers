@@ -1,0 +1,31 @@
+function:     boot
+purpose:      Boot new operating system
+
+user access:  <jsyseq.h>
+              <syslib.h>
+
+synopsis:     int boot(exadd,size)
+              unsigned short *exadd; unsigned long size;
+
+Description
+
+This call boots a new operating system. The user program must read the new
+operating system into his memory. The boot function will shutdown the running
+system, move size bytes from address exadd to address 000000, load:
+
+     D1.L   size of code
+     D2.L   current root device
+
+and simulate the reset condition.
+
+Return value:
+
+     does not return     if no error occurred;
+     ERR                 if an error occurred,
+
+Common errors:
+
+     _priv          The call was issued by a nonprivileged user.
+     _badaddress    The address passed to the system call
+                    does not belong to user's address space.
+

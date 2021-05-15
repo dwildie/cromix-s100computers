@@ -1,0 +1,7 @@
+system	:		:0	:0	:/		:	:
+bin	:xxxxxxxxxx	:32767	:32767	:/bin
+user1	:		:1	:1	:/usr/user1
+user2	:		:2	:1	:/usr/user2
+unix	:		:0	:0	:/usr/unix	:boot uboot
+newuser	:		:99	:1	:/		:newuser
+dwildie	:tw312x3ayi	:5	:1	:/home/dwildie

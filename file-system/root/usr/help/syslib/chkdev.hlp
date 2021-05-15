@@ -1,0 +1,28 @@
+function:       chkdev
+purpose:        Verify presence of a driver.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int chkdev(dtype,majorno,minorno)
+                int dtype, majorno, minorno;
+
+Description
+
+The chkdev call verifies the presence of a device driver. The device type
+should be:
+
+     is_block            for block device
+     is_char             for character device
+
+The function returns:
+
+     0              if driver present
+     ERR            if not
+
+Common errors:
+
+     _nodevice           The specified device driver does not exist.
+

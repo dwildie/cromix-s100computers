@@ -1,0 +1,27 @@
+utility:      COMPARE
+purpose:      This program compares two files.
+
+user access:  all users
+
+summary:      compare [-t] file1 file2
+
+arguments:    2 filenames
+
+options:      -t   terse
+
+Description
+
+The Compare program compares two files and reports differences in length and
+content.
+
+Compare lists differences between the files on a byte-by-byte basis. It
+displays an address in hexadecimal, then the byte in the first file at that
+address, followed by the corresponding byte in the second file. Compare does
+not adjust for offset, should one file lack one or more bytes in the middle
+(e.g., if part of a file was deleted).
+
+Options
+
+The -t option suppresses the list of differences. When this option is used,
+only a message is displayed to indicate whether the files are the same or
+different.

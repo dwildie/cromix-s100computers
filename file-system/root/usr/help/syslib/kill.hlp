@@ -1,0 +1,45 @@
+function:       kill
+purpose:        Send the specified signal to the specified process
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int kill(pid,stype)
+                int pid, stype;
+
+Description
+
+The kill function sends a signal to a process.
+
+When any signal is received by a process, the process is aborted unless the
+signal system call specifies that a subroutine be executed, or that the signal
+be ignored.
+
+When a signal is received, unless it is ignored, an unsatisfied request for
+input or output from a character device is cancelled. Examples: reading a
+buffered line from a console or writing a line to the printer.
+
+If a signal is sent to process 0, the same type of signal is sent to all
+processes that belong to the user invoking the call.
+
+If the user is a privileged user and a siguser signal is sent to process 1,
+system shutdown is initiated.
+
+If a sigabort signal is sent to process 1, the /etc/ttys file is reexamined.
+If an entry has a 0 in the leftmost column, the appropriate terminal is logged
+off and all of its processes are terminated. If an entry shows a 1 in that
+column, the terminal is logged in if it is not already logged in.
+
+The function returns:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _priv          Only a privileged user can send signals to processes
+                    he did not initiate.
+     _noproc        Such a process does not exist.
+

@@ -1,0 +1,24 @@
+utility:      IOLOAD
+purpose:      This program loads a program into an I/O board
+
+user access:  privileged user
+
+summary:      ioload [-r] filename device
+
+arguments:    filename of program to be loaded
+
+              I/O device name (io1 .. io4 oc1 .. oc8)
+
+options:      -r   Reset the board before loading
+
+Description
+
+The Ioload utility loads a file into an I/O board (IOP, Octart, or Biart).
+This utility is normally used to load the IOP driver /etc/quadart.iop,
+/etc/tape8.iop, or /etc/tape16.iop into an IOP, the Octart driver
+/etc/octart.iop into an Octart, or the driver for Z80 programs /etc/zio.iop
+into a Biart or Octart. Ioload.bin is located in the /etc directory.
+
+The -r option should be used only with the devices that understand software
+reset sequence (Octart and Biart). The reset sequence will ensure that the
+board is listening to the host in a well defined manner.

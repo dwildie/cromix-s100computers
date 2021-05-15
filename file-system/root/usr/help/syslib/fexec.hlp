@@ -1,0 +1,65 @@
+function:       fexec
+purpose:        Fork and execute a program.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int fexec(pathname,argv,sigmask,sigvalues)
+                char *pathname, *argv[]; int sigmask, sigvalues;
+
+Description
+
+The fexec call begins execution of a program and returns control to the
+calling program. The call is similar to the exec call, except that a new
+process is created.
+
+The values of sigmask and sigvalues define how the child process should
+respond to signals.
+
+To each signal number there corresponds a bit in the sigmask and the
+sigvalues. The mask for signal sigxxx is defined as
+
+     1 << (sigxxx-1)
+
+If a bit in sigmask is zero, the corresponding bit in sigvalues is immaterial.
+The child process will react to signals in the same way as the parent process:
+
+     parent         child
+
+     abort          abort
+     ignore         ignore
+     trap           abort
+
+If a bit in sigmask is nonzero, the child process will react on a signal as
+defined by the corresponding bit in sigvalues:
+
+     bit in sigvalues         reaction by the child
+
+     0                        abort
+     1                        ignore
+
+The child process may issue the signal system call to modify the reaction to
+the individual signals.
+
+Array argv of pointers to the arguments must be terminated by the NULL
+pointer.
+
+The function returns:
+
+     child process id         if successful
+     ERR                      if error
+
+Common errors:
+
+     _notexist             The file to be executed does not exist.
+     _filaccess            The user does not have execute access to
+                           the file.
+     _nomemory             There is not enough memory available to fork
+                           this program.
+     _badname              The program to be forked is referenced by an
+                           illegal pathname.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

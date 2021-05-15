@@ -1,0 +1,35 @@
+function:       rdseq
+purpose:        Read sequential bytes
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int rdseq(channel,buffer,bytecount)
+                iint channel, bytecount; char *buffer;
+
+Description
+
+Reads bytes until:
+
+     bytecount bytes are read
+     a signal is received
+
+Returns:
+
+     number of bytes read     if successful
+     ERR                      if error
+
+Common errors:
+
+     _notopen            The channel to read from is not open.
+     _filaccess          The user does not have read access to the
+                         file to read from.
+     _ioerror            Any kind of driver error, diagnosed on the
+                         raw terminal.
+     _endfile            The file is positioned at the end of the file.
+     _ssignal            A signal was received while waiting for a byte.
+     _badaddress         The address passed to the system call does not
+                         belong to the user's address space.
+

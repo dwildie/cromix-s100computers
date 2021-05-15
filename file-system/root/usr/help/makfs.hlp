@@ -1,0 +1,63 @@
+utility:      MAKFS
+purpose:      This program sets up the structure for a file system on disk.
+
+user access:  privileged user
+
+summary:      makfs [-b #] [-i #] [-r #] [-s #] devname(s)
+
+arguments:    device name
+
+options:      -b #    first inode block number
+              -i #    number of inodes
+              -r      restore Superblock
+              -s #    number of blocks used
+
+Description
+
+The Makfs utility sets up a structure for a file system on block devices.  It
+establishes the number of inodes, the blocks dedicated to those inodes, blocks
+dedicated to the system, and blocks dedicated to the user.
+
+Makfs is run on all floppy disks and on some hard disks before the disk is
+mounted for the first time.
+
+The Makfs utility destroys any existing data on the device. It warns and
+prompts the user before destroying data.
+
+The Makfs utility stores the inode number in all of the inodes created.
+
+Options
+
+The -r option restores the Superblock should it be accidentally destroyed. Use
+this option with caution. If you previously ran Makfs with the -i, -s, or -b
+option, give the -r option with the same argument given -i, -s, or -b. Failure
+to do so will destroy the file structure.
+
+After running Makfs with the -r option, run Icheck to complete the restoration
+process.
+
+The -b option specifies which block should be the first to contain inodes.
+Except for block 1 (Super block), preceding blocks are not used. The argument
+given -b cannot be less than 2.
+
+If -b is not used, block 20 is selected by default, with blocks 0 and 2
+through 19 allocated as follows: boot program (0, 2-17), partition table (18),
+alternate track table (19).
+
+The -i option establishes a file system with a nonstandard number of inodes.
+This option is used only if you need more files than the default allows.
+Otherwise, Makfs decides how many inodes are needed and uses that number.
+Makfs rounds the number of inodes specified down to the nearest multiple of
+four (the number of inodes in a block).
+
+The -s option specifies the number of blocks, from the beginning, to be used
+for the file structure. Blocks beyond the point specified by the argument to
+-s are not used.
+
+If -s is not used, the maximum number of blocks is selected by default.
+
+Notes
+
+In lieu of running Makfs with the -r option, a more prudent method of
+restoring the Superblock is to use the Fixsb utility. Fixsb restores the
+Superblock and then runs Icheck automatically.

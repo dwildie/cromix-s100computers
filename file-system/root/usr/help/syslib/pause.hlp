@@ -1,0 +1,18 @@
+function:       pause
+purpose:        Wait for any signal
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int pause()
+
+Description
+
+Pause suspends execution of the process until a signal arrives.
+
+Returns:
+
+     ERR and errno set to _ssignal
+

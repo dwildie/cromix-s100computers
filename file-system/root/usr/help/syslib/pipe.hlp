@@ -1,0 +1,23 @@
+function:       pipe
+purpose:        Create a pipe
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int pipe(pipeout,pipein)
+                int *pipeout, *pipein;
+
+Description
+
+The function pipe creates a pipe. If there is no error, the function returns
+zero and two channel numbers in pipein and pipeout. If there is an error, the
+function returns ERR.
+
+Note:  Pipeout should be used for writing, pipein should be used for reading.
+
+Common errors:
+
+     _toomany         Too many open channels.
+

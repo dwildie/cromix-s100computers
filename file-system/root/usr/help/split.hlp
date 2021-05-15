@@ -1,0 +1,69 @@
+utility:      SPLIT
+purpose:      This program can split a file into smaller pieces.
+
+user access:  all users
+
+summary:      split [-f] [b #] [-l #] input-file [output-file]
+
+arguments:    file to be split
+              optional mold for resulting files
+
+options:      -f     overwrite target files
+              -b #   make resulting files # blocks (512 bytes) each
+              -l #   make resulting files # lines (up to 512 bytes) each
+
+Description
+
+The Split utility can be used to break a large file into smaller chunks.
+Output file names are formed from the second argument by appending extensions:
+
+     .aa
+     .ab
+     .ac
+     ....
+     .zz
+
+in this order. If the second argument is not given, the first argument is used
+to form output file names.
+
+Each chunk will have a prescribed number of lines (if the -l option is used)
+or a prescribed number of blocks (if the -b option is used). For the purpose
+of this discussion, lines are limited to 512 characters, blocks are 512 bytes
+each. The last file can have a smaller number of lines (blocks). In the
+absence of the -l and -b options the resulting files will have up to 1000
+lines each.
+
+If a "-" is given as the first argument, standard input will be split. In this
+case the second argument is mandatory.
+
+Once a file has been split it can be concatenated together using the Type
+utility.
+
+Options
+
+The -f option forces the output files to be overwritten.
+
+The -b option, followed by a number, will force output files to contain at
+most the specified number of blocks.
+
+The -l option, followed by a number, will force output files to contain at
+most the specified number of lines.
+
+Example
+
+Suppose the file x is 2000 bytes long. The command
+
+     jim[1] split -b 1 x
+
+will split the file x into:
+
+     x.aa  512 bytes
+     x.ab  512 bytes
+     x.ac  512 bytes
+     x.ad  464 bytes
+
+Provided there are no other files with names x.*, the command
+
+     jim[2] ty x.* > y
+
+will create the file y which is an exact copy of x.

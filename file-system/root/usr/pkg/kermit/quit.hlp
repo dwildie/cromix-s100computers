@@ -1,0 +1,8 @@
+
+QUIT, EXIT, STOP, EX - Get out of Kermit
+
+		Usage:
+
+		QUIT
+
+Use the QUIT command to exit Kermit.  EXIT and STOP are synonyms.

@@ -1,0 +1,84 @@
+utility:      RFILE
+purpose:      This program allows binary files to be received from
+              users over the phone lines with error-free results.
+
+user access:  all users
+
+summary:      rfile [-q] [-f]  [-d device-name] [-b baud-rate]
+              destination-directory
+
+arguments:    destination directory pathname (must already exist)
+
+options:      -q   quiet  (default is verbose)
+              -f   force
+              -d   qtty device name  (default is STDIN/STDOUT)
+              -b   baud rate  (default is current baud rate)
+
+Description
+
+The Rfile utility allows binary disk files to be received by a user on one
+Cromix system from a user on another Cromix system that is using the Sfile
+utility to transmit files.
+
+Rfile may operate at either 300 or 1200 baud. It must use an asynchronous
+modem such as the Cromemco MDM-1200, a Bell 212A, or a Bell 103 type. The
+modem used must be compatible with the modem the Sfile utility is using to
+transmit the data. The modem can be connected to any serial port on the
+Quadart using a 12-wire cable constructed for this purpose.
+
+The qtty driver is used to connect Rfile with the IOP/Quadart and modem. The
+Cromix-Plus system being used must include the IOP/Quadart drivers (refer to
+Crogen), and a device file for the qtty should be set up in the /dev directory
+using Makdev. The corresponding entry in the /etc/ttys file should have a 0 in
+the first column.
+
+Example
+
+     jim[1] rfile -d qtty2 -b 300 recvtemp
+
+This command line sets the reception rate at 300 baud and stores all of the
+data received from qtty2 into the existing directory named recvtemp.
+
+Messages returned by Rfile
+
+Waiting for phone call
+
+Rfile is in an idle state waiting for a connection from the Sfile utility.
+Rfile will remain in this mode indefinitely if Sfile fails to make a valid
+connection.
+
+Receiving [filename] from [devname] into [directory-name]
+
+A valid connection to the Sfile utility has been established, and data is
+being transferred from the qtty device to the specified disk file in the
+specified directory.
+
+Connection lost -- ABORT RFILE
+
+The line to Sfile was prematurely disconnected.
+
+ABORT RFILE
+
+A CONTROL-C character was received from the user at the keyboard; Rfile does
+an orderly exit back to the Cromix Shell.
+
+Options
+
+The -q option specifies a different set of Rfile console messages.  (Used by
+Ccall and when Rfile is running on a remote machine.)
+
+The -f option causes Rfile to overwrite any existing file with the same
+pathname as the file sent by Sfile. If this option is not specified and
+another file exists with the destination pathname, an error is reported.
+
+The -d option specifies which qtty device is to be the receiver.
+
+The -b option sets the baud rate of the receiving device.
+
+Notes
+
+Rfile is used in conjunction with Sfile. Refer to the Sfile utility for
+additional information.
+
+When used without an argument, Rfile displays a summary of the command line
+syntax.

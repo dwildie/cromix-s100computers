@@ -1,0 +1,42 @@
+function:       delete
+purpose:        Delete a directory entry.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int delete(pathname)
+                char *pathname;
+
+Description
+
+The delete call attempts to remove the specified directory entry. If the
+removed directory entry is the last link to the file, the space occupied by
+the file is released, and the file's contents lost.
+
+The delete call requires write permission to the directory from which the
+directory entry will be removed.
+
+If the file is open at the time the call is made and the specified directory
+entry is the last link to the file, the directory entry is deleted
+immediately. The file itself is not deleted until the active process closes
+the file.  In order for a directory to be deleted, it must not
+
+     1.  Contain any files;
+     2.  Be the current directory for any user;
+     3.  Be the root directory for a device.
+
+The function returns:
+
+     0           if successful
+     ERR         if error
+
+Common errors:
+
+     _diraccess            The user lacks proper access to one of the
+                           referenced directories.
+     _notexist             The file to be deleted does not exist.
+     _badaddress           The address passed to the system call does not
+                           belong to user's address space.
+

@@ -1,0 +1,147 @@
+Shell
+command:      SHELL or SH
+purpose:      This command creates a Shell process.
+
+user access:  all users
+
+summary:      [shell] [cmd file]
+
+arguments:    optional command file
+
+option:       -c              complete input line
+              -p              parsed input line
+              -q              quiet
+              -z              do not terminate on CONTROL-Z
+              -h string       prompt string
+              -e pathname     Shell environment file
+
+Description
+
+Given without an argument, the Shell command creates an interactive shell
+process; given with the name of a command file, Shell executes that file as it
+echoes each line of the file to the terminal. Entering only the name of a
+command file implies the use of the Shell command. Executed in this manner the
+source lines of the command file are not echoed to the terminal.
+
+On Cromix-Plus release 94 and higher, the Shell recognizes the variable:
+
+     #err
+
+as the decimal value of the last error number.
+
+Cromix-Plus release 149 and higher can manipulate Shell variables. If a
+command procedure sets the variable "abort" to an arbitrary value, the command
+procedure will abort on the first error. Execute the "help set" command for
+details.
+
+On Cromix-Plus release 153 and higher, the Shell recognizes the variables:
+
+     #path and #ext
+
+The variable #path should contain a list of directories, separated by colons.
+The Shell will search each directory in turn for the files with the extensions
+stored in the variable #ext. If the variable #path is not defined, the Shell
+will supply its own list of directories which is equivalent to the definition
+
+     path = ":/ram:/bin:/cmd"
+
+with the meaning that the directories will be searched in the following order:
+
+     current  directory
+     /ram     directory
+     /bin     directory
+     /cmd     directory
+
+Within each directory the executable files will be searched according to the
+extension list stored in the #ext variable. The extension list consists of
+individual extensions separated by a colon. The Shell will ignore illegal
+extensions so that the only reason to change the #ext variable is to alter the
+order in which the different extensions are searched. If the #ext variable is
+not defined, the Shell will use its own list which is equivalent to the
+definition:
+
+     ext = "bin:com:cmd"
+
+Use the "help set" command for further information.
+
+Command files can use redirection from the body of the command file. If the
+command is followed by the sequence:
+
+     << label
+
+the lines following the command up to the line starting with:
+
+     %label
+
+will be submitted to the command as its standard input. This means that the
+lines:
+
+     ty << eof
+     Line 1
+     Line 2
+     %eof
+
+are equivalent the the command:
+
+     ty < temp_file
+
+where the file temp_file contains the text:
+
+     Line 1
+     Line 2
+
+In addition, if a line submitted for input has the "/" (backslash) character
+as the last character, this backslash character and the following (optional
+RETURN and) NEWLINE character are discarded.
+
+Options
+
+Most options are needed only when a program is calling a Shell; the -c and -p
+options have no meaning when the Shell is called from the terminal.
+
+The -c option indicates that a full command line is being passed to the Shell
+(the line is not parsed into arguments).
+
+The -p option indicates that the command being passed to the Shell has been
+parsed.
+
+The -q option requests that lines from a command file not be echoed to the
+terminal (STDOUT).
+
+The -z option should be used to start an interactive Shell that is not aborted
+by CNTRL-Z (End-of-File) entered from the terminal. The Shells started by Gtty
+always have this option selected.
+
+The -e option can be used to add a third shell environment file. Shell always
+reads the files "/etc/sh_env" and "../sh_env", in this order. The file defined
+by the -e option is the third evironment file read. Note the subsequent shell
+environment files are superimposed over existing Shell variables.
+
+Examples:
+
+As the value of #err might be a negative number, the "--" sign notifies the
+Echo utility that there are no more options.
+
+     bad_command
+     if #err != -1 echo -- #err error number
+
+A command file:
+
+     command1
+     command2
+     set abort 1
+     command3
+     command4
+     set abort
+     command5
+     command6
+
+is equivalent to the command file:
+
+     command1
+     command2
+     command3; if -err exit #err
+     command4; if -err exit #err
+     command5
+     command6
+

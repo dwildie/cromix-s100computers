@@ -1,0 +1,22 @@
+utility:      CROGEN
+purpose:      This program generates a Cromix-Plus Operating System.
+
+user access:  privileged user
+
+summary:      Crogen pathname [sysdef]
+
+arguments:    pathname of new system file
+              optional system definition file
+
+options:      -d   include system debugger
+
+Description
+
+The Crogen utility generates a new operating system by creating a
+configuration file based on the data in a system-definition file.
+
+The file /gen/sysdef is provided for this purpose. The sysdef file can be used
+as is or with possible modifications. A user's own system-definition file may
+be substituted.
+
+After Crogen creates the configuration file, Link68 generates the system file.

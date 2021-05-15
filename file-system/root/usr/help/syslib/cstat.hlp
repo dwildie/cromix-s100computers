@@ -1,0 +1,133 @@
+function:       cstat
+purpose:        Return status information of an open file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int cstat(channel,statustype,inodebuffer)
+                int channel, statustype; char inodebuffer[128];
+
+                or
+
+                int cstat(channel,statustype)
+                int channel, statustype;
+
+                or
+
+                int cstat(channel,statustype,statustime)
+                int channel, statustype; struct st_time *statustime;
+
+Description
+
+The function cstat extracts various components from the inode identified by
+the channel number. The first two arguments are always the same. The remaining
+arguments depend on statustype:
+
+     cstat(channel,st_all,inodebuffer)
+
+          Copy all of the inode into 128 bytes inodebuffer. Return zero.
+
+     cstat(channel,st_owner)
+
+          Return the owner ID of the file.
+
+     cstat(channel,st_group)
+
+          Return the group ID of the file.
+
+     cstat(channel,st_aowner)
+
+          Return the access mask for the owner.
+
+     cstat(channel,st_agroup)
+
+          Return the access mask for the group.
+
+     cstat(channel,st_aother)
+
+          Return the access mask for the public.
+
+     cstat(channel,st_stext)
+
+          Return the shared text flag.
+
+     cstat(channel,st_ftype)
+
+          Return the file type (is_ordin, is_direct, is_char, is_block,
+          is_pipe).
+
+     cstat(channel,st_size)
+
+          Return the file size in bytes.
+
+     cstat(channel,st_nlinks)
+
+          Return the number of file links.
+
+     cstat(channel,st_inum)
+
+          Return the inode number.
+
+     cstat(channel,st_tcreate,statustime)
+
+          Store the time the file was created into the structure pointed
+          to by statustime. Return zero.
+
+     cstat(channel,st_tmodify,statustime)
+
+          Store the time the file was modified into the structure pointed
+          to by statustime. Return zero.
+
+     cstat(channel,st_taccess,statustime)
+
+          Store the time the file was accessed into the structure pointed
+          to by statustime. Return zero.
+
+     cstat(channel,st_tdumped,statustime)
+
+          Store the time the file was dumped into the structure pointed
+          to by statustime. Return zero.
+
+     cstat(channel,st_devno)
+
+          Return the device number of the device specified by channel.
+          If the channel number does not refer to a device file, zero
+          is returned.
+
+     cstat(channel,st_pdevno)
+
+          Return the device number of the device specified by channel.
+          If the channel number does not refer to a device file zero
+          is returned. If the device number happens to be zero, the
+          device number of the controlling tty (character device) or
+          of the root device (block device) will be returned.
+
+     cstat(channel,st_device)
+
+          Return the device number of the device where the file specified
+          by channel resides.
+
+The access permission returned is build from the values
+
+     ac_read           read permission
+     ac_exec           execute permission
+     ac_writ           write permission
+     ac_apnd           append permission
+
+The device numbers returned are built like this:
+
+     majorno << 8 | minorno
+
+The function returns
+
+     as described above  if successful
+     ERR                 if an error occurred
+
+Common errors:
+
+     _notopen              The channel referenced is not open.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

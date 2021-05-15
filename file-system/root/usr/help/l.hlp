@@ -1,0 +1,44 @@
+utility:      L
+purpose:      This program lists directory or file information in the old
+              Cromix-20 style.
+
+user access:  all users
+
+summary:      l [-adrst] [file-list]
+
+arguments:    optional file or directory pathname(s)
+
+options:      -a   all
+              -d   directory information
+              -r   reverse order
+              -s   summary
+              -t   time modified
+
+Description
+
+The L utility lists directory or file information in alphabetical order.  If
+no pathname is specified, L lists the contents of the current directory. If a
+directory pathname is given, the contents of that directory are listed. If a
+file pathname is given, information about that file is listed.
+
+Options
+
+The -a option lists the names of all files, including invisible files (those
+files whose names begin with a period).
+
+The -d option lists information about the directory, rather than the contents
+of the directory.
+
+The -r option performs the sort specified in reverse order. Thus, an
+alphabetical listing is given in reverse alphabetical order, and a time-date
+listing is listed most recent file first.
+
+The -s option generates a summary of listed files.
+
+The -t option sorts the file list in order of time last modified. This order
+is from oldest to most recent unless the -r option is used.
+
+Notes
+
+This utility is a simple command file, which uses the Ls utility to produce
+the result. Refer to the description of the Ls utility.

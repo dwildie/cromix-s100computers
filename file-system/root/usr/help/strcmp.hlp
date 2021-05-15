@@ -1,0 +1,55 @@
+utility:      STRCMP
+purpose:      This program test for equality between the contents of stdin
+              and a set of strings.
+
+user access:  all users
+
+summary:      strcmp [-efr] [-m #] string(s)
+
+arguments:    one or more strings
+
+options:      -e      exact
+              -f      compare first characters
+              -m #    compare first # characters
+              -r      reverse sense of test
+
+Description
+
+This utility compares the string read from stdin to the set of strings on the
+command line and sets an error return code if none of the strings matches the
+contents of the input string.
+
+The test made by Strcmp is case-insensitive unless the -e option is used.
+Strcmp tests for equality between the strings. To locate text strings embedded
+in the text of a file, use the Match utility.
+
+Options
+
+The -e option forces the match to be case sensitive.
+
+The -r option reverses the sense of Strcmp by setting the error code if a
+match is not made.
+
+The -m option must by followed by a number. The Strcmp utility will check the
+specified number of leading characters.
+
+The -f option checks only the first character of the input string against the
+first character of each of the control strings.
+
+Example
+
+     echo -n "Do you want to shut down the system?"
+     input | strcmp YES OUI SI
+     if -err goto noshutdown
+     kill -2 1
+     %noshutdown
+
+The example above is a typical command file that uses Strcmp and Input. The
+first line sends the string within quotation marks to the standard output. The
+second line uses the Input utility to send the user's response into the pipe
+to be analyzed by the Strcmp utility. The Strcmp then tests for occurrences of
+the strings YES, OUI, or SI. If any of the control strings was entered, the
+system is shut down using the Kill command. If the user did not enter any of
+the control strings, Strcmp sets an error code. The command that follows
+passes control to the label noshutdown. If the user answers no to the
+question, the system is not shut down.

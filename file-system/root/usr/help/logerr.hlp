@@ -1,0 +1,34 @@
+utility:      LOGERR
+purpose:      This program accumulates errors detected and reported by the Ecc
+              program.
+
+user access:  privileged user
+
+summary:      logerr [#]
+
+arguments:    Optional time period in seconds
+
+options:      none
+
+Description
+
+If called without an argument, Logerr displays the contents of the file that
+accumulates errors reported by the Ecc program. If Logerr is called with an
+argument, the argument defines how often the Ecc program should scan the
+error-correction hardware and append any errors to a file for later display by
+Logerr.
+
+Example:
+
+     system[1] logerr 30
+
+The Ecc program will scan the error-correcting hardware every 30 seconds.
+
+The following example is a typical display when Logerr is called without
+argument.
+
+     system[1] logerr
+     *ECC started Jul-21-1984 16:45:22
+      Single bit error - MCU 1, Addr Ocxxxx, Row 3, Column 18
+      Single bit error - MCU 1, Addr Odxxxx, Row 1, Column 18
+

@@ -1,0 +1,22 @@
+utility:      GROUP
+purpose:      This program allows users to change their groups.
+
+user access:  all users
+
+summary:      group [group name]
+
+arguments:    new group name
+
+options:      none
+
+Description
+
+The Group utility examines the /etc/group file for a named group.  If this
+group is not found, an error message is displayed, and execution of the
+utility is aborted.
+
+If the named group is found and if there is a password associated with it, the
+Group utility prompts for the password. If the user responds with the correct
+password or if there is no password associated with the group, a new shell is
+formed in which the user belongs to the named group. Upon exiting from the
+newly created shell, the user's previous status is reinstated.

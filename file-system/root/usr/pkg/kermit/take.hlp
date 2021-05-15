@@ -1,0 +1,10 @@
+
+TAKE, T - Execute a file of Kermit commands.
+
+		Usage:
+
+		TAKE <files>
+
+Use this command to execute a Kermit command file.  The 'kermit.ini' files
+are read automatically this way when Kermit starts up, typically to define
+useful macros.  See also PUSH.

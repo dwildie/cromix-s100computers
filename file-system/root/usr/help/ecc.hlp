@@ -1,0 +1,39 @@
+utility:      ECC
+purpose:      This program manipulates the error-correcting memory controllers.
+
+user access:  privileged user
+
+summary:      ecc [-e] [-t #] [ON] [OFF]
+
+arguments:    Optional keyword ON or OFF
+
+options:      -e    examine memory controller
+              -t #  reexamine every # seconds
+
+Description
+
+The Ecc program can enable, disable, or examine the error-correcting memory
+controllers. When called without options or arguments, Ecc reports the
+controller status (enabled or disabled).
+
+If Ecc is called with the -e option, it will examine the memory controllers,
+report any recorded errors to the standard output, and clear the error status.
+If Ecc is called with the -t option, the memory controllers will be scanned
+periodically as defined by the numerical argument following -t.
+
+Options
+
+The -e option requests the Ecc program to scan the controllers and report
+errors.
+
+The -t option, followed by a number, defines the number of seconds between two
+consecutive scans.
+
+Example:
+
+     system[1] ecc on
+     system[2] ecc -t 30 &
+
+This sequence of commands enables the error-detection hardware and then scans
+it every 30 second as a detached process. The errors will be reported on
+standard output.

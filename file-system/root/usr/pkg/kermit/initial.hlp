@@ -1,0 +1,9 @@
+
+INITIAL, INIT - Exchange protocol parameters.
+
+		Usage:
+
+		INITIAL
+
+Use the INITIAL command to exchange parameters between the local Kermit and
+the server.  This might facilitate subsequent communication.

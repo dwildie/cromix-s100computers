@@ -1,0 +1,13 @@
+
+SEND, S - Send a file.
+
+		Usage:
+
+		SEND <filelist>
+		SEND
+
+Use the SEND command to send a number of files to another KERMIT.  If no
+arguments are given, Kermit will ask for the filename and the name to send
+it under.  A wildcard specification may be given.  The receiving Kermit
+must be prepared to receive the file(s) either just before or very soon after 
+the Send is issued.

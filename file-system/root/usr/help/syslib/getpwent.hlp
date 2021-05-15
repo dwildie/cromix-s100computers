@@ -1,0 +1,45 @@
+function:       getpwent, getpwuid, getpwnam, setpwent, endpwent
+purpose:        read and decode password file.
+
+user access:    all users
+
+include files:  <pwd.h>
+
+synopsis:       struct passwd *getpwent()
+
+                struct passwd *getpwuid(uid)
+                int uid;
+
+                struct passwd *getpwnam(name)
+                char *name;
+
+                void setpwent();
+
+                void endpwent();
+
+Description
+
+Getpwent, getpwuid, and getpwnam each returns a pointer to an object with the
+passwd structure (see /usr/include/pwd.h).
+
+Getpwent when first called returns a pointer to the first passwd structure in
+the file; thereafter it returns a pointer to the next structure in the passwd
+file; so successive calls can be used to search the entire file.
+
+The passwd file is kept open and can be rewound by the setpwent function, or
+closed by the endpwent function.
+
+Getpwuid searches from the beginning of the file until a numeric user id
+matching uid is found, and returns the pointer to the particular structure in
+which it was found.
+
+Getpwnam searches from the beginning of the file until a login name matching
+name is found, and returns the pointer to the particular structure in which it
+was found.
+
+The functions returning pointers return a NULL pointer if the entry is not
+found.
+
+Note
+
+All data is kept in static memory and each call will overwrite previous data.

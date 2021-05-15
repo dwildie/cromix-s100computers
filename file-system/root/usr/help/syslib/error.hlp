@@ -1,0 +1,25 @@
+function:       error
+purpose:        Display Cromix-Plus error message.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int error(channel)
+                int channel;
+
+Description
+
+Error displays the error message defined by the Cromix system for the value of
+errno, which was loaded the last time a Cromix call returned an error.  If the
+error function itself generates an error, the error number will not be saved
+in errno.
+
+The function error is part of the clib.obj library.
+
+The function returns:
+
+     0           if successful
+     ERR         if error
+

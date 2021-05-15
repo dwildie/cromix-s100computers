@@ -1,0 +1,9 @@
+
+REMOTE, REM - Send a command to remote server.
+
+		Usage:
+
+		REMOTE <command-list>
+
+The REMOTE command sends to the server a command or commands in its own 
+interactive command language.

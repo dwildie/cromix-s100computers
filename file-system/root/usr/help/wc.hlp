@@ -1,0 +1,30 @@
+utility:      WC (Word Count)
+purpose:      This program counts lines words and characters.
+
+user access:  all users
+
+summary:      ls [-lwc] [file-list]
+
+arguments:    optional list of files
+
+options:      -l   count lines
+              -w   count words
+              -c   count characters
+
+Description
+
+The Wc utility counts lines, words, and characters in the named files, or in
+the standard input if no names appear. It also keeps a total count for all
+named files. A word is a maximal string of characters delimited by white space
+characters.
+
+Options
+
+The options can be used in any combination. Calling Wc with no options is
+equivalent to calling it with all options.
+
+The -l option count lines.
+
+The -w option counts words.
+
+The -c option counts characters.

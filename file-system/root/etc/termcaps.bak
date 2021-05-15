@@ -1,0 +1,188 @@
+# Termcaps Source File
+#
+# Cromemco Inc.
+# Jan 06, 1987
+#
+
+
+# Any terminal, no features are assumed
+#
+C0|dumb|Any terminal:
+
+
+# Cromemco 3101 Terminal (minimal features required by CE)
+#
+C1|3101|Cromemco 3101 Terminal:\
+	:co#80:li#24:\
+	:ho=\EH:up=\EA:do=\EB:nd=\EC:nb=^H:\
+	:cm=2\EF%+ %+ :\
+	:cl=2\EE:cd=2\EJ:ce=2\EK:\
+	:dc=\EP:\
+	:am:\
+	:kl=^A:kr=^D:ku=^W:kd=^X:\
+	:kR=^R:kI=^I:kE=\E:
+
+
+# Group of terminals: 3102, C-10, C-05
+#
+# Cromemco 3102 Terminal
+#
+C2|3102|Cromemco 3102 Terminal:\
+	:co#80:li#24:\
+	:ho=\EH:up=\EA:do=\EB:nd=\EC:nb=^H:\
+	:dl=\EM:al=\EL:\
+	:cm=\EF%+ %+ :\
+	:cl=\EE:cd=\EJ:ce=\EK:\
+	:dc=\EP:ic=\EQ \E@\ED:\
+	:am:xs:\
+	:Ic=\Ea \E@\ED:im=\EQ:ei=\E@:\
+	:pd=\E`:pi=\Ea:pe=\E@:\
+	:wi=\E\^%+ %+ :we=^]:\
+	:ct=\EZ:\
+	:so=\EdP:se=\Ed@:rs=\Ee:\
+	:sb=\EdH:su=\Ed`:\
+	:kR=^R:kI=^I:kE=\E:\
+	:kl=^H:kr=^L:ku=^K:kd=^J:\
+	:is=\E.9:
+
+# Cromemco C-10 Terminal
+#
+C3|C-10|Cromemco C-10 Terminal:\
+	:ba:\
+	:wo=\E.L:wf=\E.J:\
+	:oc=\Er:fc=\Eq:\
+	:tc=3102:
+
+# Cromemco C-05 Terminal
+#
+C4|C-05|Cromemco C-05 Terminal:\
+	:il=\E.O:ir=\E.P:\
+	:sq=\E.o:sw=\E.W%+0:sd=\E.U%+0:\
+	:tc=C-10:
+
+# Cromemco C-15  -- Ampex A219 Terminal
+#
+C5|C-15|Ampex A219 Terminal:\
+	:co#80:li#24:\
+	:ho=\E[H:up=\E[A:do=\E[B:nd=\E[C:nb=\E[D:\
+	:dl=\E[M:al=\E[L:\
+	:cm=\E[%i%2;%2H:\
+	:cl=\E[2J\E[H:cd=\E[J:ce=\E[K:\
+	:dc=\E[P:ic=\EO:\
+	:am:\
+	:im=\E[4h:ei=\E[4l:\
+	:oc=\E[3;1z:fc=\E[3;4z:\
+	:so=\E[7m:se=\E[m:\
+	:kR=^R:kI=^I:kE=\E[7~:\
+	:kl=\E[D:kr=\E[C:ku=\E[A:kd=\E[B:\
+	:is=\EP1;1|1/1B5B377E\E\\:
+
+C6|C-20|IBM PC VT100 Terminal Emulator:\
+	:co#80:li#24:\
+	:up=\E[1A:do=\E[1B:nd=\E[1C:nb=\E[1D:\
+	:dl=1\E[1M:al=1\E[1L:\
+	:cm=\E[%2;%2H:\
+	:cl=\E[2J:cd=\E[0J:ce=\E[0K:\
+	:dc=\E[1P:ic=\E[1@:\
+	:so=\E[7m:se=\E[0m:\
+	:ho=\E[0;0H:\
+	:kR=^R:kI=^I:kE=\E:\
+	:kl=^H:kr=^L:ku=^K:kd=^J:
+
+
+# Group T925, T912
+#
+# TeleVideo TV 925 Terminal
+#
+T2|T925|TeleVideo 925 Terminal:\
+	:co#80:li#24:\
+	:ho=^^:up=^K:do=^V:nd=^L:nb=^H:\
+	:dl=\ER:al=\EE:\
+	:cm=\E=%+ %+ :\
+	:cl=\E+:cd=\EY:ce=\ET:\
+	:dc=\EW:ic=\EQ:\
+	:kR=^R:kI=^I:kE=\E:\
+	:kl=^H:kr=^L:ku=^K:kd=^V:
+
+# TeleVideo TV 912 Terminal
+#
+T1|T912|TeleVideo 912 Terminal:\
+	:so=^H\Ej:se=\Ek:\
+	:kd=\n:\
+	:tc=T925:
+
+
+# Group M100, Z100, V132
+#
+# Apple Mac-Intosh VT100 Terminal Emulator
+#
+M1|M100|Mac-Term VT 100 terminal emulator:\
+	:co#80:li#24:\
+	:up=\E[1A:do=\E[1B:nd=\E[1C:nb=\E[1D:\
+	:dl=1\E[1M:al=1\E[1L:\
+	:cm=\E[%i%2;%2H:\
+	:cl=\E[2J:cd=\E[J:ce=\E[K:\
+	:dc=\E[1P:\
+	:so=\E[7m:se=\E[m:\
+	:kR=^R:kI=^I:kE=\E:\
+	:kl=^A:kr=^D:ku=\E[A:kd=\E[B:
+
+# Zenith Z-19 VT100 Terminal Emulator
+#
+Z1|Z100|Zenith VT 100 terminal emulator:\
+	:ic=\E[1@:\
+	:im=\E[4h:ei=\E[4l:\
+	:tc=M100:
+
+# Ampex VT100 Terminal Emulator:\
+#
+V2|V132|AMPEX VT 100 terminal emulator:\
+	:co#132:\
+	:oc=\E[>4h:fc=\E[>5h:\
+	:kl=\E[D:kr=\E[C:ku=\E[A:kd=\E[B:\
+	:tc=Z100:
+
+
+# Zenith Z-29 Terminal
+#
+Z2|Z-29|Zenith Z-29 Terminal:\
+	:co#80:li#24:\
+	:ho=^^:up=\EA:do=\EB:nd=\EC:nb=\ED:\
+	:dl=\EM:al=\EL:\
+	:cm=\EY%+ %+ :\
+	:cl=\EE:cd=\EJ:ce=\EK:\
+	:dc=\EN:ic=\E@ \EO\ED:\
+	:im=\E@:ei=\EO:\
+	:oc=\Ey5:fc=\Ex5:\
+	:so=\Ep:se=\Eq:\
+	:kR=^R:kI=^I:kE=\E:\
+	:kl=^A:kr=^D:ku=^W:kd=^X:
+
+
+# Wyse group
+#
+# Wyse 85 Terminal
+#
+W1|WY85|Wyse 85 Terminal:\
+	:co#80:li#25:\
+	:ho=\E[H:up=\E[A:do=\E[B:nd=\E[C:nb=\E[D:\
+	:dl=\E[M:al=\E[L:\
+	:cm=\E[%i%2;%2H:\
+	:cl=\E[2J\E[H:cd=\E[J:ce=\E[K:\
+	:dc=\E[P:ic=\E[@:\
+	:am:\
+	:im=\E[4h:ei=\E[4l:\
+	:oc=\E[?25h:fc=\E[?25l:\
+	:so=\E[7m:se=\E[m:\
+	:su=\E[4m:sb=\E[1m:\
+	:mo=\E[3h:mf=\E[3l\E[4D\E[4P:mt:\
+	:kR=^R:kI=^I:kE=\E[23~:\
+	:kl=\E[D:kr=\E[C:ku=\E[A:kd=\E[B:\
+	:is=\EP1;1|1/1B5B377E\E\\:
+
+# Wyse 85 Terminal/132 character
+#
+W2|WY86|Wyse 85 Terminal:\
+	:co#132:\
+	:tc=WY85:
+

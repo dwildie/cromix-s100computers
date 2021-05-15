@@ -1,0 +1,23 @@
+Shell:        SYNCHRONIZE or SYNC
+command:      This program provides a one-time flush of system buffers.
+
+user access:  all users
+
+summary:      sync
+
+arguments:    none
+
+options:      none
+
+Description
+
+System buffers should be occasionally written to the disk to prevent a loss of
+data in case of system failure. System buffers are written to the disk:
+
+     - at shutdown
+     - at unmount (unmounted device only)
+     - whenever a user logs out
+     - whenever the system is idle for more than four seconds
+     - whenever the flush utility (if it is running) says so
+     - whenever the Sync command is issued
+

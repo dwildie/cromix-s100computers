@@ -1,0 +1,72 @@
+utility:      CRONTAB
+purpose:      This program lists, removes, and changes the
+              crontab file for the user.
+
+user access:  all users
+
+summary:      crontab [-lr] [crontab-file]
+
+arguments:    optional user crontab file
+
+options       -l     list current user crontab file
+              -r     remove current user crontab
+
+Description
+
+The Crontab utility copies the specified file, or standard input if no file is
+specified, into a directory that holds all users' crontabs.  The -r option
+will remove a user's crontab from the crontab directory.  Crontab -l will list
+the crontab file for the invoking user.
+
+A user is permitted to use the Crontab utility if his name appears in the file
+/usr/cron/cron.allow. If that file does not exist, the file
+/usr/cron/cron.deny is checked to determine if the user should be denied
+access to the Crontab utility. If neither file exists, only a privileged user
+can use the Crontab utility.
+
+A crontab file consists of lines of six fields each. The fields are separated
+by spaces or tabs. The first five fields are integer patterns that specify the
+following:
+
+     minute (0-59)
+     hour (0-23)
+     day of the month (1-31)
+     month of the year (1-12)
+     day of the week (0-6 with 0=Sunday)
+
+Each of these patterns may be an asterisk (meaning all legal values), or a
+list of elements separated by commas. An element is either a number, or two
+numbers separated by a minus sign (meaning an inclusive range).
+
+The following examples of fields refer to the hours field. The other four
+fields are built according to the same rules:
+
+     *                   any hour
+     9,17                at 9 AM and 5 PM
+     9-17                any working hour
+     18-8                except working hours !
+     0,4,8,12,16,20      every fourth hour starting at midnight
+
+If any of the five time fields is illegal, the command will never execute.
+
+The sixth field of a line in a crontab file is a string that is executed at
+the times that match all listed conditions. A percent character in this field
+(unless escaped by "\") is translated to a newline character. Only the first
+line (up to the % or end of line) of the command field is executed by Shell.
+The other lines are made available to the command as standard input.
+
+If the crontab line is terminated by the "\" character, another line is read
+and appended to the previous one, up to 2048 characters.
+
+The Shell command is invoked from the user's home directory. The standard
+input channel is /dev/null unless the % character is used to provide input
+lines. The standard output and standard error are redirected to the
+controlling tty device as determined from the /etc/who file. If the /etc/who
+entry is not found, the standard output and standard error are redirected to
+/dev/null.
+
+Users can redirect their input and/or their output elsewhere. In particular,
+the standard output and/or standard error can be piped into the Mail utility.
+
+
+

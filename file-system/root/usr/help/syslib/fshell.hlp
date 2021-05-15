@@ -1,0 +1,88 @@
+function:       fshell
+purpose:        Fork a Shell process.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int fshell(argv,sigmask,sigvalues)
+                char *argv[]; int sigmask, sigvalues;
+
+Description
+
+The fshell call begins execution of a shell and returns control to the calling
+program. The call is similar to the shell call, except that a new process is
+created.
+
+The values of sigmask and sigvalues define how the child process should
+respond to signals.
+
+To each signal number there corresponds a bit in the sigmask and the
+sigvalues. The mask for signal sigxxx is defined as
+
+     1 << (sigxxx-1)
+
+If a bit in sigmask is zero, the corresponding bit in sigvalues is immaterial,
+and the child process will react on signals in the same way as the parent
+process:
+
+     parent         child
+
+     abort          abort
+     ignore         ignore
+     trap           abort
+
+If a bit in sigmask is nonzero, the child process will react to a signal as
+defined by the corresponding bit in sigvalues:
+
+     bit in sigvalues         reaction by the child
+
+     0                        abort
+     1                        ignore
+
+Note that the child process may issue the signal system call to modify the
+reaction to the individual signals.
+
+In every case argv[0] should point to the string "shell" (or "sh").
+
+If you want to execute a program, then
+
+     argv[1] --> "-p"
+     argv[2] --> full program name
+     argv[3] --> arg[1] of the program
+     argv[4] --> arg[2] of the program
+     ................................
+     Last pointer should be zero
+
+If you want to execute a command line, then
+
+     argv[1] -->  "-c"
+     argv[2] -->  command line
+     argv[3]      0
+
+If you want to execute a command file, then
+
+     argv[1] -->  command file name
+     argv[2]      0
+
+or
+
+     argv[1] -->  "-q"
+     argv[2] -->  command file name
+     argv[3]      0
+
+In the first form, the commands from the command file will be echoed. In the
+second form, they will not be echoed.
+
+The function returns:
+
+     child process id         if successful
+     ERR                      if error
+
+Common errors:
+
+     _nomemory             There is not enough memory to fork another Shell.
+     _badaddress           The address passed to the system call does not
+                           belong to the user's address space.
+

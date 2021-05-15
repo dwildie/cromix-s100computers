@@ -1,0 +1,65 @@
+function:       create
+purpose:        Create and open a file.
+
+user access:    all users
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int create(filename,accessmode,accessmask)
+                char *filename; int accessmode, accessmask;
+
+Description
+
+The create call creates a new file and opens it for the specified access.
+
+Accessmode defines how the created file will be opened. The user may specify
+one of the nonexclusive modes
+
+     op_read             read only
+     op_write            write only
+     op_rdwr             read/write
+     op_append           append only
+
+or one of the exclusive modes
+
+     op_xread            read only
+     op_xwrite           write only
+     op_xrdwr            read/write
+     op_xappend          append only
+
+If a nonexclusive mode is selected the accessmask is not used. If an exclusive
+mode is selected, the bits op_read, op_write, op_rdwr, op_append in the
+accessmask are set to prevent such an access from other users.
+
+Example:
+
+To create a file "some" with exclusive read/write permission, use the call
+
+     create ("some", op_xrdwr, 1<<op_write | 1<<op_rdwr | 1<<op_append)
+
+The current process will create the file and open it for read/write. Until the
+file is closed, other processes may open this file only for read.
+
+Two additional values may be "ORed" into accessmode to tell what should happen
+if the file to be created already exists:
+
+     op_truncf           delete existing data
+     op_condf            return error if file exists
+
+If the file was new, it will have the default access privileges (defined at
+crogen time). The default is rewa.re.re (which means that the owner has all
+permissions, group and public permissions are for read and execute).  The
+function returns:
+
+     channel number of the open file           if successful
+     ERR                                       if error
+
+Common errors:
+
+     _filtable        Too many files were open in the system.
+     _badname         Illegal pathname
+     _diraccess       The user lacks appropriate access to a directory
+     _badaddress      The address passed to the system call does not
+                      belong to the user's address space.
+

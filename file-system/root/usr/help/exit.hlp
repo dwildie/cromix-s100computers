@@ -1,0 +1,66 @@
+Shell
+command:      EXIT or EX
+purpose:      This command exits from a Shell.
+
+user access:  all users
+
+summary:      ex [return-value]
+
+arguments:    Optional value returned to the parent process
+
+options:      none
+
+Description
+
+The Exit command exits from a shell. If no higher level shell is active, the
+Cromix-Plus Operating System logs the user off the system. If there is a
+higher level shell active, it receives from the exiting shell a return value
+as defined in the following paragraph.
+
+If the Exit command is used without an argument (or if a command file runs to
+end-of-file), the return status will be -1 if an error such as a syntax error
+was detected anywhere in the command file.  If there was no error detected,
+the return value will be the value returned by the last executed command. An
+Exit command with an argument (a value) can be used to return that value.
+
+Return values are used by the "if -err" command. Each shell keeps track of the
+value returned by the last command, and this value is used to determine the
+truth of the "if -err" condition. Any nonzero value indicates an error
+condition.
+
+Example:
+
+Here is the contents of a possible command file to compile (and, optionally,
+link) a number of C source files. A user-defined -l option requests linking.
+The command file will abort if any step returns an error.
+
+     if "#1" = "-l" shift               % Get rid of -l
+     if "#1" = "" goto huh              % If no arguments
+
+     %compile                           % Compile all source files
+     if "#1" = "" goto endcompile       % If none is left
+     c #1                               % C compiler
+     if -err goto err                   % If errors in compilation
+     code #1.i #1.obj                   % Generate code
+     if -err goto err                   % If errors in code generation
+     del #1.i #1.scr >* /dev/null       % Delete scratch files
+     shift                              % Next argument
+     goto compile
+     %endcompile
+
+     rewind
+     if "#1" != "-l" exit               % No linking requested
+     shift                              % Get rid of -l
+     crolinker #* /usr/lib/clib /usr/lib/paslib
+     exit
+
+     %err                               % In case of errors
+      del #1.i #1.scr >* /dev/null      % Delete scratch files
+      exit 1                            % Return error
+
+     %huh                               % If no arguments
+      echo "Huh?"
+      exit 1                            % Return error
+
+If both "exit 1" commands were replaced by "exit" command, the return value
+would be the value returned by the last command (Delete or Echo).

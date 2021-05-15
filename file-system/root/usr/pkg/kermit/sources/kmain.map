@@ -1,0 +1,507 @@
+MC68000 Object Code Linker  16-Apr-87
+
+File: kmain.bin
+
+000008A8    0008A8 + OVERFL00    %%IOFIB
+00000BE2    000BE2 + OVERFL00    %A_2_D
+00000ACA    000ACA + OVERFL00    %A_2_F
+00000836    000836 + OVERFL00    %CNTARGS
+00000D3E    000D3E + OVERFL00    %D_2_A
+00001A00    001A00 + OVERFL00    %D_2_I
+000015EA    0015EA + OVERFL00    %D_ADD
+00001766    001766 + OVERFL00    %D_CMP
+00001C36    001C36 + OVERFL00    %D_DIV
+00001B52    001B52 + OVERFL00    %D_EXTE
+000018D8    0018D8 + OVERFL00    %D_MUL
+00001B82    001B82 + OVERFL00    %D_NORM
+00001BAC    001BAC + OVERFL00    %D_NRCP
+00001BB6    001BB6 + OVERFL00    %D_RCP
+000015E4    0015E4 + OVERFL00    %D_SUB
+00001BE4    001BE4 + OVERFL00    %D_USEL
+0000150C    00150C + OVERFL00    %F_ADD
+0000180C    00180C + OVERFL00    %F_DIV
+00002038    002038 + OVERFL00    %F_MUL
+00001E70    001E70 + OVERFL00    %F_PACK
+00001EC4    001EC4 + OVERFL00    %F_RCP
+00001DF6    001DF6 + OVERFL00    %F_UNPK
+00000AB2    000AB2 + OVERFL00    %GETGADD
+00002010    002010 + OVERFL00    %G_INT
+00001FCE    001FCE + OVERFL00    %G_NINT
+00000A1C    000A1C + OVERFL00    %INITFIB
+000008F6    0008F6 + OVERFL00    %INITGLB
+000019DA    0019DA + OVERFL00    %I_2_D
+00001F04    001F04 + OVERFL00    %I_2_F
+0000142A    00142A + OVERFL00    %I_DIV4
+0000141E    00141E + OVERFL00    %I_MOD4
+000013EE    0013EE + OVERFL00    %I_MUL4
+00001F4A    001F4A + OVERFL00    %I_PACK
+00001F38    001F38 + OVERFL00    %I_UNPK
+00009FFA    007BD0                 %P860421
+0000A402    007FD8                 %TOUCH
+000014BE    0014BE + OVERFL00    %U_DIV4
+00001E42    001E42 + OVERFL00    %U_LOAD
+000014C6    0014C6 + OVERFL00    %U_MOD4
+00001DE4    001DE4 + OVERFL00    %U_STOR
+00001366    001366 + OVERFL00    %_CHKSTK
+00002392    002392 + OVERFL00    %_DISNAN
+000023BA    0023BA + OVERFL00    %_DISNUM
+000021A0    0021A0 + OVERFL00    %_DPWR10
+0000241A    00241A + OVERFL00    %_DSGNBT
+0000A08A    007C60                 %_END
+0000A3D2    007FA8                 %_HALTF
+000010BE    0010BE + OVERFL00    %_MEMAV
+0000A3F8    007FCE                 %_NO_ACP
+0000A32A    007F00                 %_PANIC
+0000A368    007F3E                 %_PRLOC
+000020D6    0020D6 + OVERFL00    %_PWR10
+00009F98    007B6E                 %c_d_2_a
+00009E38    007A0E                 %roundup
+000007FE    0007FE + OVERFL00    %savereg
+00009730    007306                 _exit
+00009738    00730E                 _filbuf
+0000983E    007414                 _flsbuf
+00009546    00711C                 alarm
+00009234    006E0A                 atoi
+00004658    00222E                 bufemp
+00004386    001F5C                 bufill
+0000429A    001E70                 cinchr
+0000A0B6    007C8C                 close
+00005076    002C4C                 closefilter
+00005368    002F3E                 connect
+0000A0D2    007CA8                 creat
+00009466    00703C                 cstat
+0000899C    006572                 cstring
+00008D3C    006912                 deffind
+00008B7E    006754                 defopt
+00008D88    00695E                 defscan
+00009334    006F0A                 delete
+000081C2    005D98                 dismac
+0000820A    005DE0                 display
+0000816C    005D42                 disset
+00003B5C    001732                 dopar
+00004592    002168                 enter
+00004CB0    002886                 error
+00008FF4    006BCA                 execl
+00005B3C    003712                 execp
+00009EF0    007AC6                 exit
+000099EC    0075C2                 fclose
+000095F4    0071CA                 fexec
+00009960    007536                 fflush
+00004B22    0026F8                 flushinput
+00009B22    0076F8                 fopen
+00009D4E    007924                 fprintf
+00009C08    0077DE                 fputs
+000011CE    0011CE + OVERFL00    free
+00009A62    007638                 freopen
+000095B8    00718E                 fshell
+000093D6    006FAC                 fstat
+00005D72    003948                 get
+00005E94    003A6A                 getfiles
+00009358    006F2E                 getmode
+0000508C    002C62                 getnames
+00005614    0031EA                 getnc
+00009C74    00784A                 gets
+00006266    003E3C                 getword
+0000482A    002400                 gnxtfl
+00000000    000000 + OVERFL00    gprintf
+00009DD8    0079AE                 gputc
+00006918    0044EE                 help
+00006994    00456A                 helpout
+000042C0    001E96                 inchr
+00009644    00721A                 indirect
+00004ECA    002AA0                 init
+0000633A    003F10                 inter
+00009164    006D3A                 isconsole
+00005C02    0037D8                 isend
+000094F4    0070CA                 kill
+00006A7E    004654                 lgets
+0000A1F6    007DCC                 lseek
+0000242A    000000                 main
+000010DA    0010DA + OVERFL00    malloc
+000052D4    002EAA                 match
+000067D4    0043AA                 nshell
+0000A22E    007E04                 open
+00006538    00410E                 parse
+00004D44    00291A                 prerrpkt
+00009CE6    0078BC                 printf
+00004B9E    002774                 printmsg
+00009B78    00774E                 puts
+0000381C    0013F2                 rdata
+0000A282    007E58                 read
+00004268    001E3E                 recbreak
+00006D7A    004950                 receive
+0000318A    000D60                 recsw
+00004228    001DFE                 rectime
+00003504    0010DA                 rfile
+000033B4    000F8A                 rinit
+00003FAA    001B80                 rpack
+000049EE    0025C4                 rpar
+00008966    00653C                 rscan
+00005642    003218                 rserver
+00005A5A    003630                 rservsw
+00002BAA    000780                 sattr
+0000A2D8    007EAE                 savereg
+00003076    000C4C                 sbreak
+000064C8    00409E                 scan
+00002D48    00091E                 sdata
+00006BF2    0047C8                 send
+00006004    003BDA                 sendgen
+00006128    003CFE                 sendrem
+000024BC    000092                 sendsw
+00002EE8    000ABE                 seof
+00006E32    004A08                 set
+00009310    006EE6                 setdir
+00005068    002C3E                 setfilter
+0000938E    006F64                 setmode
+00006ECA    004AA0                 setopt
+00002926    0004FC                 sfile
+00004BFE    0027D4                 shellmsg
+000080F6    005CCC                 show
+00008DE4    0069BA                 showdef
+00009676    00724C                 signal
+0000277C    000352                 sinit
+0000951E    0070F4                 sleep
+00003C36    00180C                 spack
+00004954    00252A                 spar
+00009DB0    007986                 sprintf
+000089F2    0065C8                 srshow
+000090B8    006C8E                 stats
+0000929A    006E70                 strcat
+000091C8    006D9E                 strchr
+000091F8    006DCE                 strcmp
+00009F70    007B46                 strcpy
+000092E0    006EB6                 strlen
+00009E8A    007A60                 syserr
+00008A94    00666A                 take
+00008AEE    0066C4                 takefile
+00008EEA    006AC0                 transmit
+00004D6C    002942                 ttbin
+00004E54    002A2A                 ttres
+0000956A    007140                 wait
+000048B8    00248E                 wopen
+0000A2B2    007E88                 write
+00003EC8    001A9E                 writef
+
+Memory map for segment 'OVERFL00'
+
+00000000    000000 + OVERFL00    gprintf
+000007FE    0007FE + OVERFL00    %savereg
+00000836    000836 + OVERFL00    %CNTARGS
+000008A8    0008A8 + OVERFL00    %%IOFIB
+000008F6    0008F6 + OVERFL00    %INITGLB
+00000A1C    000A1C + OVERFL00    %INITFIB
+00000AB2    000AB2 + OVERFL00    %GETGADD
+00000ACA    000ACA + OVERFL00    %A_2_F
+00000BE2    000BE2 + OVERFL00    %A_2_D
+00000D3E    000D3E + OVERFL00    %D_2_A
+000010BE    0010BE + OVERFL00    %_MEMAV
+000010DA    0010DA + OVERFL00    malloc
+000011CE    0011CE + OVERFL00    free
+00001366    001366 + OVERFL00    %_CHKSTK
+000013EE    0013EE + OVERFL00    %I_MUL4
+0000141E    00141E + OVERFL00    %I_MOD4
+0000142A    00142A + OVERFL00    %I_DIV4
+000014BE    0014BE + OVERFL00    %U_DIV4
+000014C6    0014C6 + OVERFL00    %U_MOD4
+0000150C    00150C + OVERFL00    %F_ADD
+000015E4    0015E4 + OVERFL00    %D_SUB
+000015EA    0015EA + OVERFL00    %D_ADD
+00001766    001766 + OVERFL00    %D_CMP
+0000180C    00180C + OVERFL00    %F_DIV
+000018D8    0018D8 + OVERFL00    %D_MUL
+000019DA    0019DA + OVERFL00    %I_2_D
+00001A00    001A00 + OVERFL00    %D_2_I
+00001B52    001B52 + OVERFL00    %D_EXTE
+00001B82    001B82 + OVERFL00    %D_NORM
+00001BAC    001BAC + OVERFL00    %D_NRCP
+00001BB6    001BB6 + OVERFL00    %D_RCP
+00001BE4    001BE4 + OVERFL00    %D_USEL
+00001C36    001C36 + OVERFL00    %D_DIV
+00001DE4    001DE4 + OVERFL00    %U_STOR
+00001DF6    001DF6 + OVERFL00    %F_UNPK
+00001E42    001E42 + OVERFL00    %U_LOAD
+00001E70    001E70 + OVERFL00    %F_PACK
+00001EC4    001EC4 + OVERFL00    %F_RCP
+00001F04    001F04 + OVERFL00    %I_2_F
+00001F38    001F38 + OVERFL00    %I_UNPK
+00001F4A    001F4A + OVERFL00    %I_PACK
+00001FCE    001FCE + OVERFL00    %G_NINT
+00002010    002010 + OVERFL00    %G_INT
+00002038    002038 + OVERFL00    %F_MUL
+000020D6    0020D6 + OVERFL00    %_PWR10
+000021A0    0021A0 + OVERFL00    %_DPWR10
+00002392    002392 + OVERFL00    %_DISNAN
+000023BA    0023BA + OVERFL00    %_DISNUM
+0000241A    00241A + OVERFL00    %_DSGNBT
+
+
+Memory map for segment '        '
+
+0000242A    000000                 main
+000024BC    000092                 sendsw
+0000277C    000352                 sinit
+00002926    0004FC                 sfile
+00002BAA    000780                 sattr
+00002D48    00091E                 sdata
+00002EE8    000ABE                 seof
+00003076    000C4C                 sbreak
+0000318A    000D60                 recsw
+000033B4    000F8A                 rinit
+00003504    0010DA                 rfile
+0000381C    0013F2                 rdata
+00003B5C    001732                 dopar
+00003C36    00180C                 spack
+00003EC8    001A9E                 writef
+00003FAA    001B80                 rpack
+00004228    001DFE                 rectime
+00004268    001E3E                 recbreak
+0000429A    001E70                 cinchr
+000042C0    001E96                 inchr
+00004386    001F5C                 bufill
+00004592    002168                 enter
+00004658    00222E                 bufemp
+0000482A    002400                 gnxtfl
+000048B8    00248E                 wopen
+00004954    00252A                 spar
+000049EE    0025C4                 rpar
+00004B22    0026F8                 flushinput
+00004B9E    002774                 printmsg
+00004BFE    0027D4                 shellmsg
+00004CB0    002886                 error
+00004D44    00291A                 prerrpkt
+00004D6C    002942                 ttbin
+00004E54    002A2A                 ttres
+00004ECA    002AA0                 init
+00005068    002C3E                 setfilter
+00005076    002C4C                 closefilter
+0000508C    002C62                 getnames
+000052D4    002EAA                 match
+00005368    002F3E                 connect
+00005614    0031EA                 getnc
+00005642    003218                 rserver
+00005A5A    003630                 rservsw
+00005B3C    003712                 execp
+00005C02    0037D8                 isend
+00005D72    003948                 get
+00005E94    003A6A                 getfiles
+00006004    003BDA                 sendgen
+00006128    003CFE                 sendrem
+00006266    003E3C                 getword
+0000633A    003F10                 inter
+000064C8    00409E                 scan
+00006538    00410E                 parse
+000067D4    0043AA                 nshell
+00006918    0044EE                 help
+00006994    00456A                 helpout
+00006A7E    004654                 lgets
+00006BF2    0047C8                 send
+00006D7A    004950                 receive
+00006E32    004A08                 set
+00006ECA    004AA0                 setopt
+000080F6    005CCC                 show
+0000816C    005D42                 disset
+000081C2    005D98                 dismac
+0000820A    005DE0                 display
+00008966    00653C                 rscan
+0000899C    006572                 cstring
+000089F2    0065C8                 srshow
+00008A94    00666A                 take
+00008AEE    0066C4                 takefile
+00008B7E    006754                 defopt
+00008D3C    006912                 deffind
+00008D88    00695E                 defscan
+00008DE4    0069BA                 showdef
+00008EEA    006AC0                 transmit
+00008FF4    006BCA                 execl
+000090B8    006C8E                 stats
+00009164    006D3A                 isconsole
+000091C8    006D9E                 strchr
+000091F8    006DCE                 strcmp
+00009234    006E0A                 atoi
+0000929A    006E70                 strcat
+000092E0    006EB6                 strlen
+00009310    006EE6                 setdir
+00009334    006F0A                 delete
+00009358    006F2E                 getmode
+0000938E    006F64                 setmode
+000093D6    006FAC                 fstat
+00009466    00703C                 cstat
+000094F4    0070CA                 kill
+0000951E    0070F4                 sleep
+00009546    00711C                 alarm
+0000956A    007140                 wait
+000095B8    00718E                 fshell
+000095F4    0071CA                 fexec
+00009644    00721A                 indirect
+00009676    00724C                 signal
+00009708    0072DE               + $START  
+00009730    007306                 _exit
+00009738    00730E                 _filbuf
+0000983E    007414                 _flsbuf
+00009960    007536                 fflush
+000099EC    0075C2                 fclose
+00009A62    007638                 freopen
+00009B22    0076F8                 fopen
+00009B78    00774E                 puts
+00009C08    0077DE                 fputs
+00009C74    00784A                 gets
+00009CE6    0078BC                 printf
+00009D4E    007924                 fprintf
+00009DB0    007986                 sprintf
+00009DD8    0079AE                 gputc
+00009E38    007A0E                 %roundup
+00009E8A    007A60                 syserr
+00009EF0    007AC6                 exit
+00009F70    007B46                 strcpy
+00009F98    007B6E                 %c_d_2_a
+00009FFA    007BD0                 %P860421
+0000A08A    007C60                 %_END
+0000A0B6    007C8C                 close
+0000A0D2    007CA8                 creat
+0000A1F6    007DCC                 lseek
+0000A22E    007E04                 open
+0000A282    007E58                 read
+0000A2B2    007E88                 write
+0000A2D8    007EAE                 savereg
+0000A32A    007F00                 %_PANIC
+0000A368    007F3E                 %_PRLOC
+0000A3D2    007FA8                 %_HALTF
+0000A3F8    007FCE                 %_NO_ACP
+0000A402    007FD8                 %TOUCH
+
+
+Data Areas:
+
+"kext               (0000CC74) 000004A8
+"kshell             (0000B15C) 0000001C
+/%GLOBALS/          (0000D138) 000007A4
+/%SYSCMEM/          (0000D138) 00000000
+/%SYSMEM/           (0000D138) 00000000
+/%SYSRIO/           (0000D138) 00000000
+//regs//            (0000DEE8) 00000044
+=kconnect           (0000BEC8) 000000A4
+=kmain              (0000D11C) 0000001C
+=ksendrec           (0000C17C) 000002F4
+=kserver            (0000BDA0) 00000128
+=kshell             (0000B178) 00000C28
+=kutil              (0000BFF8) 00000184
+=kwild              (0000BF6C) 0000008C
+=libcx              (0000B118) 00000044
+?cro20c             (0000D8E0) 0000001C
+?kconnect           (0000DB24) 00000004
+?kshell             (0000DB20) 00000004
+?libcx              (0000DAFC) 00000004
+?signal             (0000DB00) 00000020
+Allwild             (0000DEE4) 00000004
+Atacc               (0000DEE0) 00000004
+Baud                (0000DEDC) 00000004
+Chin                (0000DED8) 00000004
+Commands            (0000CB04) 00000170
+Defopt              (0000DE4C) 0000008C
+Delim               (0000CB00) 00000004
+Doptions            (0000CA68) 00000098
+Duplex              (0000CA40) 00000028
+Eightc              (0000DE48) 00000004
+Eightpref           (0000DE44) 00000004
+Fileas              (0000DE24) 00000020
+Filebin             (0000DE20) 00000004
+Filep               (0000C9F0) 00000050
+Filesin             (0000DE1C) 00000004
+Filnam              (0000DDFC) 00000020
+Filter              (0000DDF8) 00000004
+Flevel              (0000DDF4) 00000004
+Ft                  (0000DDB8) 0000003C
+Hand                (0000DDB4) 00000004
+Handchars           (0000C9E8) 00000008
+Handshake           (0000C958) 00000090
+Helpmore            (0000DDB0) 00000004
+Impopt              (0000C8FC) 0000005C
+Incom               (0000DDAC) 00000004
+Infile              (0000DDA8) 00000004
+Initcon             (0000DDA4) 00000004
+Iquote              (0000DDA0) 00000004
+Lastbaud            (0000DD9C) 00000004
+Lastty              (0000C8DC) 00000020
+Leapfrog            (0000C8D0) 0000000C
+Logf                (0000C8B0) 00000020
+Maxpack             (0000DD98) 00000004
+Nextopt             (0000DD94) 00000004
+Omode1              (0000DD90) 00000004
+Omode2              (0000DD8C) 00000004
+Omode3              (0000DD88) 00000004
+Onewild             (0000DD84) 00000004
+Onfile              (0000DD80) 00000004
+Options             (0000C6B8) 000001F8
+Parity              (0000C648) 00000070
+Prompt              (0000C628) 00000020
+Reol                (0000DD7C) 00000004
+Repc                (0000DD78) 00000004
+Reppref             (0000DD74) 00000004
+Retry               (0000DD70) 00000004
+Rpad                (0000DD6C) 00000004
+Rpadchar            (0000DD68) 00000004
+Rquote              (0000DD64) 00000004
+Rsop                (0000DD60) 00000004
+Sdelay              (0000DD5C) 00000004
+Seeya               (0000C624) 00000004
+Sendagain           (0000DD58) 00000004
+Sendall             (0000DD54) 00000004
+Sendnext            (0000DD50) 00000004
+Sendrec             (0000C57C) 000000A8
+Seol                (0000DD4C) 00000004
+Serve               (0000DD48) 00000004
+Serving             (0000DD44) 00000004
+Spad                (0000DD40) 00000004
+Spadchar            (0000DD3C) 00000004
+Speeds              (0000C514) 00000068
+Squote              (0000DD38) 00000004
+Ssop                (0000DD34) 00000004
+Startc              (0000DD30) 00000004
+Timeout             (0000DD2C) 00000004
+Transerr            (0000DD28) 00000004
+Warning             (0000DD24) 00000004
+Wildcards           (0000C4EC) 00000028
+Yesno               (0000C4AC) 00000040
+_iob                (0000B000) 00000118
+_ver                (0000C470) 0000003C
+cchksum             (0000DD20) 00000004
+debug               (0000DD1C) 00000004
+dpfp                (0000DD18) 00000004
+errno               (0000D8DC) 00000004
+escchr              (0000DD14) 00000004
+filecount           (0000DD10) 00000004
+filelist            (0000DC48) 000000C8
+filnamcnv           (0000DC44) 00000004
+fp                  (0000DC40) 00000004
+image               (0000DC3C) 00000004
+lecho               (0000DC38) 00000004
+n                   (0000DC34) 00000004
+numtry              (0000DC30) 00000004
+oldm1               (0000DC2C) 00000004
+oldm2               (0000DC28) 00000004
+oldm3               (0000DC24) 00000004
+oldtry              (0000DC20) 00000004
+oldtty              (0000DC1C) 00000004
+packet              (0000DBBC) 00000060
+parflg              (0000DBB8) 00000004
+pktdeb              (0000DBB4) 00000004
+recpkt              (0000DB54) 00000060
+remote              (0000DB50) 00000004
+rpsiz               (0000DB4C) 00000004
+size                (0000DB48) 00000004
+speed               (0000DB44) 00000004
+spsiz               (0000DB40) 00000004
+state               (0000DB3C) 00000004
+statuses            (0000DB38) 00000004
+stdinbuf            (0000D8FC) 00000200
+timint              (0000DB34) 00000004
+ttyfd               (0000DB30) 00000004
+ttyname             (0000DB2C) 00000004
+turn                (0000DB28) 00000004
+
+No:  Segment:    Size:     Address:
+ 0. 'OVERFL00'  0000242A      00000000
+ 1. '        '  00007FFE      0000242A
+
+Start Loc = 000072DE in segment         
+Code Size = 0000A428, Global Size = 00000000, Stack-Heap Size = 00008000

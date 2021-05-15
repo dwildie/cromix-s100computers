@@ -1,0 +1,26 @@
+utility:      WBOOT
+purpose:      Writes the boot program to the boot area of a disk.
+
+user access:  privileged user
+
+summary:      wboot devname [pathname]
+
+arguments:    device name where the boot program is to be written.
+
+              optional pathname of the boot program to be written.
+
+options:      none
+
+Description
+
+The Wboot utility writes the boot program into the boot area of a device.
+This is necessary for a device to be bootable. Devices available are floppy
+disks, WDI-II disks, and STDC hard disks (though RDOS prior to version 03.12
+cannot access them). The boot program to be written is selected by the Wboot
+utility. The programs required must reside in the /etc directory (fdboot,
+sfdboot, hdboot, stdboot). As an alternative, a user can write his own boot
+program if he specifies the appropriate filename as the second argument.
+
+Wboot uses the system drivers to access the device, so verify that there is an
+entry in /dev for the device name, and that you have run Crogen to include the
+system drivers.

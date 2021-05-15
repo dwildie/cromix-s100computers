@@ -1,0 +1,37 @@
+Shell
+command:      PROMPT
+purpose:      This command changes the prompt.
+
+user access:  all users
+
+summary:      prompt [prompt_string]
+
+arguments:    any string
+
+options:      none
+
+Description
+
+The Prompt command changes the system prompt. Prompt_string is the new string
+that the Shell is to use as a prompt. It must be a string of up to 23
+characters. If no string is specified, the prompt is changed to the default
+prompt "user_name[%d]". The new prompt may be any string. For example:
+
+     jim[1] prompt "Yes, dear,"
+
+Note the quotes were used to enforce the whole string to be considered a
+single argument. The prompt string may contain the "%d" substring. The "%d"
+characters will be replaced by the current command number.
+
+The prompt command inspects the /etc/who file to find the "user_name" of the
+user on the current console. The effect is twofold:
+
+- different users with the same user number will get a different prompt.
+
+- execution of the Priv command will not change the prompt as the
+  Priv command does not change the /etc/who file.
+
+If there is no /etc/who file or if it does not contain the entry for the
+current terminal (this will be true if the user is rooted on a write protected
+floppy), the prompt will be "#" or "%", depending on whether or not the user
+is privileged.

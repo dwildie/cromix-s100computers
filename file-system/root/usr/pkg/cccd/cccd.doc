@@ -1,0 +1,45 @@
+			  CROMEMCO 68000 C
+
+		   (  Models CCC-DL and CCC-DS  )
+
+
+This diskette contains the following files:
+
+	c.bin		The 68000 C compiler
+
+	clib.obj	The C library
+
+	code.bin	The 68000 code generator which is executed after
+			the compiler produces an intermediate code file
+
+        configure.bin   A utility program which may be used to adjust the 
+			compiler, code generator and linker to enable     
+                        compilation of larger programs.
+
+	crolinker.bin	The 68000 linker which reads the relocatable object
+			file produced by code.bin and searches the C
+			library for routines necessary to create an
+			executable user program
+
+	ccterrs		A text file which contains C compile-time error
+			messages
+
+	cc.cmd		A convenient command file which can be used to
+			compile and link a user program
+
+	install.cmd	The command file which will install the software on
+			this diskette onto a Cromix system.  To execute
+			this command, change the current directory to be
+			the directory in which this diskette is mounted and
+			type
+				"install".
+
+	jsysequ.h	Header files available for use by C programs;
+	modeequ.h	these files contain mnemonic definitions of   
+	stdio.h		frequently-used parameters.
+	structs.h
+	
+	syslib.obj	An auxiliary C library which contains functions 
+			which implement Cromix system calls 
+
+	cccd.doc	This file

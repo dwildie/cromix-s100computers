@@ -1,0 +1,41 @@
+utility:      ECHO
+purpose:      This program echoes its arguments to the terminal.
+
+user access:  all users
+
+summary:      echo [-en] text
+
+arguments:    any text
+
+options:      -e  send to STDERR
+              -n  do not print newline
+
+Description
+
+The Echo program echoes its arguments. Text may be enclosed within single or
+double quotation marks to insure correct interpretation by the Shell.
+
+Options
+
+The -e option echoes arguments to the standard error channel.
+
+The -n option suppresses the echo of a newline.
+
+Note
+
+The Echo utility, like most of the utilities, objects to illegal options.  The
+example:
+
+     jim[1] echo -1
+
+does not echo the string "-1". The Echo utility interprets the string "-1" as
+an option, and such an option is illegal for the Echo utility. The intended
+result can be produced by the command:
+
+     jim[2] echo -- -1
+
+This is particularly convenient for a command sequence like:
+
+     jim[3] ls nonexistent
+     jim[4] echo -- #err
+

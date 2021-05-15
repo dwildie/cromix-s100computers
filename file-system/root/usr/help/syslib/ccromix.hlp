@@ -1,0 +1,24 @@
+function:       ccromix
+purpose:        General system call.
+
+user access:    depends on call
+
+include files:  <jsysequ.h>
+                <syslib.h>
+
+synopsis:       int ccromix(syscall,regs)
+                int syscall; struct sys_reg *regs;
+
+Description
+
+This call implements the general system call. The structure sys_reg contains
+all the registers which take part in any system call. The user should load the
+sys_reg structure with appropriate values and invoke the ccromix function to
+do a system call. The _error and _wrbyte system calls cannot be used with the
+ccromix function.
+
+The function returns:
+
+     0              if successful
+     ERR            if error
+

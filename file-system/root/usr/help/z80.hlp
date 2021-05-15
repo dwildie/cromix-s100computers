@@ -1,0 +1,74 @@
+utility:      Z80
+purpose:      This program is used to run Z80 programs.
+
+user access:  all users
+
+summary:      z80 [-s] [-d device] Z80-program-pathname arguments
+
+arguments:    Z80 program full pathname
+
+              Arguments to Z80 program
+
+options:      -s        prints system call usage statistics
+              -d device device name where to run Z80 program
+
+Description
+
+The Z80 utility is used to run Z80 programs (.bin and .com files) on any
+device which contains a Z80 processor and that has the Z80 driver built into
+Cromix-Plus.
+
+The shell will automatically call the Z80 utility whenever it has to execute a
+program that is not a legal 68000 .bin file. There is no need for the user to
+explicitly call the Z80 utility unless a Z80 program has to be forked from a
+68000 user program or if for some reason the Z80 program has to run on a
+particular device.
+
+The Z80 utility will scan the /dev/z80 directory to find an unoccupied Z80
+device. The Z80 utility will handle the system calls for the Z80 program that
+will be run by a Z80 driver for one of the device types that are supported.
+For Z80 programs to run successfully
+
+     - the Z80.bin program must be in the /bin directory;
+     - the /dev/z80 directory must exist;
+     - the /dev/z80 directory must contain a number of Z80 device files;
+     - device files must have "execute" permission
+     - the drivers for these device files must be built into Cromix-Plus.
+
+Example:
+
+To run the Z80 Screen editor from the console, enter:
+
+     jim[1] screen file
+
+or
+
+     jim[1] z80 /bin/screen.bin file
+
+To use the Z80 assembler, enter:
+
+     jim[2] asmb file
+
+or
+
+     jim[2] z80 /bin/asmb.com file
+
+To execute the assembler from a 68000 program, fork a process with the
+pathname:
+
+     "/bin/z80.bin"
+
+and with arguments:
+
+     argv[0] = "z80"
+     argv[1] = "/bin/asmb.com"
+     argv[2] = filename
+     argv[3] = 0
+
+or fork a shell with arguments:
+
+     argv[0] = "shell"
+     argv[1] = "-c"
+     argv[2] = "asmb filename"
+     argv[3] = 0
+

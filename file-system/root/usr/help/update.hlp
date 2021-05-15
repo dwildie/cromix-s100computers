@@ -1,0 +1,34 @@
+utility:      UPDATE(1...2)
+purpose:      These command files update an existing Cromix file system from
+              new release diskettes.
+
+user access:  privileged user
+
+summary:      update1    device_name
+              update2    device_name
+
+options:      none
+
+Description
+
+The Update programs update an existing Cromix file system from new system
+diskettes.
+
+After booting the system from Disk 1 and rooting on Disk 1, run Update1, using
+the following command syntax:
+
+     # update1 drive
+
+where drive is the destination drive.
+
+Update1 will reboot the system. Boot your newly updated drive and run Update2
+for all additional new system disks using the following command syntax:
+
+     # update2 drive
+
+where drive is the source drive.
+
+Because the Update programs are command files, you can refer to the files
+themselves for information about how they work. Command files are ordinary
+text files. Thus, you can display them with Type or even change them with the
+CE editor.

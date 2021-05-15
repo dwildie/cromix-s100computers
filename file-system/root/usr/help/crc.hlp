@@ -1,0 +1,32 @@
+utility:      CRC
+purpose:      This program computes the CRC of a file.
+
+user access:  all users
+
+summary:      crc [-c value] file and/or directory list
+
+arguments:    list of files and/or directories
+
+options:      -c value     append two bytes to make CRC equal to "value"
+
+Description
+
+The Crc utility will process every ordinary file given as an argument. If a
+directory pathname is given as an argument, all files in that directory will
+be processed (recursively). Device files are ignored.
+
+When a file is processed, its CRC is computed and printed. The CRC polynomial
+used is:
+
+     x**16 + x**12 + x**5 + 1
+
+Options
+
+The -c option causes two bytes to be appended at the end of each file.  These
+two bytes are computed so that the CRC of the modified file will be equal to
+the given value. The CRC value given must be in the range
+
+     0 <= value <= 65,535
+
+Note that appending two bytes to a file might cause the file to be useless, so
+that the -c option may be used only under very special conditions.

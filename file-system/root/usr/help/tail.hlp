@@ -1,0 +1,36 @@
+utility:      TAIL
+purpose:      This program displays the last part of a file.
+
+user access:  all users
+
+summary:      tail [-c #] [-b #] [-l #] [-f] [filename]
+
+arguments:    optional file name
+
+options:      -c #   display # characters
+              -b #   display # blocks of 512 characters
+              -l #   display # lines
+              -f     follow up
+
+Description
+
+The Tail utility displays the last part of the file. If there is no filename
+given, the standard input will be displayed. By default, the Tail utility will
+display the last 10 lines.
+
+Options
+
+The -l option followed by a number will cause the Tail utility to display the
+specified number of lines.
+
+The -c option followed by a number will cause the Tail utility to display the
+specified number of characters.
+
+The -b option followed by a number will cause the Tail utility to display the
+specified number of blocks. A block is 512 characters.
+
+With the -f ("follow") option, if the input file is not a pipe, the program
+will not terminate after the tail of the input file has been copied, but will
+enter an endless loop, wherein it sleeps for two seconds and then attempts to
+read and copy further records from the input file. Thus, it may be used to
+monitor the growth of a file that is being written by some other process.

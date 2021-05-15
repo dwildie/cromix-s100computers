@@ -1,0 +1,27 @@
+Shell
+command:      TEE
+
+user access:  all users
+
+summary:      tee [-a] pathname
+
+argument:     pathname
+
+options:      -a   append
+
+Description
+
+Tee takes input from the standard input file and sends it to the standard
+output, as well as to the file specified by the pathname provided in the
+argument.
+
+Options
+
+The -a option appends output to the specified file.
+
+Example:
+
+     jim[1] sort short | tee sort0
+
+This command sorts the file short, and sends the sorted output to the terminal
+(standard output) and to the file named sort0 in the current directory.

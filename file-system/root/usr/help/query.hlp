@@ -1,0 +1,56 @@
+utility:      Q or QUERY
+purpose:      This program displays a short description of a specified utility
+              program or Shell command.
+
+user access:  all users
+
+summary:      query [-s] [name]
+
+arguments:    the names of one or more utility programs or Shell commands
+
+options:      -s   system function
+                   lists system call data as well as commands and utilities.
+
+Description
+
+The Query program searches a file containing one line descriptions of all of
+the utility programs and Shell commands for the name given as an argument.
+
+When using Query without an argument, a listing of all one line descriptions
+of utilities and Shell commands is displayed.
+
+The Query program considers names that are part of other keywords. When the
+name fil is given, Query finds all occurrences of the name file as well. This
+is helpful when the correct spelling of a name is unknown.
+
+After using Query to find the name of the desired command, additional
+information is obtained by entering help, followed by the name of the command.
+For further details, refer to the Help utility.
+
+The Query program uses the file /usr/query/query_data as a database. This file
+may be edited using the Screen Editor.
+
+Options
+
+The -s option searches the file /usr/query/sys_data, /usr/query/jsys_data, and
+/usr/query/mode_data before searching the default file, which gives
+information on the programs only.
+
+The /usr/query/sys_data file gives a list of system calls associated with the
+command. The /usr/query/jsys_data and /usr/query/mode_data are linked to the
+files /equ/jsysequ.z80 and /equ/modeequ.z80, respectively.
+
+Example:
+
+The following example demonstrates the use of the Query program.
+
+     jim[1] query delete
+
+     query_data
+     delete   -   removes a file or directory from a file system
+     deltree  -   deletes a directory and its descendents
+     passwd   -   change a user password, add or delete a user
+
+In the above example, the Query program has displayed all descriptions of
+Shell commands and utility programs that contain the word delete in their
+descriptions.

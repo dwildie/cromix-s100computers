@@ -1,0 +1,277 @@
+utility:      SORT
+purpose:      This utility sorts or merges files.
+
+user access:  all users
+
+summary:      sort [-muvbdfirt?] [-o path] [-n lines] [-l size]
+              [+x[.y[bdfirv]] ...] [file_list]
+
+arguments:    input filename(s)
+
+options:      -m     merge sorted input files
+              -u     unique records only
+              -v     evaluate fields numerically
+              -b     leading spaces and tabs ignored
+              -d     dictionary order
+              -f     consider uppercase as lowercase
+              -i     ignore all control characters and 7Fh
+              -r     reverse order
+              -t?    use ? as field separator
+              -o     output file
+              -n     number of lines in memory
+              -l     maximum line size
+              +x.y   sort on keys
+
+Description
+
+The Sort utility sorts the lines in one or more files in ASCII order.  ASCII
+order is: nonprinting characters, blanks, punctuation, digits, uppercase
+alphabetic characters, and lowercase characters.
+
+Each line (or record) in a file is a string of characters terminated by a
+newline (0Ah). The "+x.y" option allows you to begin sorting on any character
+in the line; without the +x.y option, sorting begins on the first valid
+character.
+
+When called without arguments, Sort takes input from STDIN and sends output to
+STDOUT. An ASCII table is included in the Cromix-Plus Programmer's Reference
+Manual.
+
+Options
+
+The -b option ignores leading tabs and spaces, and sorts lines or fields
+according to their first nonblank character. If the first column shown below
+is the input file, a sort with no options produces column two, while a sort
+with the -b option produces column three.
+
+     INPUT FILE  SORT WITH NO OPTIONS   SORT WITH -b
+
+     maser         McKinley              MacDowell
+      McCormack   MacDowell             MacLeish
+      MacDowell   McCormack              McCormack
+       McKinley  MacLeish                 McKinley
+     mace        mace                   mace
+     MacLeish    make                   make
+     make        maser                  maser
+
+In column two, the record with the most white space comes first because blank
+spaces precede characters and letters in an ASCII sort. The last column is
+closer to alphabetical order, but uppercase entries are first (blanks and tabs
+are retained, though they do not affect the order of the file).
+
+The -d option sorts by letters, numbers, and blanks, but ignores special and
+nonprinting characters (dictionary order). If the first column shown below is
+the input file db.in, a sort with no options produces column two (standard
+ASCII sort), while a sort with the -d option produces column three. In a
+dictionary sort, lines with only special characters are sorted in standard
+ASCII order, but in lines with both special and alphabetic characters, special
+characters are treated as blanks.
+
+     INPUT db.in    SORT WITH NO OPTIONS  SORT WITH -d
+
+     a              **a                   +++
+     +++            +++                   .444
+     aaa            +C                    BBB
+     BBBBB          .444                  BBBB
+     C              BBB                   +C
+     +C             BBBB                  C
+     BBB            C                     **a
+     .444           a                     a
+     **a            aAa                   aAa
+     aAa            aaa                   aaa
+
+To create a standard ASCII sort in output file db2.out, enter:
+
+     jim[1] sort -o db2.out db.in
+
+To create a dictionary sort in output file db.out, enter:
+
+     jim[1] sort -d -o db.out db.in
+
+Note that the output of a dictionary sort is not in simple alphabetical order
+(uppercase letters precede lowercase letters).
+
+The -f option treats upper- and lowercase letters equally. Special and
+nonprinting characters retain their order of precedence. If the first column
+shown below is the input file db.in, a sort with the -f option produces column
+two.
+
+     INPUT db.in      SORT WITH -f
+
+     a                **a
+     +++              +++
+     aaa              +C
+     BBBBB            .444
+     C                a
+     +C               aAa
+     BBB              aaa
+     .444             BBB
+     **a              BBBBB
+     aAa              C
+
+The -r option reverses the ASCII order of precedence (e.g., "z" precedes "a").
+If the first column shown below is the input file db.in, a sort with the -r
+option produces column two.
+
+     INPUT db.in      SORT WITH -r
+
+     cat              scat
+     hat              sat
+     scat             pat
+     sat              hat
+     pat              cat
+     gnat             1
+     splat            !Wo Fat
+     slat             gnat
+     1                splat
+     !Wo Fat          slat
+
+To create a reversed sort in output file db.out, enter:
+
+     jim[1] sort -r -o db.out db.in
+
+Note that the -r option completely reverses the ASCII ordering scheme for
+blank space, letters, and numbers.
+
+The -m option merges previously sorted input files to create an ordered output
+(provided that both input files are sorted according to the same scheme). As
+shown below, the input file db.in (previously sorted without options) can be
+merged with itself using the -m option, as follows:
+
+     jim[1] sort -m -o db.out db.in db.in
+
+     INPUT db.in      SORT WITH -m
+
+     Bat              Bat
+     Fat              Bat
+     cat              Fat
+     rat              Fat
+                      cat
+                      cat
+                      rat
+                      rat
+
+The merged output is in ASCII order, as are the input files. With adequate
+disk space, you can merge any number of files.
+
+The -u option deletes the duplicate records in a file, leaving one copy of
+each record. For example, using the output file db.out from the previous merge
+operation as an input file, the command
+
+     jim[1] sort -u -o u.out db.out
+
+creates an output file u.out that is identical to db.in of the previous
+example (no duplicate entries). For the -u option to identify two records as a
+match, they must be identical in all respects.
+
+The -v option causes all lines and fields to be sorted numerically. If this
+option is used, the program assumes all fields are numeric and all non-numeric
+characters are discarded. Valid numeric characters are: "+", "-", ".", and the
+digits (0 - 9). The numeric option can also be appended to individual fields.
+For example the command:
+
+     jim[1] sort +3.0vr filename
+
+will cause the program to skip three fields and sort the next field
+numerically in reverse order.
+
+The command:
+
+     jim[1] sort +1.0v data.in
+
+will produce the following action:
+
+     INPUT data.in            SORTED OUTPUT
+
+     aaaa      1.01           e       -12
+     bbbb      -1.0           bbbb    -1.0
+     cccc      1.0            dddd    zero
+     dddd      zero           fff     .1234
+     e         -12            cccc    1.0
+     fff       .1234          aaaa    1.01
+
+The -i option ignores all control characters and 7Fh (DEL) when sorting (e.g.,
+"ab^Ic" would be identical to "abc").
+
+The -l option, followed by a number, defines the maximum line length; without
+this option, lines are limited to 80 characters. If an input line is longer
+than the maximum line length, the program will abort.
+
+The -n option, followed by a number, indicates the number of lines that are
+kept in memory; without this option, 1000 lines are kept. If all input lines
+cannot be stored in memory, excess lines are stored on disk and merged later
+in a single result file. For faster operation when sorting large files, use
+the -n option to increase the number of memory-resident lines.
+
+The -t option, followed immediately by a character, indicates that the
+specified character will be taken as the field separator (rather than space or
+tab) wherever it occurs in the input file. This option is used only with the
++x.y option.
+
+The +x.y option specifies the first character on the line where sorting
+begins; without this option, sorting begins on the first valid character on
+the line. The x indicates the number of fields to be skipped (counting from
+the left end of the line); y indicates the number of characters to be skipped
+within the selected field. If x=0, the first field on the line is selected.
+
+Without the -t option, each field (except the first one) starts with a space
+or tab following the last nonblank character of the previous field. If the -t
+option is used, each field ends with the specified character.
+
+If one or more of the -b, -d, -i, -v, or -r options immediately follow the "y"
+value, they affect only the selected field; otherwise, they affect the entire
+sort. As shown below, the input file alpha has four records, each with eight
+fields of 3 bytes each. Note that all fields except the first one start with a
+blank.
+
+     abc def ghi jkl mno pqr stu vwx
+     Abc dEf ghI Jkl Mno pQr sTu Vwx
+     aBC DeF gHI Jkl mNo Pqr StU vWx
+     ABc dEF GHi jKL mnO pQR sTu VWx
+
+To sort the file in dictionary order, starting with the first character of the
+second field ("def"), enter:
+
+     jim[1] sort -d +1.0 -o alpha.out alpha
+
+The output file alpha.out would be:
+
+     aBC DeF gHI Jkl mNo Pqr StU vWx
+     ABc dEF GHi jKL mnO pQR sTu VWx
+     Abc dEf ghI Jkl Mno pQr sTu Vwx
+     abc def ghi jkl mno pqr stu vwx
+
+To sort alpha using only the second and third characters of the second field
+(not counting the spaces), enter:
+
+     jim[1] sort +1.1 -db -o alpha.out alpha
+
+The d and b options affect only the second field.
+
+In a more complex example, the file who contains information on immigrants to
+California, as follows:
+
+     Lopez   Jack     Spain   Bower  Orange
+     McNiff  John     England Rose   Sonoma
+     Rizzo   Jill     Italy   Bly    Kings
+     Ross    Jerry    Wales   Green  Placer
+     Mcniff  John     England Greer  Placer
+
+To sort the file by country of origin, last name, first name, and county
+(starting with the first character of each field and ignoring upper and
+lowercase letters in the last-name field), enter:
+
+     jim[1] sort -t^I +2.0 +0.0 -f +1.0 +4.0 -o who.out who
+
+Since each field is separated by a tab rather than blanks, the -t option
+selects the tab (CONTROL-I) as the field separator. The output file
+who.out would be:
+
+     Mcniff  John     England Greer  Placer
+     McNiff  John     England Rose   Sonoma
+     Rizzo   Jill     Italy   Bly    Kings
+     Lopez   Jack     Spain   Bower  Orange
+     Ross    Jerry    Wales   Green  Placer
+
+Because of the -f option, the difference in capitalization between Mcniff and
+McNiff is ignored, and the two records are sorted by county.
